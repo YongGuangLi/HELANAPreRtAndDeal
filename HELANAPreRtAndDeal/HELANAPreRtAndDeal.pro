@@ -79,11 +79,6 @@ HEADERS += \
     ../funlib/SimFunc.h
 
 
-LIBS += -ldl -lpthread
-
-
-unix:!macx: LIBS += -L$$PWD/../boost/lib -lboost_thread -lboost_filesystem
-
 unix:!macx: LIBS += -L$$PWD/../compiler/lib -lcompiler
 
 INCLUDEPATH += $$PWD/../compiler/inc
@@ -103,5 +98,10 @@ unix:!macx: LIBS += -L$$PWD/../waspcn/lib/ -lwaspcn
 
 INCLUDEPATH += $$PWD/../waspcn/inc
 DEPENDPATH += $$PWD/../waspcn/inc
+
+
+LIBS += -ldl -lpthread
+
+unix:!macx: LIBS += -L$$PWD/../boost/lib -lboost_thread -lboost_filesystem
 
 
