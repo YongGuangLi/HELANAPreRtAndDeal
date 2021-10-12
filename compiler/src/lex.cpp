@@ -298,7 +298,7 @@ void CLex::GetChar(void)
         while ((chrmap[*m_cp]&BLANK)||(chrmap[*m_cp]&NEWLINE))
             m_cp++;
 
-        if (m_cp == '\0')
+        if (m_cp[0] == '\0')
             m_code=EOI_SYM;
     }
 }
