@@ -82,7 +82,7 @@ HEADERS += \
 LIBS += -ldl -lpthread
 
 
-unix:!macx: LIBS += -L/usr/local/boost_1_71_0/lib -lboost_thread -lboost_filesystem
+unix:!macx: LIBS += -L$$PWD/../boost/lib -lboost_thread -lboost_filesystem
 
 unix:!macx: LIBS += -L$$PWD/../compiler/lib -lcompiler
 
