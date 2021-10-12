@@ -37,9 +37,7 @@ SOURCES += main.cpp \
     ../funlib/PublicMatrix.cpp \
     ../funlib/SimFunc.cpp
 
-DISTFILES += \
-    HELANAPreRtAndDeal.pro.user \
-    eids_service_preValue_config.cfg
+DISTFILES +=
 
 HEADERS += \
     AlarmLog.h \
