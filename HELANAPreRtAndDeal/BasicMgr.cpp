@@ -221,9 +221,9 @@ bool BasicMgr::loadConfigInfo(const bool isFirstCal,bool &isModConf,long &mCurSe
 	//int isModConf;
 	isModConf = mSimpleOpt->getIndexConfigStatus(m_strFactoryCode);	
 	mSimpleOpt->getIndexUpdataTime(m_strFactoryCode,mCurSeCalTime);
-	//std::string str1 ="";
-	//mSimpleOpt->UpdataCalTime(m_strFactoryCode,str1);
-	if (!isFirstCal && !isModConf) return true;
+
+    if (!isFirstCal && !isModConf)
+        return true;
 
 	if(isFirstCal)
 	{

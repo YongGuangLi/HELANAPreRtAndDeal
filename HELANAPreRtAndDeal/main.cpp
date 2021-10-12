@@ -22,7 +22,7 @@ bool initMain(void)
     std::string strPath = PubOpt::SystemOpt::GetCurExePath();
     if (!SINGLETON(ServiceEIDSPreConfig)->initConfig(strPath + EIDS_CONFIG_FILE))
     {
-        std::cerr <<"Init Public Config Failed."<<std::endl;
+        Aos_WriteLog("Initial Public Config Failure.");
         return false;
     }
     std::cerr <<strPath + EIDS_CONFIG_FILE<<std::endl;
@@ -32,9 +32,7 @@ bool initMain(void)
 
     if (!SINGLETON(Log)->InitLog(strLogPath, strModeName, bLogIsEnable))
     {
-        std::cerr <<"Init Log Failed."<<std::endl;
-        std::string strCmd = "echo Init Log Failed., >> D:/test.log";
-        system(strCmd.c_str());
+         Aos_WriteLog("Initial LOG Environmental Failure.");
         return false;
     }
     Aos_WriteLog("Initial LOG Environmental Success.");

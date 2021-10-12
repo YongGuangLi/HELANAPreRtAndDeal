@@ -1,15 +1,15 @@
-/*******************************************************************************
-* Copyright£¨C£©,2016-2020,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: RDbHead.h
-* ÎÄ¼şÃèÊö: Êı¾İ½á¹¹¹«¹²Í·ÎÄ¼ş
-*  ×÷  Õß : wangkai
-* ´´½¨ÈÕÆÚ: 2016-11-12 20:46:02
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2016-2020,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: RDbHead.h
+* æ–‡ä»¶æè¿°: æ•°æ®ç»“æ„å…¬å…±å¤´æ–‡ä»¶
+*  ä½œ  è€… : wangkai
+* åˆ›å»ºæ—¥æœŸ: 2016-11-12 20:46:02
 *******************************************************************************/
 
 #ifndef __RDBHEAD_H__
 #define __RDBHEAD_H__
 
-//¸üĞÂ·şÎñ°æ±¾ĞÅÏ¢
+//æ›´æ–°æœåŠ¡ç‰ˆæœ¬ä¿¡æ¯
 const std::string g_strUpdateServiceVersionSQL = 
 	"begin P_SYS_Update_VersionNumber(:v_service_name, :v_version_no, :v_logfile_path,:v_result); end;";
 const std::string g_strAlarmScoreSQL = 
@@ -37,7 +37,7 @@ const std::string g_strOrcAlarmSetSQL =
 		Fun_Pub_Num_To_Char(n.upper_limit_value) upper_limit_value\
 		from v_eids_set_model_alarm m left join  v_eids_model_point_zone n \
 		on m.model_id = n.model_id  where n.category_id is not null";
-// »ú×éµ½ÏµÍ³ÅäÖÃĞÅÏ¢¼ÓÔØ where n.category_id is not null
+// æœºç»„åˆ°ç³»ç»Ÿé…ç½®ä¿¡æ¯åŠ è½½ where n.category_id is not null
 //const std::string g_strAlarmSetSQL = 
 //		"select t.parent_id,t.id,t.model_weight,t.model_category from  TB_EIDS_MODEL t where t.id in \
 //		(select t.parent_id from  TB_EIDS_MODEL t where t.model_category=2)\
@@ -50,7 +50,7 @@ const std::string g_strAlarmCosineSQL =
 		v_eids_set_model_alarm p on t.model_id=p.model_id where t.enabled=1 \
 		order by p.set_code,p.sys_id,p.model_id";
 
-//Ä£ĞÍµ½²âµãÅäÖÃĞÅÏ¢¼ÓÔØ
+//æ¨¡å‹åˆ°æµ‹ç‚¹é…ç½®ä¿¡æ¯åŠ è½½
 const std::string g_strAlarmSQL ="select model_id,category_id,monit_point_id,interval_id,alarm_level,\
 		alarm_type,upper_limit_value,lower_limit_value \
 		from v_eids_model_point_zone \
@@ -102,55 +102,55 @@ const std::string g_strModeMuConfSQL =
 	where p.factory_code ='%s'\
 	order by model_id,model_condition_id";
 
-//²éÑ¯Ö¸±êÓëµãµÄÈ«µãÃû
+//æŸ¥è¯¢æŒ‡æ ‡ä¸ç‚¹çš„å…¨ç‚¹å
 const std::string g_strPubPointSQL = 
 		"select point_code, source_id, set_id from tb_pub_point";
 
-//²éÑ¯ÊÖ¹¤µãÖµ
+//æŸ¥è¯¢æ‰‹å·¥ç‚¹å€¼
 const std::string g_strMaunalPointSQL = 
 		"select  point_id, Fun_Pub_Num_To_Char(current_value) current_value  from \
 		(select t.*,rank() over(partition by t.point_id order by t.begin_time desc,t.approve_time desc) ord	 \
 		from tb_pub_maunal_point t where t.approve_flag = 1 ) where ord = 1";
 		//"select point_id, Fun_Pub_Num_To_Char(current_value) current_value from tb_pub_maunal_point where approve_flag = 1";
 
-//²éÑ¯Ä£ĞÍÅäÖÃ¸ü¸Ä±êÊ¶
+//æŸ¥è¯¢æ¨¡å‹é…ç½®æ›´æ”¹æ ‡è¯†
 const std::string g_strSysStatusSQL = 
 "select param_status from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
 
 
-//²éÑ¯¼ÆËãµ½Ê²Ã´Ê±¼ä
+//æŸ¥è¯¢è®¡ç®—åˆ°ä»€ä¹ˆæ—¶é—´
 const std::string g_strSysCalTimeSQL = 
 "select param_value from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
 
-//¸üĞÂÏµÍ³¼ÆËãÊ±¼ä
+//æ›´æ–°ç³»ç»Ÿè®¡ç®—æ—¶é—´
 const std::string g_strUpdateSysCalTimeSQL = 
 "update TB_PUB_PARAM set param_value = '%s',compute_type=%d where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
 
-//²éÑ¯Ä£ĞÍÅäÖÃ¸ü¸Ä±êÊ¶
+//æŸ¥è¯¢æ¨¡å‹é…ç½®æ›´æ”¹æ ‡è¯†
 const std::string g_strFactoryNoSQL = 
 "select factory_tag from TB_PUB_MODULE_FACTORY  where factory_code ='%s'";
 		
 /*const std::string g_strSysStatusSQL = 
 "select to_char(status_value) status_value from tb_pub_sys_status where status_name='MODEL_IS_MODIFY'";*/		
 
-//¸üĞÂÖ¸±êÅäÖÃ¸ü¸Ä±êÊ¶
+//æ›´æ–°æŒ‡æ ‡é…ç½®æ›´æ”¹æ ‡è¯†
 const std::string g_strUpdateStatusSQL = 
 		"update TB_PUB_PARAM  set param_status =%d where param_code='MODEL_IS_MODIFY' and factory_code ='%s'";
 
 
-//¸üĞÂÄ£ĞÍ²âµãÊµÊ±Öµ±íÀïÃæµÄÄ£ĞÍ½¡¿µ¶È²âµãÊµÊ±Öµ
+//æ›´æ–°æ¨¡å‹æµ‹ç‚¹å®æ—¶å€¼è¡¨é‡Œé¢çš„æ¨¡å‹å¥åº·åº¦æµ‹ç‚¹å®æ—¶å€¼
 const std::string g_strSavePointValueSQL =  
         "update tb_eids_model_monit_point  set \
         update_time = to_date(:update_time,'yyyy-mm-dd hh24:mi:ss'), \
         similar_value = :sim_value \
         where point_id = :point_id";
 
-//²åÈë²âµãĞÂµÄ¸æ¾¯¼ÇÂ¼Ç°½«×îºóÒ»Ìõ¸æ¾¯¼ÇÂ¼×´Ì¬ÖÃÎªÀúÊ·
+//æ’å…¥æµ‹ç‚¹æ–°çš„å‘Šè­¦è®°å½•å‰å°†æœ€åä¸€æ¡å‘Šè­¦è®°å½•çŠ¶æ€ç½®ä¸ºå†å²
 const std::string g_strRsltPointUpFrontInsSQL = 
 		"update tb_eids_model_alarm_data_point  set is_history=1 where is_history=0 and \
 		model_id=:1  and category_id=:2 and monit_point_id=:3 ";
 
-//²åÈë²âµãĞÂµÄ¸æ¾¯¼ÇÂ¼
+//æ’å…¥æµ‹ç‚¹æ–°çš„å‘Šè­¦è®°å½•
 const std::string g_strRsltPointInSQL = 
 		"insert into tb_eids_model_alarm_data_point(id,model_id,category_id,condition_id,monit_point_id,\
 		begin_time,end_time,max_value,min_value,avg_value,max_value_predicted,min_value_predicted,\
@@ -166,7 +166,7 @@ const std::string g_strOrcRsltPointInSQL =
 		:8,:9,:10,:11,:12,:13,:14,:15,:16,:17)";
 
 
-//¸üĞÂµ±Ç°²âµã¸æ¾¯¼ÇÂ¼
+//æ›´æ–°å½“å‰æµ‹ç‚¹å‘Šè­¦è®°å½•
 const std::string g_strRsltPointUpBackInSQL = 
 		"update tb_eids_model_alarm_data_point set \
 		end_time=convert(datetime,:1),max_value=:2,min_value=:3,avg_value=:4,\
@@ -215,12 +215,12 @@ const std::string g_strOrcRsltPointUpValuesSQL =
 	"update tb_eids_model_monit_point  set alarm_level=:1,update_time=to_date(:2,'yyyy-mm-dd hh24:mi:ss'),\
 	current_value=:3,predicted_value=:4,similar_value=:5 where category_id=:6 and point_id=:7";
 
-//²åÈë·ÖÀàĞÂµÄ¸æ¾¯¼ÇÂ¼Ç°½«×îºóÒ»Ìõ¸æ¾¯¼ÇÂ¼×´Ì¬ÖÃÎªÀúÊ·
+//æ’å…¥åˆ†ç±»æ–°çš„å‘Šè­¦è®°å½•å‰å°†æœ€åä¸€æ¡å‘Šè­¦è®°å½•çŠ¶æ€ç½®ä¸ºå†å²
 const std::string g_strRsltGroupUpFrontInsSQL = 
 	"update tb_eids_model_category_alarm  set is_history=1 where is_history=0 and \
 	category_id=:1 ";
 
-//²åÈë²âµãĞÂµÄ¸æ¾¯¼ÇÂ¼
+//æ’å…¥æµ‹ç‚¹æ–°çš„å‘Šè­¦è®°å½•
 const std::string g_strRsltGroupInSQL = 
 	"insert into tb_eids_model_category_alarm(id,category_id,\
 	begin_time,end_time,alarm_level,alarm_value,is_history) \
@@ -233,7 +233,7 @@ const std::string g_strOrcRsltGroupInSQL =
 	values(:id,:category_id,to_date(:start_t,'yyyy-mm-dd hh24:mi:ss'),\
 	to_date(:end_t,'yyyy-mm-dd hh24:mi:ss'),\
 	:alarm_level,:alarm_value,:is_history)";
-//¸üĞÂ·ÖÀà¸æ¾¯¼ÇÂ¼
+//æ›´æ–°åˆ†ç±»å‘Šè­¦è®°å½•
 const std::string g_strRsltGroupUpBackInSQL = 
 	"update tb_eids_model_category_alarm set end_time=convert(datetime,:end_time)\
 		where  id=:id and  is_history=0 ";
@@ -242,12 +242,12 @@ const std::string g_strOrcRsltGroupUpBackInSQL =
 	"update tb_eids_model_category_alarm set end_time=to_date(:end_time,'yyyy-mm-dd hh24:mi:ss')\
 	where  id=:id and  is_history=0 ";
 
-//²åÈëÄ£ĞÍĞÂµÄ¸æ¾¯¼ÇÂ¼Ç°½«×îºóÒ»Ìõ¸æ¾¯¼ÇÂ¼×´Ì¬ÖÃÎªÀúÊ·
+//æ’å…¥æ¨¡å‹æ–°çš„å‘Šè­¦è®°å½•å‰å°†æœ€åä¸€æ¡å‘Šè­¦è®°å½•çŠ¶æ€ç½®ä¸ºå†å²
 const std::string g_strRsltModelUpFrontInsSQL = 
 	"update tb_eids_model_alarm_data  set is_history=1 where is_history=0 and \
 	 model_id=:1";
 
-//²åÈëÄ£ĞÍĞÂµÄ¸æ¾¯¼ÇÂ¼
+//æ’å…¥æ¨¡å‹æ–°çš„å‘Šè­¦è®°å½•
 const std::string g_strRsltModelInSQL = 
 	"insert into tb_eids_model_alarm_data(id,model_id,\
 	begin_time,end_time,alarm_level,alarm_value,is_history) \
@@ -261,7 +261,7 @@ const std::string g_strOrcRsltModelInSQL =
 	values(:id,:model_id,to_date(:start_t,'yyyy-mm-dd hh24:mi:ss'),\
 	to_date(:end_t,'yyyy-mm-dd hh24:mi:ss'),\
 	:alarm_level,:alarm_value,:is_history)";
-//¸üĞÂÄ£ĞÍ¸æ¾¯¼ÇÂ¼
+//æ›´æ–°æ¨¡å‹å‘Šè­¦è®°å½•
 const std::string g_strRsltModelUpBackInSQL = 
 	"update tb_eids_model_alarm_data set end_time=convert(datetime,:end_time)\
 	 where  id=:id and  is_history=0 ";
@@ -269,7 +269,7 @@ const std::string g_strRsltModelUpBackInSQL =
 const std::string g_strOrcRsltModelUpBackInSQL = 
 	"update tb_eids_model_alarm_data set end_time=to_date(:end_time,'yyyy-mm-dd hh24:mi:ss')\
 	where  id=:id and  is_history=0 ";
-//²åÈëÄ£ĞÍÄ£Ê½ĞÂµÄ¼ÇÂ¼Ç°½«×îºóÒ»Ìõ¸æ¾¯¼ÇÂ¼×´Ì¬ÖÃÎªÀúÊ·
+//æ’å…¥æ¨¡å‹æ¨¡å¼æ–°çš„è®°å½•å‰å°†æœ€åä¸€æ¡å‘Šè­¦è®°å½•çŠ¶æ€ç½®ä¸ºå†å²
 const std::string g_strRsltConditionUpFrontInsSQL = 
 	"update tb_eids_model_period  set is_history=1 where is_history=0 and \
 	 condition_id=:1";
@@ -277,7 +277,7 @@ const std::string g_strRsltConditionUpFrontInsSQL =
 const std::string g_strRsltConditionUpFrontInsSQLfirst = 
 "update tb_eids_model_period  set is_history=1 where is_history=0";
 
-//²åÈëÄ£Ê½ĞÂµÄ¼ÇÂ¼
+//æ’å…¥æ¨¡å¼æ–°çš„è®°å½•
 const std::string g_strRsltConditionInSQL = 
 	"insert into tb_eids_model_period(id,condition_id,begin_time,end_time,duration,is_history) \
 	values(:id,:condition_id,convert(datetime,:begin_time),convert(datetime,:end_time),\
@@ -287,7 +287,7 @@ const std::string g_strOrcRsltConditionInSQL =
 	"insert into tb_eids_model_period(id,condition_id,begin_time,end_time,duration,is_history) \
 	 values(:id,:condition_id,to_date(:begin_time,'yyyy-mm-dd hh24:mi:ss'),to_date(:end_time,'yyyy-mm-dd hh24:mi:ss'),\
 	:duration,:is_history)";
-//¸üĞÂÄ£Ê½¸æ¾¯¼ÇÂ¼
+//æ›´æ–°æ¨¡å¼å‘Šè­¦è®°å½•
 const std::string g_strRsltConditionUpBackInSQL = 
 	"update tb_eids_model_period set end_time=convert(datetime,:end_time),duration=:duration\
 	where  id=:id and  is_history=0 ";
@@ -295,7 +295,7 @@ const std::string g_strRsltConditionUpBackInSQL =
 const std::string g_strOrcRsltConditionUpBackInSQL = 
 	"update tb_eids_model_period set end_time=to_date(:end_time,'yyyy-mm-dd hh24:mi:ss'),duration=:duration\
 	where  id=:id and  is_history=0 ";
-//²åÈë¹ÊÕÏ¶¨Î»ĞÂµÄ¼ÇÂ¼
+//æ’å…¥æ•…éšœå®šä½æ–°çš„è®°å½•
 const std::string g_strRsltCosineInSQL = 
 	"insert into tb_eids_fault_event(id,fault_id,model_id,fault_name,start_time,end_time,\
 	duration,fault_causes,fault_analyse,fault_guide,event_state,fault_code, match_rate,fault_type) \
@@ -310,7 +310,7 @@ const std::string g_strOrcRsltCosineInSQL =
 	to_date(:end_t,'yyyy-mm-dd hh24:mi:ss'),:duration,:fault_causes,:fault_analyse,\
 	:fault_guide,:event_state,:fault_code,:match_rate,:fault_type)";
 
-//¸üĞÂ¹ÊÕÏ¶¨Î»¼ÇÂ¼
+//æ›´æ–°æ•…éšœå®šä½è®°å½•
 const std::string g_strRslCosineUpBackInSQL = 
 "update tb_eids_fault_event  set end_time=convert(datetime,:end_time),duration=:duration\
 	where id=:id";

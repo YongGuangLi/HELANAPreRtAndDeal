@@ -46,9 +46,9 @@ StartupServer::initial(const GetDateWay iSysType,const GetDateWay GetWay)
     mBaseMgr = new BasicMgr(m_strFactoryCode);
     mCalculateIndex = new RecursiveCalculateIndex();
     mPointPreCal = new PointPreCal(mCalculateIndex);
-    //if (!mBaseMgr->initialRtdb()) return false;
+
     mSeCalCycSec = SINGLETON(ServiceEIDSPreConfig)->getServiceCalCycSec();
-    //mBaseMgr->m_strFactoryCode = m_strFactoryCode;
+
     Aos_Assert_R(mBaseMgr->BuffInitial(iSysType,GetWay), false);
     return true;
 }
@@ -75,19 +75,18 @@ bool
 StartupServer::calculate()
 {
     //导入服务配置信息
-    //Aos_WriteLog("&&&&&1.");
     if (mSeLastTime == 0)
         mSeLastTime = Util::getNowTime();
+
     bool rslt = mBaseMgr->loadConfigInfo(mFirstCal, mModConf, mCurSeCalTime);
 
-    //Aos_WriteLog("&&&&&2.");
     mFirstCal = false;
     Aos_Assert_R(rslt, false);
 
     if (smDestory)
         return true;
+
     run();
-    //mFirstCal = false;
     return true;
 }
 

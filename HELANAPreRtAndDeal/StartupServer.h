@@ -33,12 +33,12 @@ public:
 	static bool						smIsStartDelay;			 //正在延时计算标识 
 	static bool						smDestory;				 //停止信号标识
 	static bool						smSanityCheck;
-	std::string						m_strFactoryCode;//电厂编号
-	int								mHisGetNum;      //电厂追加补算多少小时
+    std::string						m_strFactoryCode;        //电厂编号
+    int								mHisGetNum;              //电厂追加补算多少小时
 
-	int								mHisToRtDevMin;      //电厂追加补算切换到实时计算间隔时间 分钟
+    int								mHisToRtDevMin;          //电厂追加补算切换到实时计算间隔时间 分钟
 
-	std::string						m_strSerivceName;//服务名称
+    std::string						m_strSerivceName;        //服务名称
 public:
 	StartupServer(void);
 	~StartupServer(void);

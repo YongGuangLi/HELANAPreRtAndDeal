@@ -120,21 +120,18 @@ bool
 RDbOperationSimple::getIndexConfigStatus(std::string strFactoryCode)
 {	
 	std::string strCode;
-	//bool nErr;
-	//if (!mQtOpt->QtIsConnect()) return false;
-	Aos_Assert_R(Util::QtConnect(mQtOpt,strFactoryCode), false);
-	std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysStatusSQL.c_str(),strFactoryCode.c_str());
-	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
-	//Aos_Assert_R(stmtPrepare("getIndexConfigStatus", g_strSysStatusSQL), false);
-	int nNumber = 0;
-	while (mQtOpt->SQLStmtFetch())
-	{
-		nNumber++;
-		strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
 
+	Aos_Assert_R(Util::QtConnect(mQtOpt,strFactoryCode), false);
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysStatusSQL.c_str(), strFactoryCode.c_str());
+	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
+
+	while (mQtOpt->SQLStmtFetch())
+    {
+        strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
 	}
+
 	stmtCloseStream();  
-	bool is_update = Util::CharPointerConvert2Number<int>(strCode.c_str()) != 0?true:false;
+    bool is_update = Util::CharPointerConvert2Number<int>(strCode.c_str()) != 0? true : false;
 	
 	return is_update;
 }
@@ -143,19 +140,16 @@ bool
 RDbOperationSimple::getIndexUpdataTime(std::string strFactoryCode,long &calTime)
 {	
 	std::string strTime;
-	//bool nErr;
-	//if (!mQtOpt->QtIsConnect()) return false;
+
 	Aos_Assert_R(Util::QtConnect(mQtOpt), false);
 	std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysCalTimeSQL.c_str(),strFactoryCode.c_str());
 	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
-	//Aos_Assert_R(stmtPrepare("getIndexConfigStatus", g_strSysStatusSQL), false);
-	int nNumber = 0;
-	while (mQtOpt->SQLStmtFetch())
-	{
-		nNumber++;
-		strTime = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
 
+	while (mQtOpt->SQLStmtFetch())
+    {
+        strTime = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
 	}
+
 	stmtCloseStream();  
 	calTime = PubOpt::SystemOpt::StrToDateTm(strTime);
 

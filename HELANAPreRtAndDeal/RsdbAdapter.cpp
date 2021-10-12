@@ -175,7 +175,8 @@ bool RsdbAdapter::QtConnect(const DBServerInfo &stServerInfo)
 	}
 
 	m_IsConn = true;
-	if (m_query != NULL) delete m_query;
+    if (m_query != NULL)
+        delete m_query;
 	m_query = new QSqlQuery(m_rsdb);
 
 	//m_strErrorMessage = std::string("Rtdb (QT) Connect Success");

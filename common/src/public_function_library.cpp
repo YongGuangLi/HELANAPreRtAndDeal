@@ -181,7 +181,7 @@ namespace PubOpt
         {
             if (strSplit.empty())
             {
-                return false;
+                return "";
             }
             std::string strSrcBak = strSrc;
             size_t siFind = 0;
