@@ -29,7 +29,6 @@ bool initMain(void)
     std::string strModeName = SINGLETON(ServiceEIDSPreConfig)->getModeName();
     bool bLogIsEnable = SINGLETON(ServiceEIDSPreConfig)->isShowLog();
 
-    std::cout<<strPath<<std::endl;
     if (!SINGLETON(Log)->InitLog(strPath + "/log/", strModeName, bLogIsEnable))
     {
         Aos_WriteLog("Initial LOG Environmental Failure.");
