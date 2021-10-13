@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: data_format.cpp
-* ÎÄ¼şÃèÊö: Êı¾İ½âÎö½Ó¿ÚÀà
-*  ×÷  Õß : %ÁÖÏşÓê%£¬18942552977
-* ´´½¨ÈÕÆÚ: 2014-9-10 14:25:01
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: data_format.cpp
+* æ–‡ä»¶æè¿°: æ•°æ®è§£ææ¥å£ç±»
+*  ä½œ  è€… : %æ—æ™“é›¨%ï¼Œ18942552977
+* åˆ›å»ºæ—¥æœŸ: 2014-9-10 14:25:01
 *******************************************************************************/
 
 #include "data_parser.h"
@@ -82,7 +82,7 @@ DataParser::CreatePointData(PointDatas* aPoints, unsigned long lPointCount)
 bool 
 DataParser::rt_Receive(PointDatas* pPoints)
 {
-	//»ñÈ¡»º³åÇø´óĞ¡
+	//è·å–ç¼“å†²åŒºå¤§å°
 	long nLen=0;
 	if(mDataType == Binary)
 	{
@@ -96,12 +96,12 @@ DataParser::rt_Receive(PointDatas* pPoints)
 	}
 	
 	if (mFileBuff == NULL) return false;
-	//»º³åÇøÊı¾İ
+	//ç¼“å†²åŒºæ•°æ®
 	//void* pData=new char[nLen];
 	//Linda
 	char * pData=new char[nLen];
 	memset(pData,0,sizeof(char)*nLen);
-	//½ÓÊÕÊı¾İ
+	//æ¥æ”¶æ•°æ®
 	if(!mFileBuff->retrieveData(pData, nLen))
 	{
 		mStrError = mFileBuff->getError();
@@ -116,7 +116,7 @@ DataParser::rt_Receive(PointDatas* pPoints)
 		return true;
 	}
 
-	if(mDataType == Binary)//°´ÕÕ¶ş½øÖÆ½â°ü
+	if(mDataType == Binary)//æŒ‰ç…§äºŒè¿›åˆ¶è§£åŒ…
 	{
 		bool bRet= UnpackPointData(pData, nLen, pPoints);
 		if(!bRet)
@@ -125,7 +125,7 @@ DataParser::rt_Receive(PointDatas* pPoints)
 		return true;
 	}
 
-	//°´ÎÄ±¾·½Ê½½â°ü
+	//æŒ‰æ–‡æœ¬æ–¹å¼è§£åŒ…
 	//string strData=string(nLen+1,0);
 	//strData=(char*)pData;
 	string strData(pData, nLen);
@@ -144,11 +144,11 @@ DataParser::rt_Send(const PointDatas& aPoints)
 	if (mFileBuff == NULL) return false;
 	if(mDataType == Binary)
 	{
-		//»ñÈ¡»º³åÇø´óĞ¡
+		//è·å–ç¼“å†²åŒºå¤§å°
 		long nLen=0;
 		if(!GetPointPackLen(aPoints,&nLen))
 			return false;
-		//´ò°üÊı¾İ
+		//æ‰“åŒ…æ•°æ®
 		//void* pData=new char[nLen];
 		//Linda
 		char* pData=new char[nLen];
@@ -157,7 +157,7 @@ DataParser::rt_Send(const PointDatas& aPoints)
 			delete[] pData;
 			return false;
 		}
-		//·¢ËÍÊı¾İ
+		//å‘é€æ•°æ®
 		if(!mFileBuff->saveData(pData,nLen))
 		{
 			mStrError=mFileBuff->getError();
@@ -169,7 +169,7 @@ DataParser::rt_Send(const PointDatas& aPoints)
 	}
 	else
 	{
-		//°´ÎÄ±¾·½Ê½·¢ËÍ
+		//æŒ‰æ–‡æœ¬æ–¹å¼å‘é€
 		string strData="";
 		if(!PackPointDataToStr(aPoints,strData))
 			return false;
@@ -217,15 +217,15 @@ DataParser::UnpackPointData(const void* pData,long pDataLen, PointDatas* pPoints
 		}
 	}
 	char* pTem=(char*)const_cast<void*>(pData);
-	//»ñÈ¡Êı°ü½Úµã
+	//è·å–æ•°åŒ…èŠ‚ç‚¹
 	int cNodeCode=*(int*)pTem;
 	if(cNodeCode!=PACK_NODE_NO)
 	{
 		mStrError=IDS_ERROR_PACK;																						  
 		return false;
 	}
-	pPoints->NodeNo=cNodeCode;//½ÚµãºÅ
-	//»ñÈ¡°üÊı¾İÀàĞÍ
+	pPoints->NodeNo=cNodeCode;//èŠ‚ç‚¹å·
+	//è·å–åŒ…æ•°æ®ç±»å‹
 	PackDataType eDataType;
 	GetPackDataType(pData,&eDataType);
 	if(eDataType!=Point)
@@ -233,12 +233,12 @@ DataParser::UnpackPointData(const void* pData,long pDataLen, PointDatas* pPoints
 		mStrError=IDS_ERROR_POINT_PACK;
 		return false;
 	}
-	//Ğ£ÑéºÍ
+	//æ ¡éªŒå’Œ
 	pTem+=(pDataLen-PACK_CHECK_SUM_LEN);
 	unsigned short nCheckSum=*(unsigned short*)pTem;
-	//¼ÆËãĞ£ÑéºÍ
+	//è®¡ç®—æ ¡éªŒå’Œ
 	unsigned short sCheckSum=CheckSum16((unsigned char*)pData,pDataLen-PACK_CHECK_SUM_LEN);
-	//°üµÄ±àºÅ
+	//åŒ…çš„ç¼–å·
 	pTem=(char*)const_cast<void*>(pData);
 	pTem+=PACK_NODE_NO_LEN;
 	pPoints->No=*(long*)pTem;//(long)(*pTem);
@@ -247,24 +247,24 @@ DataParser::UnpackPointData(const void* pData,long pDataLen, PointDatas* pPoints
 		mStrError=Util::Convert<long,std::string>(pPoints->No)+ IDS_ERROR_CHECK_SUM;
 		return false;
 	}
-	//µç³§±àºÅ
+	//ç”µå‚ç¼–å·
 	pTem+=PACK_NO_LEN;
-	pPoints->PackTime=*(long*)pTem;//°ü·¢ËÍÊ±¼ä
+	pPoints->PackTime=*(long*)pTem;//åŒ…å‘é€æ—¶é—´
 	pTem+=PACK_TIME_LEN;
 	pTem+=PACK_DATA_TYPE_LEN;
 	pPoints->DCNo=*(unsigned short*)pTem;
 
 	pTem+=PACK_DC_NO_LEN;	
 	pTem+=PACK_DATA_LEN_LEN;
-	//¿ØÖÆÎ»
+	//æ§åˆ¶ä½
 	unsigned short nControl=*(unsigned short*)pTem;
-	pPoints->ID=((nControl&0X1)==1);//ÊÇ·ñ±àºÅ
-	pPoints->Name=((nControl&0X2)>>1==1);//ÊÇ·ñµãÃû
-	pPoints->Time=((nControl&0X4)>>2==1);//ÊÇ·ñÊ±¼ä´Á
-	pPoints->State=((nControl&0X8)>>3==1);//ÊÇ·ñ×´Ì¬
-	pPoints->SetCode=((nControl&0X10)>>4==1);//ÊÇ·ñ»ú×éºÅ
+	pPoints->ID=((nControl&0X1)==1);//æ˜¯å¦ç¼–å·
+	pPoints->Name=((nControl&0X2)>>1==1);//æ˜¯å¦ç‚¹å
+	pPoints->Time=((nControl&0X4)>>2==1);//æ˜¯å¦æ—¶é—´æˆ³
+	pPoints->State=((nControl&0X8)>>3==1);//æ˜¯å¦çŠ¶æ€
+	pPoints->SetCode=((nControl&0X10)>>4==1);//æ˜¯å¦æœºç»„å·
 
-	//µãÊı
+	//ç‚¹æ•°
 	pTem+=PACK_CONTROL_LEN;
 	long nPointCount=*(long*)pTem;
 
@@ -277,13 +277,13 @@ DataParser::UnpackPointData(const void* pData,long pDataLen, PointDatas* pPoints
 bool 
 DataParser::UnpackPointDataFromStr(const string& strData,PointDatas* pPoints)
 {
-	//¼ì²éÊı¾İ
+	//æ£€æŸ¥æ•°æ®
 	if(strData == "")
 	{
 		mStrError=IDS_DATA_NULL;
 		return false;
 	}
-	//°üÍ·Êı¾İÊı´óÓÚ
+	//åŒ…å¤´æ•°æ®æ•°å¤§äº
 	//LYZ_LIB::strings strSplits=LYZ_LIB::SplitString(strData, SPLIT, true);
 	vector<std::string> strSplits = Util::SplitString(strData, SPLIT, true);
 	if(strSplits.size()<PACK_HEAD_COUNT)
@@ -301,25 +301,25 @@ DataParser::UnpackPointDataFromStr(const string& strData,PointDatas* pPoints)
 	}
 	pPoints->NodeNo = PACK_NODE_NO;
 	++i;
-	pPoints->No=Util::Convert<string,long>(*i);//°üĞòºÅ
+	pPoints->No=Util::Convert<string,long>(*i);//åŒ…åºå·
 	++i;
-	pPoints->Count=Util::Convert<string,unsigned long>(*i);//µãµÄ¸öÊı
+	pPoints->Count=Util::Convert<string,unsigned long>(*i);//ç‚¹çš„ä¸ªæ•°
 	++i;
-	pPoints->PackTime=PubOpt::SystemOpt::StrToDateTm(*i);//°üµÄÊ±¼ä
+	pPoints->PackTime=PubOpt::SystemOpt::StrToDateTm(*i);//åŒ…çš„æ—¶é—´
 	++i;
-	pPoints->DCNo=Util::Convert<string,unsigned short>(*i);//µç³§±àºÅ
+	pPoints->DCNo=Util::Convert<string,unsigned short>(*i);//ç”µå‚ç¼–å·
 	++i;
-	pPoints->ID=Util::Convert<string,bool>(*i);//ÊÇ·ñÓĞID
+	pPoints->ID=Util::Convert<string,bool>(*i);//æ˜¯å¦æœ‰ID
 	++i;
-	pPoints->Name=Util::Convert<string,bool>(*i);//ÊÇ·ñÓĞµãÃû
+	pPoints->Name=Util::Convert<string,bool>(*i);//æ˜¯å¦æœ‰ç‚¹å
 	++i;
-	pPoints->SetCode=Util::Convert<string,bool>(*i);//ÊÇ·ñÓĞ»ú×éºÅ
+	pPoints->SetCode=Util::Convert<string,bool>(*i);//æ˜¯å¦æœ‰æœºç»„å·
 	++i;
-	pPoints->State=Util::Convert<string,bool>(*i);//ÊÇ·ñÓĞ×´Ì¬
+	pPoints->State=Util::Convert<string,bool>(*i);//æ˜¯å¦æœ‰çŠ¶æ€
 	++i;
-	pPoints->Time=Util::Convert<string,bool>(*i);//ÊÇ·ñÓĞµãµÄÊ±¼ä´Á
+	pPoints->Time=Util::Convert<string,bool>(*i);//æ˜¯å¦æœ‰ç‚¹çš„æ—¶é—´æˆ³
 	++i;
-	int nLeftPointData=strSplits.size()-PACK_HEAD_COUNT;//Ê£ÏÂÊı¾İµÄ¸öÊı
+	int nLeftPointData=strSplits.size()-PACK_HEAD_COUNT;//å‰©ä¸‹æ•°æ®çš„ä¸ªæ•°
 	if(nLeftPointData==0)
 	{
 		pPoints->Count=0;
@@ -333,17 +333,17 @@ DataParser::UnpackPointDataFromStr(const string& strData,PointDatas* pPoints)
 bool 
 DataParser::PackPointDataToStr(PointDatas aPoints, string& strData)
 {
-	strData=TXT_HEADER;//ÎÄ±¾ÎÄ¼şÍ·
+	strData=TXT_HEADER;//æ–‡æœ¬æ–‡ä»¶å¤´
 	strData+=SPLIT_LINE;
-	strData+=Util::Number2String<long>(aPoints.No)+SPLIT_CHAR;//°üĞòºÅ
-	strData+=Util::Number2String<unsigned long>(aPoints.Count)+SPLIT_CHAR;//µãµÄÊıÄ¿
-	strData+=PubOpt::SystemOpt::DateTmToStr(aPoints.PackTime)+SPLIT_CHAR;//°üÊ±¼ä
-	strData+=Util::Convert<unsigned short,string>(aPoints.DCNo)+SPLIT_LINE;//µç³§±àºÅ
-	strData+=Util::Convert<bool,string>(aPoints.ID)+SPLIT_CHAR;//ÊÇ·ñÓĞID
-	strData+=Util::Convert<bool,string>(aPoints.Name)+SPLIT_CHAR;//ÊÇ·ñÓĞµãÃû
-	strData+=Util::Convert<bool,string>(aPoints.SetCode)+SPLIT_CHAR;//ÊÇ·ñÓĞ»ú×éºÅ
-	strData+=Util::Convert<bool,string>(aPoints.State)+SPLIT_CHAR;//ÊÇ·ñÓĞ×´Ì¬
-	strData+=Util::Convert<bool,string>(aPoints.Time)+SPLIT_LINE;//ÊÇ·ñÓĞµãÊ±¼ä´Á
+	strData+=Util::Number2String<long>(aPoints.No)+SPLIT_CHAR;//åŒ…åºå·
+	strData+=Util::Number2String<unsigned long>(aPoints.Count)+SPLIT_CHAR;//ç‚¹çš„æ•°ç›®
+	strData+=PubOpt::SystemOpt::DateTmToStr(aPoints.PackTime)+SPLIT_CHAR;//åŒ…æ—¶é—´
+	strData+=Util::Convert<unsigned short,string>(aPoints.DCNo)+SPLIT_LINE;//ç”µå‚ç¼–å·
+	strData+=Util::Convert<bool,string>(aPoints.ID)+SPLIT_CHAR;//æ˜¯å¦æœ‰ID
+	strData+=Util::Convert<bool,string>(aPoints.Name)+SPLIT_CHAR;//æ˜¯å¦æœ‰ç‚¹å
+	strData+=Util::Convert<bool,string>(aPoints.SetCode)+SPLIT_CHAR;//æ˜¯å¦æœ‰æœºç»„å·
+	strData+=Util::Convert<bool,string>(aPoints.State)+SPLIT_CHAR;//æ˜¯å¦æœ‰çŠ¶æ€
+	strData+=Util::Convert<bool,string>(aPoints.Time)+SPLIT_LINE;//æ˜¯å¦æœ‰ç‚¹æ—¶é—´æˆ³
 
 	return PackPrivatePointDataToStr(aPoints, strData);
 }
@@ -358,7 +358,7 @@ DataParser::PackPointData(PointDatas aPoints,void* pData,long* pDataLen)
 		return false;
 	}
 	long nPackLen=0;
-	//»ñÈ¡´ò°üĞèÒªµÄ×Ö½ÚÊı
+	//è·å–æ‰“åŒ…éœ€è¦çš„å­—èŠ‚æ•°
 	GetPointPackLen(aPoints,&nPackLen);
 	if(*pDataLen<nPackLen)
 	{
@@ -367,47 +367,47 @@ DataParser::PackPointData(PointDatas aPoints,void* pData,long* pDataLen)
 	}
 	char* pTem=(char*)pData;
 	int nNode=PACK_NODE_NO;
-	memcpy(pTem,&nNode,sizeof(nNode));//°ü½ÚµãºÅ
+	memcpy(pTem,&nNode,sizeof(nNode));//åŒ…èŠ‚ç‚¹å·
 
 	pTem+=PACK_NODE_NO_LEN;
-	memcpy(pTem,&aPoints.No,sizeof(aPoints.No));//°üĞòºÅ
+	memcpy(pTem,&aPoints.No,sizeof(aPoints.No));//åŒ…åºå·
 
 	pTem+=PACK_NO_LEN;
-	memcpy(pTem,&aPoints.PackTime,sizeof(aPoints.PackTime));//°ü·¢ËÍµÄÊ±¼ä
+	memcpy(pTem,&aPoints.PackTime,sizeof(aPoints.PackTime));//åŒ…å‘é€çš„æ—¶é—´
 
 	pTem+=PACK_TIME_LEN;
-	*pTem=Point;//°üµÄÊı¾İÀàĞÍ
+	*pTem=Point;//åŒ…çš„æ•°æ®ç±»å‹
 
 	pTem+=PACK_DATA_TYPE_LEN;
-	memcpy(pTem,&aPoints.DCNo,sizeof(aPoints.DCNo));//µç³§±àºÅ
+	memcpy(pTem,&aPoints.DCNo,sizeof(aPoints.DCNo));//ç”µå‚ç¼–å·
 
 	pTem+=PACK_DC_NO_LEN;	
-	long nDataLen=0;//Êı¾İ³¤¶È
+	long nDataLen=0;//æ•°æ®é•¿åº¦
 	GetPointDataLen(aPoints,&nDataLen);
-	memcpy(pTem,&nDataLen,sizeof(long));//Êı¾İÇøµÄ³¤¶È
+	memcpy(pTem,&nDataLen,sizeof(long));//æ•°æ®åŒºçš„é•¿åº¦
 
 	pTem+=PACK_DATA_LEN_LEN;
 	short int nControl=0;
 	if(aPoints.ID)
-		nControl=nControl|0X1;//±àºÅ¿ØÖÆÎ»
+		nControl=nControl|0X1;//ç¼–å·æ§åˆ¶ä½
 	if(aPoints.Name)
-		nControl=nControl|0X2;//µãÃû¿ØÖÆÎ»
+		nControl=nControl|0X2;//ç‚¹åæ§åˆ¶ä½
 	if(aPoints.Time)
-		nControl=nControl|0X4;//Ê±¼ä´Á¿ØÖÆÎ»
+		nControl=nControl|0X4;//æ—¶é—´æˆ³æ§åˆ¶ä½
 	if(aPoints.State)
-		nControl=nControl|0X8;//×´Ì¬¿ØÖÆÎ»
+		nControl=nControl|0X8;//çŠ¶æ€æ§åˆ¶ä½
 	if(aPoints.SetCode)
-		nControl=nControl|0X10;//»ú×éºÅ¿ØÖÆÎ»
-	memcpy(pTem,&nControl,sizeof(nControl));//Êı¾İ¿ØÖÆÇø
+		nControl=nControl|0X10;//æœºç»„å·æ§åˆ¶ä½
+	memcpy(pTem,&nControl,sizeof(nControl));//æ•°æ®æ§åˆ¶åŒº
 
 	pTem+=PACK_CONTROL_LEN;
-	memcpy(pTem,&aPoints.Count,sizeof(aPoints.Count));//µãÊı
+	memcpy(pTem,&aPoints.Count,sizeof(aPoints.Count));//ç‚¹æ•°
 
 	pTem+=PACK_DATA_COUNT_LEN;
 
 	PackPrivatePointData(aPoints, pTem);
 
-	//Ğ£ÑéºÍ
+	//æ ¡éªŒå’Œ
 	//unsigned short nCheckSum=CheckSum16((unsigned char*)pData,nPackLen-2);
 	unsigned short nCheckSum=CheckSum16((unsigned char*)pData,nPackLen-PACK_CHECK_SUM_LEN);								   
 	memcpy(pTem,&nCheckSum,sizeof(nCheckSum));//CheckSum16((unsigned char*)pTem,nPackLen-2);

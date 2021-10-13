@@ -20,25 +20,25 @@ class TbPubSetToPoint:public RDbOperationComplex
 {
 private: 
 
-	void setOutVarAndFunc(const std::string strParse,VectorString  &VectorConPoint);
+    void setOutVarAndFunc(const std::string strParse,VectorString  &VectorConPoint);
 
-	bool loadValue(MapStringToSetCfg &mapSetInfo,MapStringToBool &mMapModleNameStatus);
+    bool loadValue(MapStringToSetCfg &mapSetInfo,MapStringToBool &mMapModleNameStatus);
 
-	bool loadValue(MapStringTostrEX &mapAllPointSourceName);
+    bool loadValue(MapStringTostrEX &mapAllPointSourceName);
 
-	void loadAparam(std::vector<VarParam>& mVectorParamCfgs,std::string& strPoint,double& aSource,
-		std::string& aCap,std::string& aValue,std::string& aMax,std::string& aMin);
-	void InsertMapStringToPointData(MapStringToPointData& mMapPointData,
-		std::string strPoint,std::string strSouce,std::string strSet,PointType itype);
+    void loadAparam(std::vector<VarParam>& mVectorParamCfgs,std::string& strPoint,double& aSource,
+                    std::string& aCap,std::string& aValue,std::string& aMax,std::string& aMin);
+    void InsertMapStringToPointData(MapStringToPointData& mMapPointData,
+                                    std::string strPoint,std::string strSouce,std::string strSet,PointType itype);
 public:
-	TbPubSetToPoint(void);
-	TbPubSetToPoint(RsdbAdapter * QtOpt); 
-	~TbPubSetToPoint(void);
-	bool loadDB(MapStringToSetCfg &SetInfo,MapStringToBool &mMapModleNameStatus,std::string strCon);
-	bool loadDBPoint(MapStringTostrEX &mMapPointSourceName,std::string strCon);
+    TbPubSetToPoint(void);
+    TbPubSetToPoint(RsdbAdapter * QtOpt);
+    ~TbPubSetToPoint(void);
+    bool loadDB(MapStringToSetCfg &SetInfo,MapStringToBool &mMapModleNameStatus,std::string strCon);
+    bool loadDBPoint(MapStringTostrEX &mMapPointSourceName,std::string strCon);
 
-	void GetNeedPoint(MapStringToString &mMapAllPointSourceName,MapStringToString &mMapPointSourceName,
-		MapStringToSetCfg &SetInfo,MapStringToPointData& mMapPointData);
+    void GetNeedPoint(MapStringToString &mMapAllPointSourceName,MapStringToString &mMapPointSourceName,
+                      MapStringToSetCfg &SetInfo,MapStringToPointData& mMapPointData);
 };
 
 #endif//__TBPUBSETTOPOINT_H__

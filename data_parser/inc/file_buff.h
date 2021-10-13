@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY.Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: file_buff.h
-* ÎÄ¼şÃèÊö: buff ÎÄ¼ş½âÎö Êı¾İÊäÈëÊä³ö¹¦ÄÜÊµÏÖÀà 
-*  ×÷  Õß : %ÁÖÏşÓê%£¬18942552977
-* ´´½¨ÈÕÆÚ: 2014-9-15 11:57:09
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY.Tech .Co.Ltd;
+* æ–‡ ä»¶ å: file_buff.h
+* æ–‡ä»¶æè¿°: buff æ–‡ä»¶è§£æ æ•°æ®è¾“å…¥è¾“å‡ºåŠŸèƒ½å®ç°ç±» 
+*  ä½œ  è€… : %æ—æ™“é›¨%ï¼Œ18942552977
+* åˆ›å»ºæ—¥æœŸ: 2014-9-15 11:57:09
 *******************************************************************************/
 
 #ifndef __FILE_BUFF_H__
@@ -16,9 +16,9 @@ class ScanPathFile;
 
 class FileBuff
 {
-    std::string					mDataFullPath;//Ä¿Â¼È«Â·¾¶ 
+    std::string					mDataFullPath;//ç›®å½•å…¨è·¯å¾„ 
 	std::string					mFnamePrefix;
-    ScanPathFile *				mScanPathFile; //É¨ÃèÄ¿Â¼¶ÔÏó
+    ScanPathFile *				mScanPathFile; //æ‰«æç›®å½•å¯¹è±¡
 	std::string					mStrError;
 	std::list<std::string> 		mListFile;
 public:
@@ -28,37 +28,37 @@ public:
 
     ~FileBuff(void);
 
-	//¹¦ÄÜÃèÊö:¼ì²âÄ¿Â¼ÊÇ·ñ´æÔÚ
+	//åŠŸèƒ½æè¿°:æ£€æµ‹ç›®å½•æ˜¯å¦å­˜åœ¨
 	bool open();
 
-	//¹¦ÄÜÃèÊö:ÊÍ·Å
+	//åŠŸèƒ½æè¿°:é‡Šæ”¾
 	void close();
 
-	//¹¦ÄÜÃèÊö:¶ÁÈ¡Êı¾İ°ü
+	//åŠŸèƒ½æè¿°:è¯»å–æ•°æ®åŒ…
 	bool retrieveData(void* pack_data, long &read_data_len);
 
-	//¹¦ÄÜÃèÊö:±£´æÊı¾İ°ü
+	//åŠŸèƒ½æè¿°:ä¿å­˜æ•°æ®åŒ…
 	bool saveData(
 			const void* pack_data, 
 			const long &data_len);
 
-	//¹¦ÄÜÃèÊö:»ñÈ¡´íÎóĞÅÏ¢
+	//åŠŸèƒ½æè¿°:è·å–é”™è¯¯ä¿¡æ¯
 	std::string getError();
-	//¹¦ÄÜÃèÊö:»ñÈ¡Ä¿Â¼ÎÄ¼ş×Ü¸öÊı  add by wk 2018-7-10
+	//åŠŸèƒ½æè¿°:è·å–ç›®å½•æ–‡ä»¶æ€»ä¸ªæ•°  add by wk 2018-7-10
 	int getDirFileNum();
 private:
-	//¹¦ÄÜÃèÊö:É¨ÃèÎÄ¼şÄ¿Â¼
+	//åŠŸèƒ½æè¿°:æ‰«ææ–‡ä»¶ç›®å½•
 	bool scanFileName(std::string &file_name);
-	//¹¦ÄÜÃèÊö:´ÓÎÄ¼şÖĞ¶ÁÈ¡Êı¾İ°ü
+	//åŠŸèƒ½æè¿°:ä»æ–‡ä»¶ä¸­è¯»å–æ•°æ®åŒ…
 	bool readFile(const std::string &filename, void* pack_data, long &read_data_len);
-	//¹¦ÄÜÃèÊö:½«Êı¾İ°üĞ´ÈëÎÄ¼ş
+	//åŠŸèƒ½æè¿°:å°†æ•°æ®åŒ…å†™å…¥æ–‡ä»¶
 	bool writeFile(
 			const void* pack_data, 
 			const long &data_len,
 			const std::string &filename);
-	//¹¦ÄÜÃèÊö:Æ´½ÓÎÄ¼şÃû
+	//åŠŸèƒ½æè¿°:æ‹¼æ¥æ–‡ä»¶å
 	std::string composeFullFileName();
-	//¹¦ÄÜÃèÊö:¼ì²éÊı¾İ°üÊÇ·ñÍêÕû
+	//åŠŸèƒ½æè¿°:æ£€æŸ¥æ•°æ®åŒ…æ˜¯å¦å®Œæ•´
 	bool  checkData(const void* data, long len);
 	static bool my_cmp(const std::string &v1, const std::string &v2);
 };

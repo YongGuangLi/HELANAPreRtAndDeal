@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2016,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: IndexConfigInfo.h
-* ÎÄ¼şÃèÊö: Ö¸±ê»ù´¡ÅäÖÃ
-*  ×÷  Õß : %ÁÖÏşÓê%£¬
-* ´´½¨ÈÕÆÚ: 2015-5-27 10:21:06
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2016,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: IndexConfigInfo.h
+* æ–‡ä»¶æè¿°: æŒ‡æ ‡åŸºç¡€é…ç½®
+*  ä½œ  è€… : %æ—æ™“é›¨%ï¼Œ
+* åˆ›å»ºæ—¥æœŸ: 2015-5-27 10:21:06
 *******************************************************************************/
 
 #ifndef __INDEXCONFIGINFO_H__
@@ -16,161 +16,161 @@
 
 struct IndexConfigInfo
 {
-	std::string				mFullIndexCode; 		//´øµç³§Ç°×ºµÄÖ¸±ê±àºÅ
-	std::string				mIndexCode; 		//Ö¸±ê±àºÅ
-	std::string				mIndexName;			//Ö¸±êÖĞÎÄÃèÊö
-	std::string				mSetCode;			//»ú×é±àºÅ
-	std::string				mWriteBackCode;		//»ØĞ´µã±êÊ¶
-	std::string				mLocalVar;			//ÄÚ²¿±äÁ¿
-	std::string				mOutVarAndFunc;		//Íâ²¿±äÁ¿Óëº¯ÊıÃû³Æ
-	std::string				mExpression;		//¼ÆËã¹«Ê½
-	int						mPeriodTime;		//¼ÆËãÖÜÆÚ(ÒÔÃëÎªµ¥Î»)  ->tb_pub_period
-	int						mIsCal;				//ÊÇ·ñÆôÓÃ¼ÆËãÌõ¼ş<µÍ¸ººÉÊÇ·ñ¼ÆËã>(0:²» ¼ÆËã  1£º¼ÆËã)
-	int						mIsClearZero;		//ÊÇ·ñÇåÁã(0:²»ÇåÁã 1:ÇåÁã)
-	int						mIsWriteRdtb;		//ÊÇ·ñ»ØĞ´ÊµÊ±Êı¾İ¿â(0:²» »ØĞ´  1£º»ØĞ´)
-	int						mType;				//Ö¸±êÀàĞÍ(0£ºÒ»°ãÖ¸±ê 1£º³¬ÏŞÖ¸±ê 2£º´ø¸ººÉÄÜÁ¦¹ØÁªÖ¸±ê 3£ºÆôÍ£Ö¸±ê)
+    std::string				mFullIndexCode; 		//å¸¦ç”µå‚å‰ç¼€çš„æŒ‡æ ‡ç¼–å·
+    std::string				mIndexCode; 		//æŒ‡æ ‡ç¼–å·
+    std::string				mIndexName;			//æŒ‡æ ‡ä¸­æ–‡æè¿°
+    std::string				mSetCode;			//æœºç»„ç¼–å·
+    std::string				mWriteBackCode;		//å›å†™ç‚¹æ ‡è¯†
+    std::string				mLocalVar;			//å†…éƒ¨å˜é‡
+    std::string				mOutVarAndFunc;		//å¤–éƒ¨å˜é‡ä¸å‡½æ•°åç§°
+    std::string				mExpression;		//è®¡ç®—å…¬å¼
+    int						mPeriodTime;		//è®¡ç®—å‘¨æœŸ(ä»¥ç§’ä¸ºå•ä½)  ->tb_pub_period
+    int						mIsCal;				//æ˜¯å¦å¯ç”¨è®¡ç®—æ¡ä»¶<ä½è´Ÿè·æ˜¯å¦è®¡ç®—>(0:ä¸ è®¡ç®—  1ï¼šè®¡ç®—)
+    int						mIsClearZero;		//æ˜¯å¦æ¸…é›¶(0:ä¸æ¸…é›¶ 1:æ¸…é›¶)
+    int						mIsWriteRdtb;		//æ˜¯å¦å›å†™å®æ—¶æ•°æ®åº“(0:ä¸ å›å†™  1ï¼šå›å†™)
+    int						mType;				//æŒ‡æ ‡ç±»å‹(0ï¼šä¸€èˆ¬æŒ‡æ ‡ 1ï¼šè¶…é™æŒ‡æ ‡ 2ï¼šå¸¦è´Ÿè·èƒ½åŠ›å…³è”æŒ‡æ ‡ 3ï¼šå¯åœæŒ‡æ ‡)
 
-	bool					mNew;				//Ö¸±êÊÇ·ñÒÑ¾­¼ÆËãµÄ¸üĞÂ±êÖ¾ true--ÒÑ¾­¼ÆËã false--Ã»ÓĞ¼ÆËã
-	int						mIsCalState;        //Ö¸±ê¼ÆËãµÄ×´Ì¬(0:µ±Ç°Ã»ÓĞ¼ÆËã 1£ºµ±Ç°ÕıÔÚ¼ÆËã)
-	double					mFDefaultVal;       //Ä¬ÈÏÖµ
-	double					mUpLimit;			//ÉÏÏŞ
-	double					mLowLimit;			//ÏÂÏŞ
-	
+    bool					mNew;				//æŒ‡æ ‡æ˜¯å¦å·²ç»è®¡ç®—çš„æ›´æ–°æ ‡å¿— true--å·²ç»è®¡ç®— false--æ²¡æœ‰è®¡ç®—
+    int						mIsCalState;        //æŒ‡æ ‡è®¡ç®—çš„çŠ¶æ€(0:å½“å‰æ²¡æœ‰è®¡ç®— 1ï¼šå½“å‰æ­£åœ¨è®¡ç®—)
+    double					mFDefaultVal;       //é»˜è®¤å€¼
+    double					mUpLimit;			//ä¸Šé™
+    double					mLowLimit;			//ä¸‹é™
 
-	std::string				mTranOutVarAndFun;   //º¯ÊıÃû³ÆÖĞ´æ·ÅµÄ "@"¸ñÊ½×ª»»³É "_"¸ñÊ½,ĞÎ³ÉĞÂµÄÍâ²¿±äÁ¿Óëº¯ÊıÃû³Æ
-	std::vector<std::string>mOutFuncVarArray;     //Íâ²¿º¯Êı±äÁ¿+Íâ²¿±äÁ¿
 
-	IndexConfigInfo(void)
-	{
-		mIndexCode = "";
-		mIndexName = "";
-		mWriteBackCode = "";
-		mLocalVar = "";
-		mOutVarAndFunc = "";
-		mExpression = "";
-		mPeriodTime = 0;
-		mIsCal = 0;
-		mIsClearZero = 0;
+    std::string				mTranOutVarAndFun;   //å‡½æ•°åç§°ä¸­å­˜æ”¾çš„ "@"æ ¼å¼è½¬æ¢æˆ "_"æ ¼å¼,å½¢æˆæ–°çš„å¤–éƒ¨å˜é‡ä¸å‡½æ•°åç§°
+    std::vector<std::string>mOutFuncVarArray;     //å¤–éƒ¨å‡½æ•°å˜é‡+å¤–éƒ¨å˜é‡
 
-		mSetCode = "";
-		mNew = false;
-		mIsCalState = 0;
-		mFDefaultVal = 0;
-		mIsWriteRdtb = 1;
-		mUpLimit	=	9999999;
-		mLowLimit	=	-9999999;
-		mTranOutVarAndFun = "";
-		mOutFuncVarArray.clear();
-	}
+    IndexConfigInfo(void)
+    {
+        mIndexCode = "";
+        mIndexName = "";
+        mWriteBackCode = "";
+        mLocalVar = "";
+        mOutVarAndFunc = "";
+        mExpression = "";
+        mPeriodTime = 0;
+        mIsCal = 0;
+        mIsClearZero = 0;
 
-	~IndexConfigInfo()
-	{
-		mOutFuncVarArray.clear();
-	}
-	
-	std::string toString()
-	{
-		std::string varArray;
-		for (unsigned int i = 0; i < mOutFuncVarArray.size(); i++)
-		{
-			varArray += mOutFuncVarArray[i];
-			varArray += "&";
-		}
-		std::string strMsg = PubOpt::StringOpt::StringFormat(
-			"mIndexCode:%s, mIndexName:%s, mSetCode:%s, mWriteBackCode:%s, mLocalVar:%s, mOutVarAndFunc:%s, mExpression:%s, mPeriodTime:%d, mTranOutVarAndFun:%s, mOutFuncVarArray:(%s);",
-			mIndexCode.c_str(), mIndexName.c_str(), mSetCode.c_str(), 
-			mWriteBackCode.c_str(), mLocalVar.c_str(), mOutVarAndFunc.c_str(),
-			mExpression.c_str(), mPeriodTime, 
-			mTranOutVarAndFun.c_str(),
-			varArray.c_str());
-		return strMsg;
-	}
+        mSetCode = "";
+        mNew = false;
+        mIsCalState = 0;
+        mFDefaultVal = 0;
+        mIsWriteRdtb = 1;
+        mUpLimit	=	9999999;
+        mLowLimit	=	-9999999;
+        mTranOutVarAndFun = "";
+        mOutFuncVarArray.clear();
+    }
 
-	void clearMiddleRslt()
-	{
-		mNew = false;
-		mIsCalState = 0;
-	}
-	//½âÎö³öÖ¸±êµÄÍâ²¿±äÁ¿
-	void setOutVarAndFunc(const std::string pOutVar)
-	{
-		if (pOutVar.empty()) return;
+    ~IndexConfigInfo()
+    {
+        mOutFuncVarArray.clear();
+    }
 
-		std::string strOutVar = pOutVar;											//Êä³ö±äÁ¿
-		if (!strOutVar.empty())
-		{
-			if(strOutVar.substr(strOutVar.size()-1,1) == ",")
-			{
-				strOutVar = strOutVar + mIndexCode;
-			}
-			else
-			{
-				strOutVar = strOutVar + "," + mIndexCode;
-			}
-		}
-		else
-		{
-			strOutVar = "," + mIndexCode;
-		}
+    std::string toString()
+    {
+        std::string varArray;
+        for (unsigned int i = 0; i < mOutFuncVarArray.size(); i++)
+        {
+            varArray += mOutFuncVarArray[i];
+            varArray += "&";
+        }
+        std::string strMsg = PubOpt::StringOpt::StringFormat(
+                    "mIndexCode:%s, mIndexName:%s, mSetCode:%s, mWriteBackCode:%s, mLocalVar:%s, mOutVarAndFunc:%s, mExpression:%s, mPeriodTime:%d, mTranOutVarAndFun:%s, mOutFuncVarArray:(%s);",
+                    mIndexCode.c_str(), mIndexName.c_str(), mSetCode.c_str(),
+                    mWriteBackCode.c_str(), mLocalVar.c_str(), mOutVarAndFunc.c_str(),
+                    mExpression.c_str(), mPeriodTime,
+                    mTranOutVarAndFun.c_str(),
+                    varArray.c_str());
+        return strMsg;
+    }
 
-		mOutVarAndFunc = strOutVar;
+    void clearMiddleRslt()
+    {
+        mNew = false;
+        mIsCalState = 0;
+    }
+    //è§£æå‡ºæŒ‡æ ‡çš„å¤–éƒ¨å˜é‡
+    void setOutVarAndFunc(const std::string pOutVar)
+    {
+        if (pOutVar.empty()) return;
 
-		//Êı¾İ¿âÖĞ´æ·ÅµÄÊÇ "@"¸ñÊ½µÄ Òª×ª»»³É "_"¸ñÊ½
-		//½«Ö¸±ê±¾ÉíÒ²×÷ÎªÍâ²¿±äÁ¿¼ÓÈëµ½Íâ²¿±äÁ¿´®ÖĞ£¬·ÀÖ¹¹«Ê½ÖĞÒıÓÃÁË×Ô¼ºµÄÖ¸±ê
-		//£¨ÕâÖÖÇé¿öÏÂ£¬±£Ö¤Ö¸±êµÄ¼ÆËãË³Ğò£¬½âÎödll½«Ö¸±ê±¾ÉíÔÚ±äÁ¿´®ÖĞÈ¥µôÁË£©ÔÚ¼ÆËãÊ±³ö´í
-		strOutVar = PubOpt::StringOpt::StringReplace(strOutVar,"@","_");
+        std::string strOutVar = pOutVar;											//è¾“å‡ºå˜é‡
+        if (!strOutVar.empty())
+        {
+            if(strOutVar.substr(strOutVar.size()-1,1) == ",")
+            {
+                strOutVar = strOutVar + mIndexCode;
+            }
+            else
+            {
+                strOutVar = strOutVar + "," + mIndexCode;
+            }
+        }
+        else
+        {
+            strOutVar = "," + mIndexCode;
+        }
 
-		mTranOutVarAndFun = strOutVar;
-		ParseOutVarFunc();
-	}
+        mOutVarAndFunc = strOutVar;
 
-	///*----------------------------------------------------------------------------*/
-	////	¹¦ÄÜÃèÊö:	½âÎö³öÖ¸±êµÄÍâ²¿±äÁ¿Óëº¯Êı£¬ÒÔµ¥¸öĞÎÊ½±£´æÔÚÄÚ´æÖĞ
-	///*----------------------------------------------------------------------------*/
-	void ParseOutVarFunc()
-	{
-		int iOfLen = 0;
-		std::string strICode;
-		//È¡Íâ²¿º¯Êı³ÉÔ±Ãû³Æ
-		std::string strOutVarFunc = mOutVarAndFunc;
-		strOutVarFunc = PubOpt::StringOpt::TrimString(strOutVarFunc);
-		if (!strOutVarFunc.empty())
-		{
-			if (strOutVarFunc.substr(strOutVarFunc.size()-1,1) != ",")     //ÓÒ±ßÃ»ÓĞ",",¼Ó","
-			{
-				strOutVarFunc += ",";
-			}
-			if (strOutVarFunc.substr(0,1) == ",")      //×ó±ßÓĞ",",¾ÍÈ¥µô","
-			{
-				strOutVarFunc = strOutVarFunc.substr(1,strOutVarFunc.size()-1);
-			}
-			while (strOutVarFunc.find(",") != std::string::npos&&strOutVarFunc.find(",")!=strOutVarFunc.size())
-			{
-				iOfLen = strOutVarFunc.find(",");
-				strICode = strOutVarFunc.substr(0,iOfLen);
-				strOutVarFunc = strOutVarFunc.substr(iOfLen+1,strOutVarFunc.size()-iOfLen-1);
-				strICode = PubOpt::StringOpt::TrimString(strICode);
-				if(!strICode.empty()) mOutFuncVarArray.push_back(strICode);
-			}
-		}
+        //æ•°æ®åº“ä¸­å­˜æ”¾çš„æ˜¯ "@"æ ¼å¼çš„ è¦è½¬æ¢æˆ "_"æ ¼å¼
+        //å°†æŒ‡æ ‡æœ¬èº«ä¹Ÿä½œä¸ºå¤–éƒ¨å˜é‡åŠ å…¥åˆ°å¤–éƒ¨å˜é‡ä¸²ä¸­ï¼Œé˜²æ­¢å…¬å¼ä¸­å¼•ç”¨äº†è‡ªå·±çš„æŒ‡æ ‡
+        //ï¼ˆè¿™ç§æƒ…å†µä¸‹ï¼Œä¿è¯æŒ‡æ ‡çš„è®¡ç®—é¡ºåºï¼Œè§£ædllå°†æŒ‡æ ‡æœ¬èº«åœ¨å˜é‡ä¸²ä¸­å»æ‰äº†ï¼‰åœ¨è®¡ç®—æ—¶å‡ºé”™
+        strOutVar = PubOpt::StringOpt::StringReplace(strOutVar,"@","_");
 
-		std::string strTemp = mTranOutVarAndFun;
-		//È¥µôÍâ²¿±äÁ¿Óëº¯Êı×éºÏ¶ÔÏóÇ°ÃæÓë×îºóµÄ","(¶ººÅ)
-		if (!strTemp.empty())
-		{
-			if (strTemp.substr(strTemp.size()-1,1) == ",")     //ÓÒ±ßÓĞ",",¾ÍÈ¥µô","
-			{
-				strTemp = strTemp.substr(1,strTemp.size()-1);   //Íâ²¿±äÁ¿Óëº¯Êı
-			}
-			if (strTemp.substr(0,1) == ",")      //×ó±ßÓĞ",",¾ÍÈ¥µô","
-			{
-				strTemp = strTemp.substr(1,strTemp.size()-1);
-			}
+        mTranOutVarAndFun = strOutVar;
+        ParseOutVarFunc();
+    }
 
-			mTranOutVarAndFun = strTemp; //Íâ²¿º¯Êı±äÁ¿+Íâ²¿±äÁ¿
-			strTemp.clear();
-		}
-	}
+    ///*----------------------------------------------------------------------------*/
+    ////	åŠŸèƒ½æè¿°:	è§£æå‡ºæŒ‡æ ‡çš„å¤–éƒ¨å˜é‡ä¸å‡½æ•°ï¼Œä»¥å•ä¸ªå½¢å¼ä¿å­˜åœ¨å†…å­˜ä¸­
+    ///*----------------------------------------------------------------------------*/
+    void ParseOutVarFunc()
+    {
+        int iOfLen = 0;
+        std::string strICode;
+        //å–å¤–éƒ¨å‡½æ•°æˆå‘˜åç§°
+        std::string strOutVarFunc = mOutVarAndFunc;
+        strOutVarFunc = PubOpt::StringOpt::TrimString(strOutVarFunc);
+        if (!strOutVarFunc.empty())
+        {
+            if (strOutVarFunc.substr(strOutVarFunc.size()-1,1) != ",")     //å³è¾¹æ²¡æœ‰",",åŠ ","
+            {
+                strOutVarFunc += ",";
+            }
+            if (strOutVarFunc.substr(0,1) == ",")      //å·¦è¾¹æœ‰",",å°±å»æ‰","
+            {
+                strOutVarFunc = strOutVarFunc.substr(1,strOutVarFunc.size()-1);
+            }
+            while (strOutVarFunc.find(",") != std::string::npos&&strOutVarFunc.find(",")!=strOutVarFunc.size())
+            {
+                iOfLen = strOutVarFunc.find(",");
+                strICode = strOutVarFunc.substr(0,iOfLen);
+                strOutVarFunc = strOutVarFunc.substr(iOfLen+1,strOutVarFunc.size()-iOfLen-1);
+                strICode = PubOpt::StringOpt::TrimString(strICode);
+                if(!strICode.empty()) mOutFuncVarArray.push_back(strICode);
+            }
+        }
+
+        std::string strTemp = mTranOutVarAndFun;
+        //å»æ‰å¤–éƒ¨å˜é‡ä¸å‡½æ•°ç»„åˆå¯¹è±¡å‰é¢ä¸æœ€åçš„","(é€—å·)
+        if (!strTemp.empty())
+        {
+            if (strTemp.substr(strTemp.size()-1,1) == ",")     //å³è¾¹æœ‰",",å°±å»æ‰","
+            {
+                strTemp = strTemp.substr(1,strTemp.size()-1);   //å¤–éƒ¨å˜é‡ä¸å‡½æ•°
+            }
+            if (strTemp.substr(0,1) == ",")      //å·¦è¾¹æœ‰",",å°±å»æ‰","
+            {
+                strTemp = strTemp.substr(1,strTemp.size()-1);
+            }
+
+            mTranOutVarAndFun = strTemp; //å¤–éƒ¨å‡½æ•°å˜é‡+å¤–éƒ¨å˜é‡
+            strTemp.clear();
+        }
+    }
 };
 
 #endif

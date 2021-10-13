@@ -1,9 +1,10 @@
 ﻿#ifndef __POINTPRECAL_H__
 #define __POINTPRECAL_H__
+
 #include "TypeDef.h"
-//#include "singleton.h"
 #include "DataValueInfo.h"
 #define NonMonitoring			 "NonMonitoring"
+
 class MutexLock;
 class RecursiveCalculateIndex;
 class PointPreCal

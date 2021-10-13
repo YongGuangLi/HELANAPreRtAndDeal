@@ -14,10 +14,8 @@ SOURCES += main.cpp \
     AlarmSetDeal.cpp \
     BasicMgr.cpp \
     buff_points.cpp \
-    Count_service.cpp \
     LoadConfg.cpp \
     PointPreCal.cpp \
-    PPubPointValue.cpp \
     PreRtProduce.cpp \
     pub_index_data.cpp \
     RDbOperationComplex.cpp \
@@ -52,7 +50,6 @@ HEADERS += \
     LoadConfg.h \
     ModeMethodAvgConfig.h \
     PointPreCal.h \
-    PPubPointValue.h \
     PreRtProduce.h \
     pub_index_data.h \
     RDbHead.h \
@@ -74,7 +71,8 @@ HEADERS += \
     ../funlib/Kmeanfun.h \
     ../funlib/Matrix.h \
     ../funlib/PublicMatrix.h \
-    ../funlib/SimFunc.h
+    ../funlib/SimFunc.h \
+    IncludeHead.h
 
 
 unix:!macx: LIBS += -L$$PWD/../compiler/lib -lcompiler
@@ -101,5 +99,6 @@ DEPENDPATH += $$PWD/../waspcn/inc
 LIBS += -ldl -lpthread
 
 unix:!macx: LIBS += -L$$PWD/../boost/lib -lboost_thread -lboost_filesystem
-
+INCLUDEPATH += $$PWD/../boost/include
+DEPENDPATH += $$PWD/../boost/include
 

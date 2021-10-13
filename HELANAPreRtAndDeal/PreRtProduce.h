@@ -13,17 +13,9 @@
 #include <string>
 #include "thread.h"
 #include "StartupServer.h"
-//class BuffPoints;
-//class StartupServer;
+
 class PreRtProduce : public Thread
 {
-	bool	mStopWait;
-public:
-	//enum GetDateWay
-	//{
-	//	eFromRtdb = 1,			//从实时数据库获取数据或者表示是子站系统
-	//	eFromDir = 2,		//从目录获取数据或者表示是主站系统
-	//};
 public:
     PreRtProduce(const std::string &strFactoryCode);
     virtual ~PreRtProduce(void);
@@ -38,17 +30,14 @@ public:
 private:
     // 功能描述: 初始化实时数据库连接
     bool connectRtdbDB(void);
-	virtual void Run(void);
-
-	//bool    InitSendBufferOpt(void);
+    virtual void Run(void);
 
 private:
 	StartupServer * mStartSvr;
 public:
+    bool	mStopWait;
 	GetDateWay					mGetDateWay;				//获取数据方式
-	std::string m_strFactoryCode;           // 当前处理的电厂编号
-	//BuffPoints* m_pPointOpt;                // Buff读取文件操作对象
-	//std::map<std::string, BuffPoints* > m_mapSendOpt;	//发送数据目录操作集合
+    std::string m_strFactoryCode;                          // 当前处理的电厂编号
 };
 
 #endif

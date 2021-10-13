@@ -18,20 +18,20 @@ class TbPubModeMethodAvg:public RDbOperationComplex
 private:
 
 public:
-	TbPubModeMethodAvg();
-	TbPubModeMethodAvg(RsdbAdapter * QtOpt);
-	~TbPubModeMethodAvg(void);
+    TbPubModeMethodAvg();
+    TbPubModeMethodAvg(RsdbAdapter * QtOpt);
+    ~TbPubModeMethodAvg(void);
 
-	bool loadDB(MapStringToBool &mMapModleNameStatus,
-				MapStringToModeMethodAvg &pModeFunInfo,
-				MapStringToString &pPointSourceName,
-				std::string strCon);
-	//bool bindVar();
-	bool loadValue(MapStringToBool &mMapModleNameStatus,MapStringToModeMethodAvg &pModeFunInfo,MapStringToString &pPointSourceName);
-	void SetOciMemory();
-	void FreeOciMemory();
-	
+    bool loadDB(MapStringToBool &mMapModleNameStatus,
+                MapStringToModeMethodAvg &pModeFunInfo,
+                MapStringToString &pPointSourceName,
+                std::string strCon);
+    //bool bindVar();
+    bool loadValue(MapStringToBool &mMapModleNameStatus,MapStringToModeMethodAvg &pModeFunInfo,MapStringToString &pPointSourceName);
+    void SetOciMemory();
+    void FreeOciMemory();
+
 private:
-    bool GetMuValue(std::vector<std::string>& tempVec,MethodAvg* condtion_fun,const int num,const int typeVec);	
+    bool GetMuValue(std::vector<std::string>& tempVec,MethodAvg* condtion_fun,const int num,const int typeVec);
 };   
 #endif//__TBPUBMODEMETHODAVG_H__

@@ -108,7 +108,7 @@ SINGLETON(Log)->WriteLog(SINGLETON(Log)->StringFormat("[%s][%s:%d]: %s", DEBUG_L
 
 #ifndef Aos_WriteLog
 #define Aos_WriteLog(msg)           \
-SINGLETON(Log)->WriteLog(msg, true);\
+SINGLETON(Log)->WriteLog(SINGLETON(Log)->StringFormat("[%s][%s:%d]: %s", SUPER_LEVEL, __FILE__, __LINE__, msg), true);\
 
 #endif
 

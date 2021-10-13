@@ -82,9 +82,9 @@ class LoadConfig;
 class ServiceEIDSPreConfig
 {
     DECLARE_SINGLETON_INIT(ServiceEIDSPreConfig)
-public:
-    // 功能描述：初始化公共配制信息
-    bool initConfig(const std::string &strFname);
+    public:
+        // 功能描述：初始化公共配制信息
+        bool initConfig(const std::string &strFname);
 public:
     // 功能描述: 获取OCI连接会话名称
     std::string getOciSessionName(void);
@@ -92,58 +92,69 @@ public:
     std::string getOciUserName(void);
     // 功能描述: 获取OCI连接密码
     std::string getOciPassWD(void);
-	// 功能描述: 获取数据库类型
-	std::string getRsdbType(void);
-	std::string getRsdbIp(void);
-	std::string getRsdbPort(void);
+    // 功能描述: 获取数据库类型
+    std::string getRsdbType(void);
+    std::string getRsdbIp(void);
+    std::string getRsdbPort(void);
 public:
     // 功能描述：获取日志路径
     std::string getLogPath(void);
+
     // 功能描述: 获取日志开关
-    bool isShowLog(void);   
-	std::string getModeName(void);
-	// 功能描述: 获取服务计算周期
-	int getServiceCalCycSec();
-	//功能描述: 获取服务计算故障定位匹配度为零的限值
-	int getXsdLimit(void);
+    bool isShowLog(void);
 
-	int getRtdbIsLongNameType(void) const;
+    std::string getModeName(void);
 
-	std::string  GetRtdbHead(void);
-	// 功能描述: 获取处理的电厂个数
-	int GetFactoryTotal(void);
+    // 功能描述: 获取服务计算周期
+    int getServiceCalCycSec();
 
-	int  GetSysType(void);
+    //功能描述: 获取服务计算故障定位匹配度为零的限值
+    int getXsdLimit(void);
 
-	//功能描述: 获取电厂历史数据补算最长时长
-	int GetHisNum(void);
+    int getRtdbIsLongNameType(void) const;
 
-	//电厂追加补算切换到实时计算间隔时间 单位：分钟
-	int GetHisToRtDev(void);
-	//获取数据方式 1：实时数据库 2 文件
-	std::string  GetFactoryDateWayByCode(const std::string &strFactoryCode);
+    std::string  GetRtdbHead(void);
 
-	// 功能描述: 获取指定电厂序号的电厂名称
-	std::string GetFactoryIndexByIndex(const int &nFactoryIndex);
-	// 功能描述: 获取数据存放路径
-	std::string GetFactoryPathByCode(const std::string &strFactoryCode);
+    // 功能描述: 获取处理的电厂个数
+    int GetFactoryTotal(void);
 
-	int GetFactorySentTotal(const std::string &strFactoryCode);
-	// 功能描述: 获取数据存放路径
-	std::string GetFactorySentPathByCode(const std::string &strFactoryCode,const int &num);
-	// 功能描述: 获取Buff文件类型
-	int GetBuffFileType(void);
-	// 功能描述: 获取Buff文件存储类型
-	int GetBuffDataType(void);
+    int  GetSysType(void);
 
-	// 功能描述: 发送Buff文件类型
-	int GetSentBuffFileType(void);
-	// 功能描述: 发送Buff文件存储类型
-	int GetSentBuffDataType(void);
+    //功能描述: 获取电厂历史数据补算最长时长
+    int GetHisNum(void);
+
+    //电厂追加补算切换到实时计算间隔时间 单位：分钟
+    int GetHisToRtDev(void);
+
+    //获取数据方式 1：实时数据库 2 文件
+    std::string  GetFactoryDateWayByCode(const std::string &strFactoryCode);
+
+    // 功能描述: 获取指定电厂序号的电厂名称
+    std::string GetFactoryIndexByIndex(const int &nFactoryIndex);
+
+    // 功能描述: 获取数据存放路径
+    std::string GetFactoryPathByCode(const std::string &strFactoryCode);
+
+    int GetFactorySentTotal(const std::string &strFactoryCode);
+
+    // 功能描述: 获取数据存放路径
+    std::string GetFactorySentPathByCode(const std::string &strFactoryCode,const int &num);
+
+    // 功能描述: 获取Buff文件类型
+    int GetBuffFileType(void);
+
+    // 功能描述: 获取Buff文件存储类型
+    int GetBuffDataType(void);
+
+    // 功能描述: 发送Buff文件类型
+    int GetSentBuffFileType(void);
+
+    // 功能描述: 发送Buff文件存储类型
+    int GetSentBuffDataType(void);
 private:
     LoadConfig* m_pConfigOpt;           // 配制文件操作对象
 public:
-	int  m_sysType;
+    int  m_sysType;
 };
 
 #endif//__SERVICEHCXNJSCONFIG_H__

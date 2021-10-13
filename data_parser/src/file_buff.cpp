@@ -1,9 +1,9 @@
-/******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY.Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: file_buff.cpp
-* ÎÄ¼şÃèÊö: buff ÎÄ¼ş½âÎö Êı¾İÊäÈëÊä³ö¹¦ÄÜÊµÏÖÀà 
-*  ×÷  Õß : %ÁÖÏşÓê%£¬18942552977
-* ´´½¨ÈÕÆÚ: 2014-9-15 11:57:28
+ï»¿/******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY.Tech .Co.Ltd;
+* æ–‡ ä»¶ å: file_buff.cpp
+* æ–‡ä»¶æè¿°: buff æ–‡ä»¶è§£æ æ•°æ®è¾“å…¥è¾“å‡ºåŠŸèƒ½å®ç°ç±» 
+*  ä½œ  è€… : %æ—æ™“é›¨%ï¼Œ18942552977
+* åˆ›å»ºæ—¥æœŸ: 2014-9-15 11:57:28
 *******************************************************************************/
 
 #include "file_buff.h"
@@ -72,9 +72,9 @@ FileBuff::my_cmp(const string &v1, const string &v2)
 bool
 FileBuff::scanFileName(string &file_name)
 {
-    //É¨ÃèÄ¿Â¼
+    //æ‰«æç›®å½•
 	file_name = static_cast<std::string>(STRING_EMPTY);
-	//Èç¹ûÄÚ´æµÄÎÄ¼şÊıĞ¡ÓÚ2¸öÔòÖØĞÂ¼ÓÔØÎÄ¼ş
+	//å¦‚æœå†…å­˜çš„æ–‡ä»¶æ•°å°äº2ä¸ªåˆ™é‡æ–°åŠ è½½æ–‡ä»¶
 	if (mListFile.size() < 2)
 	{
 		mListFile.clear();
@@ -85,7 +85,7 @@ FileBuff::scanFileName(string &file_name)
 		}
 	}
 
-	// Èç¹ûÄ¿Â¼ÏÂÎÄ¼şµÈÓÚ1£¬ÓĞ¿ÉÄÜÆäËü½ø³ÌÕıÔÚ²Ù×÷Ğ©ÎÄ¼ş£¬ºöÂÔ;
+	// å¦‚æœç›®å½•ä¸‹æ–‡ä»¶ç­‰äº1ï¼Œæœ‰å¯èƒ½å…¶å®ƒè¿›ç¨‹æ­£åœ¨æ“ä½œäº›æ–‡ä»¶ï¼Œå¿½ç•¥;
 	if (mListFile.empty())
 	{
 		return true;
@@ -184,7 +184,7 @@ FileBuff::readFile(
 		return false;
 	}
 
-	// ¼ÓÔØÎÄ¼şĞÅÏ¢
+	// åŠ è½½æ–‡ä»¶ä¿¡æ¯
 	//
     File *file = new File(filename, "rb");
     if(!file->isGood())
@@ -197,7 +197,7 @@ FileBuff::readFile(
 
 	unsigned int data_len = file_len - END_LEN;
 	unsigned int rr = file->read(pack_data, data_len);
-	if (rr != data_len)   // ¼ÓÔØÎÄ¼ş
+	if (rr != data_len)   // åŠ è½½æ–‡ä»¶
 	{
 		mStrError = IDS_READ_FILE_ERROR;
 		read_data_len = 0;
@@ -282,7 +282,7 @@ FileBuff::composeFullFileName()
 
 	full_path += mFnamePrefix;
 
-    // modify begin: tangweibo  ĞŞ¸ÄBUffÎÄ¼şÉú³ÉÎÄ¼şÃû³Æ
+    // modify begin: tangweibo  ä¿®æ”¹BUffæ–‡ä»¶ç”Ÿæˆæ–‡ä»¶åç§°
 	//unsigned long long timestamp = Util::GetTimestamp();
     //   full_path += Util::Number2String<unsigned long long>(timestamp);
     std::string strTime = PubOpt::SystemOpt::GetSystemDateTime();
@@ -292,7 +292,7 @@ FileBuff::composeFullFileName()
     }
     strTime = PubOpt::StringOpt::StringReplace(strTime, ":", ".");
     full_path += strTime + ".txt";
-    // modify end: tangweibo  ĞŞ¸ÄBUffÎÄ¼şÉú³ÉÎÄ¼şÃû³Æ
+    // modify end: tangweibo  ä¿®æ”¹BUffæ–‡ä»¶ç”Ÿæˆæ–‡ä»¶åç§°
 	return full_path;
 }
 
@@ -311,7 +311,7 @@ FileBuff::checkData(const void* data, long len)
 	char* szEnd=(char*)data;
 	if((size_t)len<strlen(END))
 		return false;
-	//ÒÔendÎª½áÎ²
+	//ä»¥endä¸ºç»“å°¾
 	if(strcmp(szEnd,END)==0)
 		return true;
 	else

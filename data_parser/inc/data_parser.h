@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: data_format.h
-* ÎÄ¼şÃèÊö: Êı¾İ½âÎö½Ó¿ÚÀà
-*  ×÷  Õß : %ÁÖÏşÓê%£¬18942552977
-* ´´½¨ÈÕÆÚ: 2014-9-10 14:23:03
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: data_format.h
+* æ–‡ä»¶æè¿°: æ•°æ®è§£ææ¥å£ç±»
+*  ä½œ  è€… : %æ—æ™“é›¨%ï¼Œ18942552977
+* åˆ›å»ºæ—¥æœŸ: 2014-9-10 14:23:03
 *******************************************************************************/
 
 #ifndef __DATA_PARSER_H__
@@ -34,65 +34,65 @@ public:
 		const std::string &path,
 		const std::string &point_fname_prefix);
 
-	//¹¦ÄÜÃèÊö: ´ò¿ªÍ¨Ñ¶
+	//åŠŸèƒ½æè¿°: æ‰“å¼€é€šè®¯
 	bool rt_Open();
 
-	//¹¦ÄÜÃèÊö: ¹Ø±ÕÍ¨Ñ¶
+	//åŠŸèƒ½æè¿°: å…³é—­é€šè®¯
 	void rt_Close();
 
-	//¹¦ÄÜÃèÊö: ÊÍ·ÅÒ»¸öÊı¾İ°ü
+	//åŠŸèƒ½æè¿°: é‡Šæ”¾ä¸€ä¸ªæ•°æ®åŒ…
 	virtual void  DeletePointData(PointDatas* aPoints) = 0;
 
-	//¹¦ÄÜÃèÊö: ´´½¨Ò»¸öÊı¾İ°ü
+	//åŠŸèƒ½æè¿°: åˆ›å»ºä¸€ä¸ªæ•°æ®åŒ…
 	void CreatePointData(PointDatas* aPoints, unsigned long lPointCount);
 
-	//¹¦ÄÜÃèÊö: ½ÓÊÕÊı¾İ
+	//åŠŸèƒ½æè¿°: æ¥æ”¶æ•°æ®
 	bool  rt_Receive(PointDatas* pPoints);
 
-	//¹¦ÄÜÃèÊö:·¢ËÍÊı¾İ
+	//åŠŸèƒ½æè¿°:å‘é€æ•°æ®
 	bool  rt_Send(const PointDatas& aPoints);
 
-	//¹¦ÄÜÃèÊö: »ñÈ¡´íÎóĞÅÏ¢
+	//åŠŸèƒ½æè¿°: è·å–é”™è¯¯ä¿¡æ¯
 	std::string  getError();
-//¹¦ÄÜÃèÊö:»ñÈ¡Ä¿Â¼ÎÄ¼ş×Ü¸öÊı  add by wk 2018-7-10
+//åŠŸèƒ½æè¿°:è·å–ç›®å½•æ–‡ä»¶æ€»ä¸ªæ•°  add by wk 2018-7-10
 	int getDirFileNum();
 private:
-	//¹¦ÄÜÃèÊö: ´´½¨Ò»¸öÊı¾İ°ü
+	//åŠŸèƒ½æè¿°: åˆ›å»ºä¸€ä¸ªæ•°æ®åŒ…
 	virtual void  CreatePrivatePointValue(PointDatas* aPoints,unsigned long lPointCount) = 0;
 
-	//¹¦ÄÜÃèÊö:	Êı¾İ´ò°ü³É×Ö·û´®Êı¾İ
+	//åŠŸèƒ½æè¿°:	æ•°æ®æ‰“åŒ…æˆå­—ç¬¦ä¸²æ•°æ®
 	virtual bool  PackPrivatePointDataToStr(PointDatas aPoints, std::string& strData) = 0;
 
-	//¹¦ÄÜÃèÊö:	´Ó×Ö·û´®ÖĞ½â°ü
+	//åŠŸèƒ½æè¿°:	ä»å­—ç¬¦ä¸²ä¸­è§£åŒ…
 	virtual bool  UnpackPrivatePointDataFromStr(PointDatas* pPoints, std::vector<std::string> &strSplits,std::vector<std::string>::iterator &i) = 0;
 
-	//¹¦ÄÜÃèÊö:	Êı¾İ´ò°ü
+	//åŠŸèƒ½æè¿°:	æ•°æ®æ‰“åŒ…
 	virtual void  PackPrivatePointData(PointDatas aPoints, char* &pTem) = 0;
 
-	//¹¦ÄÜÃèÊö: Êı¾İ½â°ü
+	//åŠŸèƒ½æè¿°: æ•°æ®è§£åŒ…
 	virtual bool  UnpackPrivatePointData(const char* pTem, PointDatas* pPoints, long nPointCount) = 0;
 
-	//¹¦ÄÜÃèÊö:	»ñÈ¡µãĞèÒª´ò°üµÄ°üÊı¾İ³¤¶È
+	//åŠŸèƒ½æè¿°:	è·å–ç‚¹éœ€è¦æ‰“åŒ…çš„åŒ…æ•°æ®é•¿åº¦
 	virtual bool  GetPointPackLen(PointDatas aPoints,long* pLen) = 0; 
 
-	//¹¦ÄÜÃèÊö:	 »ñÈ¡µãÊı¾İ´ò°üµÄÎÄ±¾³¤¶È
+	//åŠŸèƒ½æè¿°:	 è·å–ç‚¹æ•°æ®æ‰“åŒ…çš„æ–‡æœ¬é•¿åº¦
 	virtual bool  GetPointPackTxtLen(PointDatas aPoints,long* pLen) = 0;
 
-	//¹¦ÄÜÃèÊö:	»ñÈ¡°üÊı¾İµÄÀàĞÍ
+	//åŠŸèƒ½æè¿°:	è·å–åŒ…æ•°æ®çš„ç±»å‹
  	virtual bool  GetPackDataType(const void* pData, PackDataType* peDataType) = 0;
 
-	//¹¦ÄÜÃèÊö:	 »ñÈ¡µãĞèÒª´ò°üµÄµãÊı¾İ³¤¶È
+	//åŠŸèƒ½æè¿°:	 è·å–ç‚¹éœ€è¦æ‰“åŒ…çš„ç‚¹æ•°æ®é•¿åº¦
 	virtual bool  GetPointDataLen(PointDatas aPoints,long* pLen) = 0;
 private:
-	//¹¦ÄÜÃèÊö:	 Êı¾İ´ò°ü³É×Ö·û´®Êı¾İ
+	//åŠŸèƒ½æè¿°:	 æ•°æ®æ‰“åŒ…æˆå­—ç¬¦ä¸²æ•°æ®
 	bool  PackPointDataToStr(PointDatas aPoints, std::string& strData);
-	//¹¦ÄÜÃèÊö:	 ´Ó×Ö·û´®ÖĞ½â°ü
+	//åŠŸèƒ½æè¿°:	 ä»å­—ç¬¦ä¸²ä¸­è§£åŒ…
 	bool  UnpackPointDataFromStr(const std::string& strData,PointDatas* pPoints);
-	//¹¦ÄÜÃèÊö:	 Êı¾İ´ò°ü
+	//åŠŸèƒ½æè¿°:	 æ•°æ®æ‰“åŒ…
 	bool  PackPointData(PointDatas aPoints,void* pData,long* pDataLen);
-	//¹¦ÄÜÃèÊö:	 Êı¾İ½â°ü
+	//åŠŸèƒ½æè¿°:	 æ•°æ®è§£åŒ…
 	bool  UnpackPointData(const void* pData,long pDataLen, PointDatas* pPoints);
-	//¹¦ÄÜÃèÊö: 16Î»Ğ£ÑéºÍ
+	//åŠŸèƒ½æè¿°: 16ä½æ ¡éªŒå’Œ
 	unsigned short int  CheckSum16(unsigned char* pData,long pLen);
 
 };

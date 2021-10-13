@@ -49,7 +49,7 @@ StartupServer::initial(const GetDateWay iSysType,const GetDateWay GetWay)
 
     mSeCalCycSec = SINGLETON(ServiceEIDSPreConfig)->getServiceCalCycSec();
 
-    Aos_Assert_R(mBaseMgr->BuffInitial(iSysType,GetWay), false);
+    Aos_Assert_R(mBaseMgr->BuffInitial(iSysType, GetWay), false);
     return true;
 }
 
@@ -62,7 +62,7 @@ StartupServer::destory()
 void
 StartupServer::stop()
 {
-//    SINGLETON(RtdbAdapter)->RtdbDisConnect();
+    //    SINGLETON(RtdbAdapter)->RtdbDisConnect();
     Aos_WriteLog("DisConnect Rtdb Data Base Success.");
 
     //SINGLETON(RsdbAdapter)->OtlDisConnect();
@@ -75,9 +75,6 @@ bool
 StartupServer::calculate()
 {
     //导入服务配置信息
-    if (mSeLastTime == 0)
-        mSeLastTime = Util::getNowTime();
-
     bool rslt = mBaseMgr->loadConfigInfo(mFirstCal, mModConf, mCurSeCalTime);
 
     mFirstCal = false;
@@ -90,25 +87,18 @@ StartupServer::calculate()
     return true;
 }
 
-void   StartupServer::RtimeCal()
+void StartupServer::RtimeCal()
 {
-    long nowTime,lastSeCalTime;
     while (true)
     {
         if (smDestory)
             return ;
 
-        nowTime = Util::getNowTime();
-//        SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);
+        long nowTime = Util::getNowTime();
+
         mNowTime = nowTime;
-        if (!mInit)
-        {
-            lastSeCalTime = mCurSeCalTime;
-        }
-        else
-        {
-            lastSeCalTime = mSeLastTime;
-        }
+        long lastSeCalTime = !mInit ? lastSeCalTime = mCurSeCalTime : lastSeCalTime = mSeLastTime;
+
         PubOpt::SystemOpt::SleepWait(1000);
         nowTime = Util::getNowTime();
         //计算
@@ -144,23 +134,25 @@ void   StartupServer::RtimeCal()
 
             //Aos_Assert_S("WriteBuffer.");
             mBaseMgr->WriteBuffer(getServerCalTime());
+
             //将点值回写实时数据库
             rslt = mBaseMgr->WriteToRtdb(getServerCalTime());
+
             // Aos_WriteLog(PubOpt::StringOpt::StringFormat("mmm3").c_str());
             //将点值写入关系数据库中
 
             //Aos_Assert_S("WriteRsdb.");
             if (rslt)
                 mBaseMgr->WriteRsdb(mCurSeCalTime);
-            //Aos_Assert_CB(rslt);
-            //PubOpt::SystemOpt::SleepWait(50);
-            nowTime = Util::getNowTime();
-            mSeLastTime = nowTime;
+
+            mSeLastTime = Util::getNowTime();;
             mInit = false;
             //Aos_Assert_S("UpdataCalTime.");
             mBaseMgr->UpdataCalTime(PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime),0);
+
             //Aos_Assert_S("UpdateServiceVersion.");
             mBaseMgr->UpdateServiceVersion(m_strSerivceName,"v1.0.0",SINGLETON(Log)->getLogPath());
+
             //Aos_Assert_S("next cyc.");
             break;
         }
@@ -340,17 +332,13 @@ void StartupServer::run()
     bool is_Recal = false;
     long nowTime = Util::getNowTime();
 
-//    if(!mBaseMgr->rtdbGetRtTagTime(nowTime))
-//        SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);
+    //    if(!mBaseMgr->rtdbGetRtTagTime(nowTime))
+    //        SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);
 
     if (nowTime - mCurSeCalTime > mHisToRtDevMin * 60)
-    {
         is_Recal = true;
-    }
     else
-    {
         is_Recal = false;
-    }
 
     if(is_Recal && eFromRtdb == mBaseMgr->msysType)
     {
@@ -372,10 +360,12 @@ StartupServer::getServerCalTime()
 {
     if (!smIsStartDelay)
         return mCurSeCalTime;
+
     if (mServerCalTimes.empty())
         return mCurSeCalTime;
+
     return
-        mServerCalTimes.front();
+            mServerCalTimes.front();
 }
 
 void

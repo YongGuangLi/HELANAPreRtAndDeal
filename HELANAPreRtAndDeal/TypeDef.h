@@ -35,9 +35,9 @@
 
 struct strEX
 {
-	std::string str1;
-	std::string str2;
-	std::string strFullCode;
+    std::string str1;
+    std::string str2;
+    std::string strFullCode;
 };
 typedef  std::map<std::string, strEX>					MapStringTostrEX;
 typedef  MapStringTostrEX::iterator						MapStringTostrEX_It;

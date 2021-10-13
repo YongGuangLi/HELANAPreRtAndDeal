@@ -12,6 +12,7 @@
 //更新服务版本信息
 const std::string g_strUpdateServiceVersionSQL = 
 	"begin P_SYS_Update_VersionNumber(:v_service_name, :v_version_no, :v_logfile_path,:v_result); end;";
+
 const std::string g_strAlarmScoreSQL = 
 		"select id,convert(varchar(10),alarm_level),convert(varchar(10),alarm_score),\
 		convert(varchar(10),upper_limit),convert(varchar(10),lower_limit) from tb_eids_model_alarm_score\

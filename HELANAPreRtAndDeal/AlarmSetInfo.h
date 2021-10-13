@@ -1,9 +1,10 @@
+ï»¿/*******************************************************************************
 /*******************************************************************************
-* Copyright£¨C£©,2016-2020,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: PubSetInfo.h
-* ÎÄ¼şÃèÊö: »ú×éµ½²âµã¸æ¾¯½á¹¹Êı¾İÅäÖÃ¼°´ø¸ººÉ
-*  ×÷  Õß : %Íõ¿­%£¬
-* ´´½¨ÈÕÆÚ: 2016-10-25 10:08:08
+* Copyrightï¼ˆCï¼‰,2016-2020,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: PubSetInfo.h
+* æ–‡ä»¶æè¿°: æœºç»„åˆ°æµ‹ç‚¹å‘Šè­¦ç»“æ„æ•°æ®é…ç½®åŠå¸¦è´Ÿè·
+*  ä½œ  è€… : %ç‹å‡¯%ï¼Œ
+* åˆ›å»ºæ—¥æœŸ: 2016-10-25 10:08:08
 *******************************************************************************/
 
 #ifndef __PUBSETINFO_H__
@@ -12,112 +13,112 @@
 #include "DataValueInfo.h"
 #include <math.h>
 
-//¸æ¾¯µÃ·ÖÇø¼äÅäÖÃ
+//å‘Šè­¦å¾—åˆ†åŒºé—´é…ç½®
 struct AlarmScore
 {
-	std::string     mStrKey;
-	int				mAlarmLevel;
-	double			mAlarmScore;
-	double			mUpper;
-	double			mLower;
+    std::string     mStrKey;
+    int				mAlarmLevel;
+    double			mAlarmScore;
+    double			mUpper;
+    double			mLower;
 };
-//²âµã¸æ¾¯Çø¼ä
+//æµ‹ç‚¹å‘Šè­¦åŒºé—´
 struct AlarmPointZone  
 {
-	std::string			mStrZoneID;			//²âµãÇø¼ä±àºÅ
-	int					mIAlarmType;			//¸æ¾¯ÀàĞÍ(0:Æ«²îÖµ¸æ¾¯ 1:Êµ¼ÊÖµ¸æ¾¯)
-	int					mIAlarmLevel;			//¸æ¾¯¼¶±ğ
-	double				mDAlarmLower;			//¸æ¾¯ÏÂÏŞ
-	double				mDAlarmUpper;			//¸æ¾¯ÉÏÏŞ
-	bool                mLowExist;              //¸æ¾¯ÏÂÏŞÊÇ·ñ´æÔÚ true£º´æÔÚ false£º²»´æÔÚ
-	bool                mUperExist;				//¸æ¾¯ÉÏÏŞÊÇ·ñ´æÔÚ true£º´æÔÚ false£º²»´æÔÚ
+    std::string			mStrZoneID;			//æµ‹ç‚¹åŒºé—´ç¼–å·
+    int					mIAlarmType;			//å‘Šè­¦ç±»å‹(0:åå·®å€¼å‘Šè­¦ 1:å®é™…å€¼å‘Šè­¦)
+    int					mIAlarmLevel;			//å‘Šè­¦çº§åˆ«
+    double				mDAlarmLower;			//å‘Šè­¦ä¸‹é™
+    double				mDAlarmUpper;			//å‘Šè­¦ä¸Šé™
+    bool                mLowExist;              //å‘Šè­¦ä¸‹é™æ˜¯å¦å­˜åœ¨ trueï¼šå­˜åœ¨ falseï¼šä¸å­˜åœ¨
+    bool                mUperExist;				//å‘Šè­¦ä¸Šé™æ˜¯å¦å­˜åœ¨ trueï¼šå­˜åœ¨ falseï¼šä¸å­˜åœ¨
 
 };
-// ²âµã
+// æµ‹ç‚¹
 struct AlarmPointInfo
 {
-	std::string   mStrPointId;
-	double        mDcurValue;     //Ô­Ê¼Öµ
-	double        mDpreValue;	  //ÆÚÍûÖµ
-	double        mDsim;          //²âµã½¡¿µ¶ÈÖµ
-	bool		  mIsGetPreVale;//ÆÚÍûÖµÊÇ·ñÈ¡µ½
-	bool          mIsGetCurVale;//Ô­Ê¼ÖµÊÇ·ñÈ¡µ½
-	bool		  mIsGetSimVale;//½¡¿µ¶ÈÊÇ·ñÈ¡µ½
-	bool		  mIsInitPreVale;//ÆÚÍûÖµÊÇ·ñÈ¡µ½
-	bool          mIsInitCurVale;//Ô­Ê¼ÖµÊÇ·ñÈ¡µ½
-	bool		  mIsInitSimVale;//½¡¿µ¶ÈÊÇ·ñÈ¡µ½
-	PublicDate	  mDate;
-	int           miBand;   //ËÀÇøÊ±¼ä
-	double		  m_minValue;    //¸æ¾¯Ê±¼ä¶Î×îĞ¡Öµ
-	double		  m_maxValue;    //¸æ¾¯Ê±¼ä¶Î×î´óÖµ
-	double		  m_avgValue;    //¸æ¾¯Ê±¼ä¶ÎÆ½¾ùÖµ
-	double		  m_pminValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµ×îĞ¡Öµ
-	double		  m_pmaxValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµ×î´óÖµ
-	double		  m_pavgValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµÆ½¾ùÖµ
-	double		  m_savgValue;    //¸æ¾¯Ê±¼ä¶Î½¡¿µ¶ÈÆ½¾ùÖµ
-	int			  m_iCount;	   //¸æ¾¯ÖÜÆÚÖĞÈ¡ÊıÖÜÆÚÍ³¼Æ´ÎÊı
+    std::string   mStrPointId;
+    double        mDcurValue;     //åŸå§‹å€¼
+    double        mDpreValue;	  //æœŸæœ›å€¼
+    double        mDsim;          //æµ‹ç‚¹å¥åº·åº¦å€¼
+    bool		  mIsGetPreVale;//æœŸæœ›å€¼æ˜¯å¦å–åˆ°
+    bool          mIsGetCurVale;//åŸå§‹å€¼æ˜¯å¦å–åˆ°
+    bool		  mIsGetSimVale;//å¥åº·åº¦æ˜¯å¦å–åˆ°
+    bool		  mIsInitPreVale;//æœŸæœ›å€¼æ˜¯å¦å–åˆ°
+    bool          mIsInitCurVale;//åŸå§‹å€¼æ˜¯å¦å–åˆ°
+    bool		  mIsInitSimVale;//å¥åº·åº¦æ˜¯å¦å–åˆ°
+    PublicDate	  mDate;
+    int           miBand;   //æ­»åŒºæ—¶é—´
+    double		  m_minValue;    //å‘Šè­¦æ—¶é—´æ®µæœ€å°å€¼
+    double		  m_maxValue;    //å‘Šè­¦æ—¶é—´æ®µæœ€å¤§å€¼
+    double		  m_avgValue;    //å‘Šè­¦æ—¶é—´æ®µå¹³å‡å€¼
+    double		  m_pminValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼æœ€å°å€¼
+    double		  m_pmaxValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼æœ€å¤§å€¼
+    double		  m_pavgValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼å¹³å‡å€¼
+    double		  m_savgValue;    //å‘Šè­¦æ—¶é—´æ®µå¥åº·åº¦å¹³å‡å€¼
+    int			  m_iCount;	   //å‘Šè­¦å‘¨æœŸä¸­å–æ•°å‘¨æœŸç»Ÿè®¡æ¬¡æ•°
 
-	std::vector<AlarmPointZone>   mVectZone;	//²âµã¸æ¾¯Çø¼ä¼¯ºÏ
+    std::vector<AlarmPointZone>   mVectZone;	//æµ‹ç‚¹å‘Šè­¦åŒºé—´é›†åˆ
 
-	AlarmPointInfo()
-	{
-		mIsInitPreVale = false;
-		mIsInitCurVale = false;
-		mIsInitSimVale = false;
-		m_minValue = 0;    
-		m_maxValue = 0;
-		m_avgValue = 0;
-		m_pminValue = 0;
-		m_pmaxValue = 0;
-		m_pavgValue = 0;
-		m_savgValue = 0;
-		mDcurValue = 0;
-		mDpreValue = 0;
-		mDsim = 0;
-		if(0!=mVectZone.size())
-			clear();
-	}
-	~AlarmPointInfo()
-	{
-		clear();
-	}
+    AlarmPointInfo()
+    {
+        mIsInitPreVale = false;
+        mIsInitCurVale = false;
+        mIsInitSimVale = false;
+        m_minValue = 0;
+        m_maxValue = 0;
+        m_avgValue = 0;
+        m_pminValue = 0;
+        m_pmaxValue = 0;
+        m_pavgValue = 0;
+        m_savgValue = 0;
+        mDcurValue = 0;
+        mDpreValue = 0;
+        mDsim = 0;
+        if(0!=mVectZone.size())
+            clear();
+    }
+    ~AlarmPointInfo()
+    {
+        clear();
+    }
 private:
-	void clear()
-	{
-		mVectZone.clear();
-	}
+    void clear()
+    {
+        mVectZone.clear();
+    }
 };
 typedef std::map<std::string,AlarmPointInfo *> MapStringToAlarmPointInfo;
 typedef	MapStringToAlarmPointInfo::iterator    MapStringToAlarmPointInfo_It;
 struct AlaramModelGroup
 {
-	std::string							mStrGroupId;
-	PublicDate							mDate;
-	int									miBand;   //ËÀÇøÊ±¼ä
-	double								mWeight;  //È¨ÖØ
-	std::map<std::string,AlarmPointInfo *>   mapPointInfo;
+    std::string							mStrGroupId;
+    PublicDate							mDate;
+    int									miBand;   //æ­»åŒºæ—¶é—´
+    double								mWeight;  //æƒé‡
+    std::map<std::string,AlarmPointInfo *>   mapPointInfo;
 
-	AlaramModelGroup()
-	{
+    AlaramModelGroup()
+    {
 
-	}
-	~AlaramModelGroup()
-	{
-		clear();
-	}
-	void clear()
-	{
-		MapStringToAlarmPointInfo_It it=mapPointInfo.begin();
-		for (;it!=mapPointInfo.end();++it)
-		{
-			if (NULL!=it->second)
-			{
-				delete it->second;
-				it->second=NULL;
-			}
-		}
-		mapPointInfo.clear();
-	}
+    }
+    ~AlaramModelGroup()
+    {
+        clear();
+    }
+    void clear()
+    {
+        MapStringToAlarmPointInfo_It it=mapPointInfo.begin();
+        for (;it!=mapPointInfo.end();++it)
+        {
+            if (NULL!=it->second)
+            {
+                delete it->second;
+                it->second=NULL;
+            }
+        }
+        mapPointInfo.clear();
+    }
 };
 typedef std::map<std::string,AlaramModelGroup *> MapStringToAlaramModelGroup;
 typedef	MapStringToAlaramModelGroup::iterator    MapStringToAlaramModelGroup_It;
@@ -126,77 +127,77 @@ typedef	MapStringToAlaramModelGroup::const_iterator   MapStringToAlaramModelGrou
 struct CDCosine
 {
 public:
-	std::string			mId;
-	std::string			mName;
-	std::string			mCauses;
-	std::string			mAnalye;
-	std::string			mGuid;
-	bool				isMok;
-	double				mPValue;
-	double				mMoValue;
-	std::map<std::string , int>	mMapCosine;
-	//PublicDate		mDate;
+    std::string			mId;
+    std::string			mName;
+    std::string			mCauses;
+    std::string			mAnalye;
+    std::string			mGuid;
+    bool				isMok;
+    double				mPValue;
+    double				mMoValue;
+    std::map<std::string , int>	mMapCosine;
+    //PublicDate		mDate;
 public:
-	CDCosine()
-	{
-		isMok=true;
-		mMoValue = 0;
-		mPValue = 0;
-	}
-	~CDCosine()
-	{
-		mMapCosine.clear();
-	}
-	bool StringSplit(const std::string &strSrc,const std::string &strSplit)
-	{
-		if (strSplit.empty()||strSrc.empty())
-		{
-			return false;
-		}
-		double dValue;
-		std::string strSrcBak = strSrc;
-		std::string strPoints,strValues,strp,strv;
-		size_t siFind = 0;
-		siFind = strSrcBak.find(strSplit);
-		if (std::string::npos == siFind)
-			return false;
-		strPoints.clear();
-		strValues.clear();
-		strPoints= strSrcBak.substr(0, siFind);
-		strValues= strSrcBak.substr(siFind+1,strSrcBak.length()-siFind-1);
-		if(','!= strPoints.at(strPoints.length()-1)) strPoints +=",";
-		if(','!= strValues.at(strValues.length()-1)) strValues +=",";
-		if(strPoints.empty()||strValues.empty()) 
-		{
-			return false;
-		}
-		while(!strPoints.empty())
-		{
-			siFind = strPoints.find(",");
-			strp= strPoints.substr(0, siFind);
-			strPoints = strPoints.substr(siFind+1);
-			siFind = strValues.find(",");
-			strv= strValues.substr(0,siFind);
-			strValues = strValues.substr(siFind+1);
+    CDCosine()
+    {
+        isMok=true;
+        mMoValue = 0;
+        mPValue = 0;
+    }
+    ~CDCosine()
+    {
+        mMapCosine.clear();
+    }
+    bool StringSplit(const std::string &strSrc,const std::string &strSplit)
+    {
+        if (strSplit.empty()||strSrc.empty())
+        {
+            return false;
+        }
+        double dValue;
+        std::string strSrcBak = strSrc;
+        std::string strPoints,strValues,strp,strv;
+        size_t siFind = 0;
+        siFind = strSrcBak.find(strSplit);
+        if (std::string::npos == siFind)
+            return false;
+        strPoints.clear();
+        strValues.clear();
+        strPoints= strSrcBak.substr(0, siFind);
+        strValues= strSrcBak.substr(siFind+1,strSrcBak.length()-siFind-1);
+        if(','!= strPoints.at(strPoints.length()-1)) strPoints +=",";
+        if(','!= strValues.at(strValues.length()-1)) strValues +=",";
+        if(strPoints.empty()||strValues.empty())
+        {
+            return false;
+        }
+        while(!strPoints.empty())
+        {
+            siFind = strPoints.find(",");
+            strp= strPoints.substr(0, siFind);
+            strPoints = strPoints.substr(siFind+1);
+            siFind = strValues.find(",");
+            strv= strValues.substr(0,siFind);
+            strValues = strValues.substr(siFind+1);
 
-			dValue = Util::CharPointerConvert2Number<double>(strv.c_str());
-			mMapCosine.insert(make_pair(strp,dValue));
-			mMoValue+= pow(dValue,2);
-		}
-		mMoValue= sqrt(mMoValue);
-		return true;
-	}
+            dValue = Util::CharPointerConvert2Number<double>(strv.c_str());
+            mMapCosine.insert(make_pair(strp,dValue));
+            mMoValue+= pow(dValue,2);
+        }
+        mMoValue= sqrt(mMoValue);
+        return true;
+    }
 };
 typedef std::map<std::string ,CDCosine *>    MapStringToAlaramCosine;
 typedef MapStringToAlaramCosine::iterator    MapStringToAlaramCosine_It;
 struct CDCosineCfg
 {
 public:
-	std::string			mId;
-	std::string			mName;
-	std::string			mCauses;
-	std::string			mAnalye;
-	std::string			mGuid;
+    std::string			mId;
+    std::string			mName;
+    std::string			mCauses;
+    std::string			mAnalye;
+    std::string			mGuid;
 };
 typedef std::map<std::string ,CDCosineCfg *>    MapStringToAlaramCosineCfg;
 typedef MapStringToAlaramCosineCfg::iterator    MapStringToAlaramCosineCfg_It;
@@ -204,72 +205,72 @@ struct AlarmModel
 {
 
 public:
-	std::string					mstrModelId;
-	std::string					mstrSn;
-	std::string					mCondId;			//µ±Ç°Âú×ãµÄÄ£Ê½ID
-	PublicDate					mDate;
-	PublicConditionDate			mCondtionDate;		//Ä£Ê½¼ÇÂ¼Êı¾İ
+    std::string					mstrModelId;
+    std::string					mstrSn;
+    std::string					mCondId;			//å½“å‰æ»¡è¶³çš„æ¨¡å¼ID
+    PublicDate					mDate;
+    PublicConditionDate			mCondtionDate;		//æ¨¡å¼è®°å½•æ•°æ®
 
-	std::string					mLastCosineId;  //ÉÏÌõ±¨¾¯cosineId
-	std::string					mCosineId;  //±¨¾¯cosineId
-	PublicConditionDate			mCosineDate;	//¹ÊÕÏ¶¨Î»¼ÇÂ¼Êı¾İ
-	CDCosine*					mConsine;       //µ±Ç°Âú×ãµÄ¹ÊÕÏµÄÅäÖÃÃèÊö
-	double						mXsd;
-	double						mSumAlram;  //±¾ÖÜÆÚÏÂÊôËùÓĞ²âµãµÄcosine±¨¾¯ÖµÆ½·½ºÍÔÙ¿ªÆ½·½
-	double						mLastSumAlram;  //ÉÏÖÜÆÚÏÂÊôËùÓĞ²âµãµÄcosine±¨¾¯ÖµÆ½·½ºÍÔÙ¿ªÆ½·½
-	double						mDevPPD;    //ÉÏ¸ö¼ÆËãÖÜÆÚºÍ±¾ÖÜÆÚ²âµã¸æ¾¯ĞòÁĞµÄÆ¥Åä¶È
-	double						mDevFabsSum; //ÉÏ¸ö¼ÆËãÖÜÆÚ²âµãÆ«²îÖµµÄ¾ø¶ÔÖµºÍ±¾¼ÆËãÖÜÆÚ¶ÔÓ¦²âµãÆ«²îÖµµÄ¾ø¶ÔÖµÏà³ËºóÇó×ÜºÍ
+    std::string					mLastCosineId;  //ä¸Šæ¡æŠ¥è­¦cosineId
+    std::string					mCosineId;  //æŠ¥è­¦cosineId
+    PublicConditionDate			mCosineDate;	//æ•…éšœå®šä½è®°å½•æ•°æ®
+    CDCosine*					mConsine;       //å½“å‰æ»¡è¶³çš„æ•…éšœçš„é…ç½®æè¿°
+    double						mXsd;
+    double						mSumAlram;  //æœ¬å‘¨æœŸä¸‹å±æ‰€æœ‰æµ‹ç‚¹çš„cosineæŠ¥è­¦å€¼å¹³æ–¹å’Œå†å¼€å¹³æ–¹
+    double						mLastSumAlram;  //ä¸Šå‘¨æœŸä¸‹å±æ‰€æœ‰æµ‹ç‚¹çš„cosineæŠ¥è­¦å€¼å¹³æ–¹å’Œå†å¼€å¹³æ–¹
+    double						mDevPPD;    //ä¸Šä¸ªè®¡ç®—å‘¨æœŸå’Œæœ¬å‘¨æœŸæµ‹ç‚¹å‘Šè­¦åºåˆ—çš„åŒ¹é…åº¦
+    double						mDevFabsSum; //ä¸Šä¸ªè®¡ç®—å‘¨æœŸæµ‹ç‚¹åå·®å€¼çš„ç»å¯¹å€¼å’Œæœ¬è®¡ç®—å‘¨æœŸå¯¹åº”æµ‹ç‚¹åå·®å€¼çš„ç»å¯¹å€¼ç›¸ä¹˜åæ±‚æ€»å’Œ
 
-	bool						m_IsChangeCondition;
-	int							miBand;   //ËÀÇøÊ±¼ä
-	double						mWeight;  //È¨ÖØ
-	//DataMode	mode_info;
-	//MethodAvg	mode_fun;
-	bool						mIsDeal;	//Ä£ĞÍÊÇ·ñ´¦Àí true £º´¦Àí false £º²»´¦Àí  
-	double						mdSimLimit;
-	bool						mIsSimAlarm;
-	MapStringToAlaramModelGroup mapAlarmGroup;
-	MapStringToAlaramCosine		mapAlarmCosine;
+    bool						m_IsChangeCondition;
+    int							miBand;   //æ­»åŒºæ—¶é—´
+    double						mWeight;  //æƒé‡
+    //DataMode	mode_info;
+    //MethodAvg	mode_fun;
+    bool						mIsDeal;	//æ¨¡å‹æ˜¯å¦å¤„ç† true ï¼šå¤„ç† false ï¼šä¸å¤„ç†
+    double						mdSimLimit;
+    bool						mIsSimAlarm;
+    MapStringToAlaramModelGroup mapAlarmGroup;
+    MapStringToAlaramCosine		mapAlarmCosine;
 public:
-	AlarmModel()
-	{
-		mLastCosineId = NO_ALARM;
-		mCosineId = NO_ALARM;
-		mSumAlram= 0;
-		mLastSumAlram = 0;
-		mDevPPD = 0;
-		mDevFabsSum = 0;
-		mWeight= 0;
-		miBand= 1;
-		mIsDeal= false;
-	}
-	~AlarmModel()
-	{
-		clear();
-	}
-	void clear()
-	{
-		MapStringToAlaramModelGroup_It it=mapAlarmGroup.begin();
-		for (;it!= mapAlarmGroup.end();++it)
-		{
-			if (NULL!= it->second)
-			{
-				delete it->second;
-				it->second= NULL;
-			}
-		}
-		mapAlarmGroup.clear();
-		MapStringToAlaramCosine_It it_consine= mapAlarmCosine.begin();
-		for (;it_consine!= mapAlarmCosine.end();++it_consine)
-		{
-			if (NULL!= it_consine->second)
-			{
-				delete it_consine->second;
-				it_consine->second = NULL;
-			}
-		}
-		mapAlarmCosine.clear();
-	}
+    AlarmModel()
+    {
+        mLastCosineId = NO_ALARM;
+        mCosineId = NO_ALARM;
+        mSumAlram= 0;
+        mLastSumAlram = 0;
+        mDevPPD = 0;
+        mDevFabsSum = 0;
+        mWeight= 0;
+        miBand= 1;
+        mIsDeal= false;
+    }
+    ~AlarmModel()
+    {
+        clear();
+    }
+    void clear()
+    {
+        MapStringToAlaramModelGroup_It it=mapAlarmGroup.begin();
+        for (;it!= mapAlarmGroup.end();++it)
+        {
+            if (NULL!= it->second)
+            {
+                delete it->second;
+                it->second= NULL;
+            }
+        }
+        mapAlarmGroup.clear();
+        MapStringToAlaramCosine_It it_consine= mapAlarmCosine.begin();
+        for (;it_consine!= mapAlarmCosine.end();++it_consine)
+        {
+            if (NULL!= it_consine->second)
+            {
+                delete it_consine->second;
+                it_consine->second = NULL;
+            }
+        }
+        mapAlarmCosine.clear();
+    }
 };
 typedef std::map<std::string, AlarmModel *>		    MapStringToAlarmModel;
 typedef MapStringToAlarmModel::iterator			    MapStringToAlarmModel_It;
@@ -278,48 +279,48 @@ typedef MapStringToAlarmModel::iterator			    MapStringToAlarmModel_It;
 struct AlarmSetSys
 {
 public:
-	AlarmSetSys()
-	{
-		mSys="";
-		miBand=0;
-	}
-	virtual ~AlarmSetSys()
-	{
-		clear();
-	}
+    AlarmSetSys()
+    {
+        mSys="";
+        miBand=0;
+    }
+    virtual ~AlarmSetSys()
+    {
+        clear();
+    }
 public:
-	std::string mSys;
-	PublicDate  mDate;
-	int         miBand;   //ËÀÇøÊ±¼ä
-	double      mWeight;  //È¨ÖØ
-	std::map<std::string, AlarmModel *>	 mapAlarmMode;      //ÏµÍ³ÏÂµÄÄ£ĞÍ¼¯ºÏ
-	std::map<std::string,Dfhnl*>          mapDfhnl;			//´ø¸ººÉÄÜÁ¦ÅäÖÃ¼¯ºÏ
+    std::string mSys;
+    PublicDate  mDate;
+    int         miBand;   //æ­»åŒºæ—¶é—´
+    double      mWeight;  //æƒé‡
+    std::map<std::string, AlarmModel *>	 mapAlarmMode;      //ç³»ç»Ÿä¸‹çš„æ¨¡å‹é›†åˆ
+    std::map<std::string,Dfhnl*>          mapDfhnl;			//å¸¦è´Ÿè·èƒ½åŠ›é…ç½®é›†åˆ
 private:
-	void clear()
-	{
-		std::map<std::string, AlarmModel *>::iterator	 it=mapAlarmMode.begin();
-		for (;it!= mapAlarmMode.end();++it)
-		{
-			if (NULL!= it->second)
-			{
-				delete it->second;
-				it->second=NULL;
-			}
-		}
-		mapAlarmMode.clear();
+    void clear()
+    {
+        std::map<std::string, AlarmModel *>::iterator	 it=mapAlarmMode.begin();
+        for (;it!= mapAlarmMode.end();++it)
+        {
+            if (NULL!= it->second)
+            {
+                delete it->second;
+                it->second=NULL;
+            }
+        }
+        mapAlarmMode.clear();
 
-		std::map<std::string,Dfhnl*> ::iterator it_dfh = mapDfhnl.begin();
-		for (;it_dfh!=mapDfhnl.end();++it_dfh)
-		{
+        std::map<std::string,Dfhnl*> ::iterator it_dfh = mapDfhnl.begin();
+        for (;it_dfh!=mapDfhnl.end();++it_dfh)
+        {
 
-			if (NULL!= it_dfh->second)
-			{
-				delete it_dfh->second;
-				it_dfh->second=NULL;
-			}
-		}
-		mapDfhnl.clear();
-	}
+            if (NULL!= it_dfh->second)
+            {
+                delete it_dfh->second;
+                it_dfh->second=NULL;
+            }
+        }
+        mapDfhnl.clear();
+    }
 
 };
 typedef std::map<std::string, AlarmSetSys *>		        MapStringToAlarmSetSys;
@@ -327,34 +328,34 @@ typedef MapStringToAlarmSetSys::iterator			        MapStringToAlarmSetSys_It;
 struct AlarmSetInfo
 {
 public:
-	AlarmSetInfo(void)
-	{
-		mSet="";
-		miBand=0;
-	}
-	~AlarmSetInfo(void)
-	{
-		clear();
-	}
+    AlarmSetInfo(void)
+    {
+        mSet="";
+        miBand=0;
+    }
+    ~AlarmSetInfo(void)
+    {
+        clear();
+    }
 
 public:
-	std::string mSet;
-	PublicDate  mDate;
-	int         miBand;   //ËÀÇøÊ±¼ä
-	MapStringToAlarmSetSys mapSys;    //»ú×éÏµÍ³¼¯ºÏ
-	void clear()
-	{
-		MapStringToAlarmSetSys_It it= mapSys.begin();
-		for (;it!= mapSys.end();++it)
-		{
-			if (NULL!= it->second)
-			{
-				delete it->second;
-				it->second=NULL;
-			}
-		}
-		mapSys.clear();
-	}
+    std::string mSet;
+    PublicDate  mDate;
+    int         miBand;   //æ­»åŒºæ—¶é—´
+    MapStringToAlarmSetSys mapSys;    //æœºç»„ç³»ç»Ÿé›†åˆ
+    void clear()
+    {
+        MapStringToAlarmSetSys_It it= mapSys.begin();
+        for (;it!= mapSys.end();++it)
+        {
+            if (NULL!= it->second)
+            {
+                delete it->second;
+                it->second=NULL;
+            }
+        }
+        mapSys.clear();
+    }
 };
 typedef std::map<std::string, AlarmSetInfo *>		    MapStringToAlarmSetInfo;
 typedef MapStringToAlarmSetInfo::iterator			    MapStringToAlarmSetInfo_It;
@@ -364,94 +365,94 @@ typedef VectorAlarmScore::iterator					   VecetorAlarmScore_It;
 
 struct AlarmPointRst
 {
-	std::string   mStrModelId;		
-	std::string   mStrGroupId;
-	std::string   mStrCondId;
-	std::string   mStrPointId;
-	double        mDcurValue;     //Ô­Ê¼Öµ
-	double        mDpreValue;	  //ÆÚÍûÖµ
-	double        mDsim;          //²âµã½¡¿µ¶ÈÖµ
-	bool		  mIsGetPreVale;//ÆÚÍûÖµÊÇ·ñÈ¡µ½
-	bool          mIsGetCurVale;//Ô­Ê¼ÖµÊÇ·ñÈ¡µ½
-	bool		  mIsGetSimVale;//½¡¿µ¶ÈÊÇ·ñÈ¡µ½
-	bool		  mIsInitPreVale;//ÆÚÍûÖµÊÇ·ñÈ¡µ½
-	bool          mIsInitCurVale;//Ô­Ê¼ÖµÊÇ·ñÈ¡µ½
-	bool		  mIsInitSimVale;//½¡¿µ¶ÈÊÇ·ñÈ¡µ½
-	PublicDate*	  mDate;
-	//int           miBand;   //ËÀÇøÊ±¼ä
-	double		  m_minValue;    //¸æ¾¯Ê±¼ä¶Î×îĞ¡Öµ
-	double		  m_maxValue;    //¸æ¾¯Ê±¼ä¶Î×î´óÖµ
-	double		  m_avgValue;    //¸æ¾¯Ê±¼ä¶ÎÆ½¾ùÖµ
-	double		  m_pminValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµ×îĞ¡Öµ
-	double		  m_pmaxValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµ×î´óÖµ
-	double		  m_pavgValue;    //¸æ¾¯Ê±¼ä¶ÎÆÚÍûÖµÆ½¾ùÖµ
-	double		  m_savgValue;    //¸æ¾¯Ê±¼ä¶Î½¡¿µ¶ÈÆ½¾ùÖµ
+    std::string   mStrModelId;
+    std::string   mStrGroupId;
+    std::string   mStrCondId;
+    std::string   mStrPointId;
+    double        mDcurValue;     //åŸå§‹å€¼
+    double        mDpreValue;	  //æœŸæœ›å€¼
+    double        mDsim;          //æµ‹ç‚¹å¥åº·åº¦å€¼
+    bool		  mIsGetPreVale;//æœŸæœ›å€¼æ˜¯å¦å–åˆ°
+    bool          mIsGetCurVale;//åŸå§‹å€¼æ˜¯å¦å–åˆ°
+    bool		  mIsGetSimVale;//å¥åº·åº¦æ˜¯å¦å–åˆ°
+    bool		  mIsInitPreVale;//æœŸæœ›å€¼æ˜¯å¦å–åˆ°
+    bool          mIsInitCurVale;//åŸå§‹å€¼æ˜¯å¦å–åˆ°
+    bool		  mIsInitSimVale;//å¥åº·åº¦æ˜¯å¦å–åˆ°
+    PublicDate*	  mDate;
+    //int           miBand;   //æ­»åŒºæ—¶é—´
+    double		  m_minValue;    //å‘Šè­¦æ—¶é—´æ®µæœ€å°å€¼
+    double		  m_maxValue;    //å‘Šè­¦æ—¶é—´æ®µæœ€å¤§å€¼
+    double		  m_avgValue;    //å‘Šè­¦æ—¶é—´æ®µå¹³å‡å€¼
+    double		  m_pminValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼æœ€å°å€¼
+    double		  m_pmaxValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼æœ€å¤§å€¼
+    double		  m_pavgValue;    //å‘Šè­¦æ—¶é—´æ®µæœŸæœ›å€¼å¹³å‡å€¼
+    double		  m_savgValue;    //å‘Šè­¦æ—¶é—´æ®µå¥åº·åº¦å¹³å‡å€¼
 
-	AlarmPointRst()
-	{
-		mIsGetPreVale = false;
-		mIsGetCurVale = false;
-		mIsGetSimVale = false;
-		mIsInitPreVale = false;
-		mIsInitCurVale = false;
-		mIsInitSimVale = false;
-		mStrCondId = "";
-		m_minValue = 0;    
-		m_maxValue = 0;   
-		m_avgValue = 0;    
-		m_pminValue = 0;    
-		m_pmaxValue = 0;    
-		m_pavgValue = 0;   
-		m_savgValue = 0;
-		mDcurValue = 0;
-		mDpreValue = 0;
-		mDsim = 0;
-	}
+    AlarmPointRst()
+    {
+        mIsGetPreVale = false;
+        mIsGetCurVale = false;
+        mIsGetSimVale = false;
+        mIsInitPreVale = false;
+        mIsInitCurVale = false;
+        mIsInitSimVale = false;
+        mStrCondId = "";
+        m_minValue = 0;
+        m_maxValue = 0;
+        m_avgValue = 0;
+        m_pminValue = 0;
+        m_pmaxValue = 0;
+        m_pavgValue = 0;
+        m_savgValue = 0;
+        mDcurValue = 0;
+        mDpreValue = 0;
+        mDsim = 0;
+    }
 };
 
 struct  AlarmGrouRst
 {
-	std::string					mStrGroupId;
-	PublicDate*					mDate;
-	//int							miBand;   //ËÀÇøÊ±¼ä
+    std::string					mStrGroupId;
+    PublicDate*					mDate;
+    //int							miBand;   //æ­»åŒºæ—¶é—´
 };
 struct  AlarmModeltoSetRst
 {
-	std::string					mStrId;             //Ä£ĞÍid¡¢ÏµÍ³id»ò»ú×éid
-	PublicDate*					mDate;
-	//int							miBand;   //ËÀÇøÊ±¼ä
+    std::string					mStrId;             //æ¨¡å‹idã€ç³»ç»Ÿidæˆ–æœºç»„id
+    PublicDate*					mDate;
+    //int							miBand;   //æ­»åŒºæ—¶é—´
 };
 struct  AlarmModelConditionRst
 {
-	std::string					mModelIdTest;//²âÊÔÁãÊ±	
-	std::string					mCondId;			//µ±Ç°Âú×ãµÄÄ£Ê½ID
-	PublicConditionDate*		mCondtionDate;
-	//int							miBand;   //ËÀÇøÊ±¼ä
+    std::string					mModelIdTest;//æµ‹è¯•é›¶æ—¶
+    std::string					mCondId;			//å½“å‰æ»¡è¶³çš„æ¨¡å¼ID
+    PublicConditionDate*		mCondtionDate;
+    //int							miBand;   //æ­»åŒºæ—¶é—´
 };
 struct  AlarmModelCosineRst
 {
-	std::string					mStrModelId;
-	std::string					mstrSn;
-	std::string					mLastCosineId;  //ÉÏÌõ±¨¾¯cosineId
-	std::string					mCosineId;  //±¨¾¯cosineId
-	PublicConditionDate*		mCosineDate;	//¹ÊÕÏ¶¨Î»¼ÇÂ¼Êı¾İ
-	CDCosine*					mConsine;
-	//CDCosine*					mlastConsine;
-	MapStringToAlaramCosineCfg	mapRlstAlarmCosineCfg;
-	//int							miBand;   //ËÀÇøÊ±¼ä
-	double						mXsd;
-	AlarmModelCosineRst()
-	{
-		mXsd = 0;
-	}
-	~AlarmModelCosineRst()
-	{
-		for (MapStringToAlaramCosineCfg_It it = mapRlstAlarmCosineCfg.begin();it != mapRlstAlarmCosineCfg.end();++it)
-		{
-			delete it->second;
-		}
-		mapRlstAlarmCosineCfg.clear();
-	}
+    std::string					mStrModelId;
+    std::string					mstrSn;
+    std::string					mLastCosineId;  //ä¸Šæ¡æŠ¥è­¦cosineId
+    std::string					mCosineId;  //æŠ¥è­¦cosineId
+    PublicConditionDate*		mCosineDate;	//æ•…éšœå®šä½è®°å½•æ•°æ®
+    CDCosine*					mConsine;
+    //CDCosine*					mlastConsine;
+    MapStringToAlaramCosineCfg	mapRlstAlarmCosineCfg;
+    //int							miBand;   //æ­»åŒºæ—¶é—´
+    double						mXsd;
+    AlarmModelCosineRst()
+    {
+        mXsd = 0;
+    }
+    ~AlarmModelCosineRst()
+    {
+        for (MapStringToAlaramCosineCfg_It it = mapRlstAlarmCosineCfg.begin();it != mapRlstAlarmCosineCfg.end();++it)
+        {
+            delete it->second;
+        }
+        mapRlstAlarmCosineCfg.clear();
+    }
 };
 typedef std::map<std::string,AlarmPointRst *>			MapStringToAlarmPointRst;
 typedef MapStringToAlarmPointRst::iterator				MapStringToAlarmPointRst_It;

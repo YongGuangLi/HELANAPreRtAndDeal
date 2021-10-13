@@ -26,15 +26,15 @@ public:
     void ServiceStart(void);
     // 功能描述: 停止中心处理服务
     void StopService(void);
-	// 功能描述: 启动各电厂执行线程
-	virtual void Run(void);
+    // 功能描述: 启动各电厂执行线程
+    virtual void Run(void);
 
 private:
     // 功能描述: 初始化告警环境
     bool InitRtaAlarm(void);
     // 功能描述: 初始化实时数据库连接
     bool ConnectRtdbDB(void);
-	
+
     // 功能描述:  初始化电厂处理服务
     bool InitFactoryService(void);
     // 功能描述: 启动电厂处理服务

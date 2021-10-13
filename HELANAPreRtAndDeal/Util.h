@@ -55,24 +55,20 @@ namespace Util
 	// 功能描述: 字符串切割处理函数
 	bool StringSplit(const std::string &strSrc, 
 		std::vector<std::string> &lstRet, 
-		const std::string &strSplit,bool isCheckReap=true);
-	// 功能描述: 连接实时数据库
-	bool connectRtdbDB();
+        const std::string &strSplit,bool isCheckReap=true);
+
 	// 功能描述: 获取本机系统时间
-	unsigned long getNowTime();
-	// 功能描述: 检测关系数据库是否连接
-	bool RsdbIsConnect();
-	// 功能描述: 连接关系数据库
-	bool RsdbConnect();	
+    unsigned long getNowTime();
+    bool RsdbConnect();
 
 	// 功能描述: 连接关系数据库
-	bool QtConnect(RsdbAdapter* pQtOpt,std::string strFactoryCode="");
+    bool QtConnect(RsdbAdapter* pQtOpt,std::string strFactoryCode="");
 	// 功能描述: 连接关系数据库
-	bool QtConnectOnce(RsdbAdapter* pQtOp,std::string strFactoryCode);
-	// 功能描述: 获取实时数据库的当前时间
-	long getRtdbCurTimeToLong();
-	// 功能描述: 获取实时数据库的当前时间
-	bool getRtdbCurTimeToString(std::string &current_time);
+    bool QtConnectOnce(RsdbAdapter* pQtOp,std::string strFactoryCode);
+    // 功能描述: 获取实时数据库的当前时间
+    long getRtdbCurTimeToLong();
+    // 功能描述: 获取实时数据库的当前时间
+    bool getRtdbCurTimeToString(std::string &current_time);
 
 	// 功能描述: 获取win系统目录
 	//std::string getSystemDirectory();

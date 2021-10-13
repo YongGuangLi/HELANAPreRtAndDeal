@@ -5,7 +5,7 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-//#include <iostream>
+
 IMPLEMENT_SINGLETON(Log)
 
 Log::Log(void)
@@ -37,8 +37,8 @@ bool Log::InitLog(const std::string &strPath, const std::string &strMode, const 
     }
 
     m_strLogFile = GetLogFileName();
+
     m_bWrite = bWrite;
-// std::cerr <<m_strPath<<std::endl;
     return OpenFile(m_strLogFile);
 }
 

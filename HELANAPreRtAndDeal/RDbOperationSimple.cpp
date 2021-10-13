@@ -16,10 +16,10 @@
 
 RDbOperationSimple::RDbOperationSimple(void)
 {
-	mQtOpt = NULL;
+    mQtOpt = NULL;
 }
 RDbOperationSimple::RDbOperationSimple(RsdbAdapter * QtOpt)
-:mQtOpt(QtOpt)
+    :mQtOpt(QtOpt)
 {
 
 }
@@ -28,150 +28,104 @@ RDbOperationSimple::~RDbOperationSimple(void)
 }
 
 
-//bool 
-//RDbOperationSimple::getDbmsCurrentTime(std::string &current_time)
-//{
-//	if (!mQtOpt->QtIsConnect()) return false;
-//	
-//	int nErr = SINGLETON(OciAdapter)->SQLStmtPrepare(g_strGetDBDateTimeSQL);// 绑定查询SQL语句
-//	if (0 != nErr)
-//	{
-//		mStrErrorMessage = PubOpt::StringOpt::StringFormat("Prepare CurrentTime SQL ERROR: %s", 
-//				SINGLETON(OciAdapter)->GetErrorMessage().c_str());
-//		Aos_WriteLog(mStrErrorMessage.c_str());
-//		return false;
-//	}
-//
-//	char * pszOutputBuff = new char[ALL_VALUE_SIZE];
-//	if (!SINGLETON(OciAdapter)->BindOutputStrByPos(0, pszOutputBuff, ALL_VALUE_SIZE))
-//	{
-//		mStrErrorMessage = PubOpt::StringOpt::StringFormat(
-//				"Bind PubSet Variables %d ERROR: ",
-//				1, SINGLETON(OciAdapter)->GetErrorMessage().c_str());
-//		Aos_WriteLog(mStrErrorMessage.c_str());
-//		return false;
-//	}
-//
-//	nErr = SINGLETON(OciAdapter)->SQLStmtExecute();
-//	if (0 != nErr)                                                  // 执行查询SQL语句
-//	{
-//		mStrErrorMessage = PubOpt::StringOpt::StringFormat("Execute CurrentTime SQL ERROR: %s", 
-//				SINGLETON(OciAdapter)->GetErrorMessage().c_str());
-//		Aos_WriteLog(mStrErrorMessage.c_str());
-//		delete[] pszOutputBuff;
-//		return false;
-//	}
-//
-//	if (FETCH_NO_DATA == SINGLETON(OciAdapter)->SQLStmtFetch())
-//	{
-//		delete[] pszOutputBuff;
-//		return false;
-//	}
-//	current_time = pszOutputBuff;
-//	delete[] pszOutputBuff;
-//	return true;
-//}
-//
-//
+
 
 bool 
 RDbOperationSimple::stmtPrepare(const std::string &classname, const std::string &str_sql)
 {
-	bool nErr = mQtOpt->QtQuerySelect(str_sql);// 绑定查询SQL语句
-	if (!nErr)
-	{
-		Aos_Assert_S(PubOpt::StringOpt::StringFormat("Prepare %s SQL ERROR: %s", 
-			classname.c_str(), mQtOpt->GetErrorMessage().c_str()).c_str());
-		return false;
-	}	
-	return true;
+    bool nErr = mQtOpt->QtQuerySelect(str_sql);// 绑定查询SQL语句
+    if (!nErr)
+    {
+        Aos_Assert_S(PubOpt::StringOpt::StringFormat("Prepare %s SQL ERROR: %s",
+                                                     classname.c_str(), mQtOpt->GetErrorMessage().c_str()).c_str());
+        return false;
+    }
+    return true;
 }
 
 void
 RDbOperationSimple::stmtCloseStream()
 {
-	mQtOpt->SQLStmtCloseStream();
+    mQtOpt->SQLStmtCloseStream();
 }
 
 bool 
 RDbOperationSimple::getFactoryNo(std::string strFactoryCode,unsigned short &DcNum)
 {	
-	std::string strCode;
-	//int DNumber = 0;
-	//bool nErr;
-	//if (!mQtOpt->QtIsConnect()) return false;
-	Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-	std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strFactoryNoSQL.c_str(),strFactoryCode.c_str());
-	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
-	int nNumber = 0;
-	while (mQtOpt->SQLStmtFetch())
-	{
-		nNumber++;
-		strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
+    std::string strCode;
 
-	}
-	stmtCloseStream();  
-	
-	DcNum = (strCode.empty())?0:Util::CharPointerConvert2Number<int>(strCode.c_str());
+    Aos_Assert_R(Util::QtConnect(mQtOpt), false);
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strFactoryNoSQL.c_str(),strFactoryCode.c_str());
+    Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
+    int nNumber = 0;
+    while (mQtOpt->SQLStmtFetch())
+    {
+        nNumber++;
+        strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
 
-	return true;
+    }
+    stmtCloseStream();
+
+    DcNum = (strCode.empty())?0:Util::CharPointerConvert2Number<int>(strCode.c_str());
+
+    return true;
 }
 bool 
 RDbOperationSimple::getIndexConfigStatus(std::string strFactoryCode)
 {	
-	std::string strCode;
+    std::string strCode;
 
-	Aos_Assert_R(Util::QtConnect(mQtOpt,strFactoryCode), false);
+    Aos_Assert_R(Util::QtConnect(mQtOpt,strFactoryCode), false);
     std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysStatusSQL.c_str(), strFactoryCode.c_str());
-	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
+    Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
 
-	while (mQtOpt->SQLStmtFetch())
+    while (mQtOpt->SQLStmtFetch())
     {
         strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
-	}
+    }
 
-	stmtCloseStream();  
+    stmtCloseStream();
     bool is_update = Util::CharPointerConvert2Number<int>(strCode.c_str()) != 0? true : false;
-	
-	return is_update;
+
+    return is_update;
 }
 
 bool 
 RDbOperationSimple::getIndexUpdataTime(std::string strFactoryCode,long &calTime)
 {	
-	std::string strTime;
+    std::string strTime;
 
-	Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-	std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysCalTimeSQL.c_str(),strFactoryCode.c_str());
-	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
+    Aos_Assert_R(Util::QtConnect(mQtOpt), false);
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysCalTimeSQL.c_str(),strFactoryCode.c_str());
+    Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
 
-	while (mQtOpt->SQLStmtFetch())
+    while (mQtOpt->SQLStmtFetch())
     {
         strTime = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
-	}
+    }
 
-	stmtCloseStream();  
-	calTime = PubOpt::SystemOpt::StrToDateTm(strTime);
+    stmtCloseStream();
+    calTime = PubOpt::SystemOpt::StrToDateTm(strTime);
 
-	return true;
+    return true;
 }
 bool 
 RDbOperationSimple::UpdataCalTime(std::string strFactoryCode,std::string strcalTime,const int itype)
 {	
-	//std::string strTime ="2018-5-29 12:12:28";
-	//strcalTime = strTime;
-	//bool nErr;
-	if(strcalTime.empty()) return true;
-	if (!mQtOpt->QtIsConnect()) return false;
-	//calTime = PubOpt::SystemOpt::StrToDateTm(strTime);
-	std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strUpdateSysCalTimeSQL.c_str(),strcalTime.c_str(),itype,strFactoryCode.c_str());
-	Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
-	//Aos_Assert_R(stmtPrepare("getIndexConfigStatus", g_strSysStatusSQL), false);
-	bool rslt = mQtOpt->QtExec();
-	rslt = mQtOpt->QtCommit();
-	stmtCloseStream();  
-	
-	return rslt;
+    //std::string strTime ="2018-5-29 12:12:28";
+    //strcalTime = strTime;
+    //bool nErr;
+    if(strcalTime.empty()) return true;
+    if (!mQtOpt->QtIsConnect()) return false;
+    //calTime = PubOpt::SystemOpt::StrToDateTm(strTime);
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strUpdateSysCalTimeSQL.c_str(),strcalTime.c_str(),itype,strFactoryCode.c_str());
+    Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
+    //Aos_Assert_R(stmtPrepare("getIndexConfigStatus", g_strSysStatusSQL), false);
+    bool rslt = mQtOpt->QtExec();
+    rslt = mQtOpt->QtCommit();
+    stmtCloseStream();
+
+    return rslt;
 }
 
 
@@ -181,13 +135,13 @@ RDbOperationSimple::UpdataCalTime(std::string strFactoryCode,std::string strcalT
 bool 
 RDbOperationSimple::updateIndexConfigStatus(const int &status,std::string strFactory)
 {
-	bool err;
-	if (!mQtOpt->QtIsConnect()) return false;
-	
-	std::string strSql = PubOpt::StringOpt::StringFormat(g_strUpdateStatusSQL.c_str(), status,strFactory.c_str());
-	Aos_WriteLog(strSql.c_str());
-	err = mQtOpt->SQLDirectExecute(strSql);
-	return err;
+    bool err;
+    if (!mQtOpt->QtIsConnect()) return false;
+
+    std::string strSql = PubOpt::StringOpt::StringFormat(g_strUpdateStatusSQL.c_str(), status,strFactory.c_str());
+    Aos_WriteLog(strSql.c_str());
+    err = mQtOpt->SQLDirectExecute(strSql);
+    return err;
 }
 
 
@@ -380,123 +334,123 @@ RDbOperationSimple::updateIndexConfigStatus(const int &status,std::string strFac
 bool
 RDbOperationSimple::isSaveTemp(const std::string pointId, const std::string setCode)
 {
-	if (pointId.substr(0,1) == "M")
-	{
-		std::string strSetCode = setCode;
-		if (strSetCode.empty())
-		{
-			strSetCode = pointId.substr(1,1);
-		}
+    if (pointId.substr(0,1) == "M")
+    {
+        std::string strSetCode = setCode;
+        if (strSetCode.empty())
+        {
+            strSetCode = pointId.substr(1,1);
+        }
 
-		if (strSetCode == "0")
-		{
-			if (pointId == "M0_zzqyl")    return true;
-			if (pointId == "M0_dqyl")    return true;
-			if (pointId == "M0_zfl")    return true;
-			if (pointId == "M0_fdl")    return true;
-			if (pointId == "M0_fhl")    return true;
-			if (pointId == "M0_FH")    return true;
-		}
+        if (strSetCode == "0")
+        {
+            if (pointId == "M0_zzqyl")    return true;
+            if (pointId == "M0_dqyl")    return true;
+            if (pointId == "M0_zfl")    return true;
+            if (pointId == "M0_fdl")    return true;
+            if (pointId == "M0_fhl")    return true;
+            if (pointId == "M0_FH")    return true;
+        }
 
-		if (strSetCode == "1")
-		{
-			if (pointId == "M1_zzqyl")    return true;
-			if (pointId == "M1_dqyl")    return true;
-			if (pointId == "M1_zfl")    return true;
-			if (pointId == "M1_fdl")    return true;
-			if (pointId == "M1_fhl")    return true;
-			if (pointId == "M1_FH")    return true;
-		}
-		if (strSetCode == "2")
-		{
-			if (pointId == "M2_zzqyl")    return true;
-			if (pointId == "M2_dqyl")    return true;
-			if (pointId == "M2_zfl")    return true;
-			if (pointId == "M2_fdl")    return true;
-			if (pointId == "M2_fhl")    return true;
-			if (pointId == "M2_FH")    return true;
-		}
+        if (strSetCode == "1")
+        {
+            if (pointId == "M1_zzqyl")    return true;
+            if (pointId == "M1_dqyl")    return true;
+            if (pointId == "M1_zfl")    return true;
+            if (pointId == "M1_fdl")    return true;
+            if (pointId == "M1_fhl")    return true;
+            if (pointId == "M1_FH")    return true;
+        }
+        if (strSetCode == "2")
+        {
+            if (pointId == "M2_zzqyl")    return true;
+            if (pointId == "M2_dqyl")    return true;
+            if (pointId == "M2_zfl")    return true;
+            if (pointId == "M2_fdl")    return true;
+            if (pointId == "M2_fhl")    return true;
+            if (pointId == "M2_FH")    return true;
+        }
 
-		if (strSetCode == "3")
-		{
-			if (pointId == "M3_zzqyl")    return true;
-			if (pointId == "M3_dqyl")    return true;
-			if (pointId == "M3_zfl")    return true;
-			if (pointId == "M3_fdl")    return true;
-			if (pointId == "M3_fhl")    return true;
-			if (pointId == "M3_FH")    return true;
-		}
+        if (strSetCode == "3")
+        {
+            if (pointId == "M3_zzqyl")    return true;
+            if (pointId == "M3_dqyl")    return true;
+            if (pointId == "M3_zfl")    return true;
+            if (pointId == "M3_fdl")    return true;
+            if (pointId == "M3_fhl")    return true;
+            if (pointId == "M3_FH")    return true;
+        }
 
-		if (strSetCode == "4")
-		{
-			if (pointId == "M4_zzqyl")    return true;
-			if (pointId == "M4_dqyl")    return true;
-			if (pointId == "M4_zfl")    return true;
-			if (pointId == "M4_fdl")    return true;
-			if (pointId == "M4_fhl")    return true;
-			if (pointId == "M4_FH")    return true;
-		}
-	}
-	if (pointId.substr(0,1) == "D")
-	{
-		if (setCode == "0")
-		{
-			if (pointId == "D0_dqyl")		return true;
-			if (pointId == "D0_gsll")		return true;
-			if (pointId == "D0_fdjyggl")    return true;
-			if (pointId == "D0_zzqll")		return true;
-			if (pointId == "D0_zzqyl")		return true;
-			if (pointId == "D0_glzgswd")	return true;
-			if (pointId == "D0_zrzqrkwd")   return true;
-			if (pointId == "D0_zzqwdL")		return true;
-		}
+        if (strSetCode == "4")
+        {
+            if (pointId == "M4_zzqyl")    return true;
+            if (pointId == "M4_dqyl")    return true;
+            if (pointId == "M4_zfl")    return true;
+            if (pointId == "M4_fdl")    return true;
+            if (pointId == "M4_fhl")    return true;
+            if (pointId == "M4_FH")    return true;
+        }
+    }
+    if (pointId.substr(0,1) == "D")
+    {
+        if (setCode == "0")
+        {
+            if (pointId == "D0_dqyl")		return true;
+            if (pointId == "D0_gsll")		return true;
+            if (pointId == "D0_fdjyggl")    return true;
+            if (pointId == "D0_zzqll")		return true;
+            if (pointId == "D0_zzqyl")		return true;
+            if (pointId == "D0_glzgswd")	return true;
+            if (pointId == "D0_zrzqrkwd")   return true;
+            if (pointId == "D0_zzqwdL")		return true;
+        }
 
-		if (setCode == "1")
-		{
-			if (pointId == "D1_dqyl")		return true;
-			if (pointId == "D1_gsll")		return true;
-			if (pointId == "D1_fdjyggl")    return true;
-			if (pointId == "D1_zzqll")		return true;
-			if (pointId == "D1_zzqyl")		return true;
-			if (pointId == "D1_glzgswd")	return true;
-			if (pointId == "D1_zrzqrkwd")   return true;
-			if (pointId == "D1_zzqwdL")		return true;
-		}
-		if (setCode == "2")
-		{
-			if (pointId == "D2_dqyl")		return true;
-			if (pointId == "D2_gsll")		return true;
-			if (pointId == "D2_fdjyggl")    return true;
-			if (pointId == "D2_zzqll")		return true;
-			if (pointId == "D2_zzqyl")		return true;
-			if (pointId == "D2_glzgswd")	return true;
-			if (pointId == "D2_zrzqrkwd")   return true;
-			if (pointId == "D2_zzqwdL")		return true;
-		}
+        if (setCode == "1")
+        {
+            if (pointId == "D1_dqyl")		return true;
+            if (pointId == "D1_gsll")		return true;
+            if (pointId == "D1_fdjyggl")    return true;
+            if (pointId == "D1_zzqll")		return true;
+            if (pointId == "D1_zzqyl")		return true;
+            if (pointId == "D1_glzgswd")	return true;
+            if (pointId == "D1_zrzqrkwd")   return true;
+            if (pointId == "D1_zzqwdL")		return true;
+        }
+        if (setCode == "2")
+        {
+            if (pointId == "D2_dqyl")		return true;
+            if (pointId == "D2_gsll")		return true;
+            if (pointId == "D2_fdjyggl")    return true;
+            if (pointId == "D2_zzqll")		return true;
+            if (pointId == "D2_zzqyl")		return true;
+            if (pointId == "D2_glzgswd")	return true;
+            if (pointId == "D2_zrzqrkwd")   return true;
+            if (pointId == "D2_zzqwdL")		return true;
+        }
 
-		if (setCode == "3")
-		{
-			if (pointId == "D3_dqyl")		return true;
-			if (pointId == "D3_gsll")		return true;
-			if (pointId == "D3_fdjyggl")    return true;
-			if (pointId == "D3_zzqll")		return true;
-			if (pointId == "D3_zzqyl")		return true;
-			if (pointId == "D3_glzgswd")	return true;
-			if (pointId == "D3_zrzqrkwd")   return true;
-			if (pointId == "D3_zzqwdL")		return true;
-		}
+        if (setCode == "3")
+        {
+            if (pointId == "D3_dqyl")		return true;
+            if (pointId == "D3_gsll")		return true;
+            if (pointId == "D3_fdjyggl")    return true;
+            if (pointId == "D3_zzqll")		return true;
+            if (pointId == "D3_zzqyl")		return true;
+            if (pointId == "D3_glzgswd")	return true;
+            if (pointId == "D3_zrzqrkwd")   return true;
+            if (pointId == "D3_zzqwdL")		return true;
+        }
 
-		if (setCode == "4")
-		{
-			if (pointId == "D4_dqyl")		return true;
-			if (pointId == "D4_gsll")		return true;
-			if (pointId == "D4_fdjyggl")    return true;
-			if (pointId == "D4_zzqll")		return true;
-			if (pointId == "D4_zzqyl")		return true;
-			if (pointId == "D4_glzgswd")	return true;
-			if (pointId == "D4_zrzqrkwd")   return true;
-			if (pointId == "D4_zzqwdL")		return true;
-		}
-	}
-	return false;
+        if (setCode == "4")
+        {
+            if (pointId == "D4_dqyl")		return true;
+            if (pointId == "D4_gsll")		return true;
+            if (pointId == "D4_fdjyggl")    return true;
+            if (pointId == "D4_zzqll")		return true;
+            if (pointId == "D4_zzqyl")		return true;
+            if (pointId == "D4_glzgswd")	return true;
+            if (pointId == "D4_zrzqrkwd")   return true;
+            if (pointId == "D4_zzqwdL")		return true;
+        }
+    }
+    return false;
 }

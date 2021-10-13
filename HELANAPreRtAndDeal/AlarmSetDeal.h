@@ -31,45 +31,45 @@
 //#define CON_RSLT_SIZE						1
 class AlarmSetDeal:public RDbOperationComplex
 {
-	//DECLARE_SINGLETON_INIT(AlarmSetDeal)
+    //DECLARE_SINGLETON_INIT(AlarmSetDeal)
 public:
-	AlarmSetDeal(void);
-	AlarmSetDeal(RsdbAdapter * QtOpt,std::string strFactory);
-	~AlarmSetDeal(void);
+    AlarmSetDeal(void);
+    AlarmSetDeal(RsdbAdapter * QtOpt,std::string strFactory);
+    ~AlarmSetDeal(void);
 public:
-	MapStringToAlarmPointRst  mMapAlarmPointRst;
-	MapStringToAlarmGrouRst	  mMapAlarmGrouRst;
-	MapStringToAlarmModeltoSetRst mMapAlarmModeltoSetRst;
-	MapStringToAlarmModelConditionRst mMapAlarmModelConditionRst;
-	MapStringToAlarmModelCosineRst mMapAlarmModelCosineRst;
+    MapStringToAlarmPointRst  mMapAlarmPointRst;
+    MapStringToAlarmGrouRst	  mMapAlarmGrouRst;
+    MapStringToAlarmModeltoSetRst mMapAlarmModeltoSetRst;
+    MapStringToAlarmModelConditionRst mMapAlarmModelConditionRst;
+    MapStringToAlarmModelCosineRst mMapAlarmModelCosineRst;
 public:
-	void SetRtPointValue(const MapStringToDataMode  &mMapModeInfo,MapStringToAlarmSetInfo &mMapAlarmSet);
-	void CalAralm(MapStringToAlarmSetInfo &mMapAlarmSet);
-	void SetFirstDev(const bool isFirstCal,const bool isModConf,VectorAlarmScore *AlarmScore,long lCalTimeStamp);
-	void WriteRsdb();
-	void WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mMapPointData,
-					const std::string strFactory,long mCurSeCalTime);
-	bool UpdateServiceVersion(std::string strServiceName,std::string strVersion,std::string strLog);
+    void SetRtPointValue(const MapStringToDataMode  &mMapModeInfo,MapStringToAlarmSetInfo &mMapAlarmSet);
+    void CalAralm(MapStringToAlarmSetInfo &mMapAlarmSet);
+    void SetFirstDev(const bool isFirstCal,const bool isModConf,VectorAlarmScore *AlarmScore,long lCalTimeStamp);
+    void WriteRsdb();
+    void WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mMapPointData,
+                   const std::string strFactory,long mCurSeCalTime);
+    bool UpdateServiceVersion(std::string strServiceName,std::string strVersion,std::string strLog);
 private:
-	
-	bool RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
-	bool RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
-	bool RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
 
-	bool RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);
-	bool RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);
-private:
-	int				mXsdLimit;				//判断故障匹配度为0的限值
-	int				mBufferSize;              // OCI绑定查询缓存定义
-	bool			misFirstCal;
-	bool			mModConf;                //配置是否修改
-	long			mlCalTimeStamp;
-	VectorAlarmScore *mVectorAlarmScore;
+    bool RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
+    bool RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
+    bool RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
 
-	std::string							m_strFactoryCode;//电厂编号
+    bool RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);
+    bool RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);
 private:
-	
-/*******************************************************************************
+    int				mXsdLimit;				//判断故障匹配度为0的限值
+    int				mBufferSize;              // OCI绑定查询缓存定义
+    bool			misFirstCal;
+    bool			mModConf;                //配置是否修改
+    long			mlCalTimeStamp;
+    VectorAlarmScore *mVectorAlarmScore;
+
+    std::string							m_strFactoryCode;//电厂编号
+private:
+
+    /*******************************************************************************
 * 函 数 名: 
 * 函数描述: 插入新的测点告警记录前更新测点当前的告警记录
 * 参数说明: 
@@ -81,8 +81,8 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-23 15:35:14
 *******************************************************************************/
-	bool RsltPointUpFrontInsToRsdb();
-/*******************************************************************************
+    bool RsltPointUpFrontInsToRsdb();
+    /*******************************************************************************
 * 函 数 名: 
 * 函数描述: 插入新的测点告警记录
 * 参数说明: 
@@ -94,8 +94,8 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-23 15:36:10
 *******************************************************************************/
-	bool RsltPointInToRsdb();
-/*******************************************************************************
+    bool RsltPointInToRsdb();
+    /*******************************************************************************
 * 函 数 名: 
 * 函数描述: 更新测点告警记录
 * 参数说明: 
@@ -107,8 +107,8 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-23 15:36:42
 *******************************************************************************/
-	bool RsltPointUpBackInRsdb();
-/*******************************************************************************
+    bool RsltPointUpBackInRsdb();
+    /*******************************************************************************
 * 函 数 名: 
 * 函数描述: 更新测点实时值
 * 参数说明: 
@@ -120,8 +120,8 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2017-1-23 15:29:29
 *******************************************************************************/
-	bool RsltPointUpValuesRsdb();
-/*******************************************************************************
+    bool RsltPointUpValuesRsdb();
+    /*******************************************************************************
 * 函 数 名: 
 * 函数描述: 测点记录插入失败时回滚内存记录
 * 参数说明: 
@@ -133,35 +133,35 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-23 10:23:57
 *******************************************************************************/
-	void RollbackPoint(int ipos);
-	void RollbackGroup(int ipos);
-	void RollbackModelToSet(int ipos);
-	void RollbackCondition(int ipos);
-	void RollbackCosione(int ipos);
-	bool RsltGroupUpFrontInsToRsdb();
-	bool RsltGroupInToRsdb();
-	bool RsltGroupUpBackInRsdb();
-	bool WriteAlarmGroupToRsdb();
-	
-	bool RsltModelToSetUpFrontInsToRsdb();
-	bool RsltModelToSetInToRsdb();
-	bool RsltModelToSetUpBackInRsdb();
+    void RollbackPoint(int ipos);
+    void RollbackGroup(int ipos);
+    void RollbackModelToSet(int ipos);
+    void RollbackCondition(int ipos);
+    void RollbackCosione(int ipos);
+    bool RsltGroupUpFrontInsToRsdb();
+    bool RsltGroupInToRsdb();
+    bool RsltGroupUpBackInRsdb();
+    bool WriteAlarmGroupToRsdb();
 
-	bool RsltModelConditionUpFrontInsToRsdb();
-	bool RsltModelConditionInToRsdb();
-	bool RsltModelConditionUpBackInRsdb();
+    bool RsltModelToSetUpFrontInsToRsdb();
+    bool RsltModelToSetInToRsdb();
+    bool RsltModelToSetUpBackInRsdb();
 
-	//bool RsltModelCosineUpFrontInsToRsdb();
-	bool RsltModelCosineInToRsdb();
-	bool RsltModelCosineUpBackInRsdb();
+    bool RsltModelConditionUpFrontInsToRsdb();
+    bool RsltModelConditionInToRsdb();
+    bool RsltModelConditionUpBackInRsdb();
 
-	bool WriteAlarmPointToRsdb();
-	bool WriteAlarmModelGroupToRsdb();
-	bool WriteAlarmModeltoSetToRsdb();
-	bool WriteAlarmModelCondtionToRsdb();
-	bool WriteAlarmModelCosineToRsdb();
+    //bool RsltModelCosineUpFrontInsToRsdb();
+    bool RsltModelCosineInToRsdb();
+    bool RsltModelCosineUpBackInRsdb();
 
-/*******************************************************************************
+    bool WriteAlarmPointToRsdb();
+    bool WriteAlarmModelGroupToRsdb();
+    bool WriteAlarmModeltoSetToRsdb();
+    bool WriteAlarmModelCondtionToRsdb();
+    bool WriteAlarmModelCosineToRsdb();
+
+    /*******************************************************************************
 * 函 数 名: DealModelPCAlarm
 * 函数描述: 模型故障定位处理
 * 参数说明: 
@@ -173,10 +173,10 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-7 16:30:51
 *******************************************************************************/
-	void DealModelPCAlarm(AlarmModel	* pmodel);
-	bool CompSim (AlarmModel	* pmodel);
-	void CalPCAlarm(CDCosine* cosine,const MapStringToAlaramModelGroup &mapModelCategory,const double sumAlram);
-/*******************************************************************************
+    void DealModelPCAlarm(AlarmModel	* pmodel);
+    bool CompSim (AlarmModel	* pmodel);
+    void CalPCAlarm(CDCosine* cosine,const MapStringToAlaramModelGroup &mapModelCategory,const double sumAlram);
+    /*******************************************************************************
 * 函 数 名: CalSoreMolWeight
 * 函数描述: 计算加权得分
 * 参数说明: 
@@ -188,8 +188,8 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-7 16:09:46
 *******************************************************************************/
-	void CalSoreMolWeight(const int &curValue,const double &weight,double &sumScore);
-/*******************************************************************************
+    void CalSoreMolWeight(const int &curValue,const double &weight,double &sumScore);
+    /*******************************************************************************
 * 函 数 名: SetSoreAlarmValue
 * 函数描述: 根据得分设置告警级别
 * 参数说明: 
@@ -201,18 +201,18 @@ private:
 *  作  者 : %王凯%，15802613961
 * 创建日期: 2016-12-7 16:10:25
 *******************************************************************************/
-	void SetSoreAlarmValue(int &lastValue,int &curValue,double & alarmScore,double & alarmLastScore,
-		 double & sumScore,const bool & is_score);
-	void DealPointlAlarm(AlarmPointInfo * ppoint,bool isWatch,bool isChangeContion,int simValue);
-	//bool loadValue(MapStringToSetInfo &mMapSetInfo);
-	void SetMaxMinArv(AlarmPointInfo* point);
-	void DealSetAlarm(AlarmSetInfo * pset);
-	bool SetAlarmToRsdb();
+    void SetSoreAlarmValue(int &lastValue,int &curValue,double & alarmScore,double & alarmLastScore,
+                           double & sumScore,const bool & is_score);
+    void DealPointlAlarm(AlarmPointInfo * ppoint,bool isWatch,bool isChangeContion,int simValue);
+    //bool loadValue(MapStringToSetInfo &mMapSetInfo);
+    void SetMaxMinArv(AlarmPointInfo* point);
+    void DealSetAlarm(AlarmSetInfo * pset);
+    bool SetAlarmToRsdb();
 
-	void DealSysAlarm(AlarmSetSys * psys);
-	void DealModelAlarm(AlarmModel	* pmodel);
-	void SetAlarmModelRslt(AlarmModel	* pmodel);
-	void clearn();
+    void DealSysAlarm(AlarmSetSys * psys);
+    void DealModelAlarm(AlarmModel	* pmodel);
+    void SetAlarmModelRslt(AlarmModel	* pmodel);
+    void clearn();
 };
 
 #endif//__SETDEAL_H__

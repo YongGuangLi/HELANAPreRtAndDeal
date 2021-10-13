@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: buff_points.h
-* ÎÄ¼şÃèÊö: BuffÎÄ¼ş½âÎöÊı¾İ¹ÜÀíÀà
-*  ×÷  Õß : ÌÀÎÀ²¨£¬13730895608
-* ´´½¨ÈÕÆÚ: 2014-10-23 8:57:25
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: buff_points.h
+* æ–‡ä»¶æè¿°: Buffæ–‡ä»¶è§£ææ•°æ®ç®¡ç†ç±»
+*  ä½œ  è€… : æ±¤å«æ³¢ï¼Œ13730895608
+* åˆ›å»ºæ—¥æœŸ: 2014-10-23 8:57:25
 *******************************************************************************/
 
 #ifndef __BUFF_POINTS_H__
@@ -21,71 +21,71 @@ public:
     virtual ~BuffPoints(void);
 public:
 
-	int GetBuffFileCount(void);
-    /* 
-    * ¹¦ÄÜÃèÊö: ³õÊ¼»¯BuffÎÄ¼şµãµÄÊı¾İ
-    * ÊäÈë²ÎÊı: BuffÎÄ¼şËùÔÚÄ¿Â¼
-    * ÊäÈë²ÎÊı: ÎÄ¼şÇ°×ºÃû
-    * Êä³ö²ÎÊı: ÎŞ
-    * ·µ »Ø Öµ: ³É¹¦·µ»Øtrue£¬Ê§°Ü·µ»Øfalse
+    int GetBuffFileCount(void);
+    /*
+    * åŠŸèƒ½æè¿°: åˆå§‹åŒ–Buffæ–‡ä»¶ç‚¹çš„æ•°æ®
+    * è¾“å…¥å‚æ•°: Buffæ–‡ä»¶æ‰€åœ¨ç›®å½•
+    * è¾“å…¥å‚æ•°: æ–‡ä»¶å‰ç¼€å
+    * è¾“å‡ºå‚æ•°: æ— 
+    * è¿” å› å€¼: æˆåŠŸè¿”å›trueï¼Œå¤±è´¥è¿”å›false
     */
     bool InitPoints(const std::string &strPath, const std::string &strHname);
 
-	 /* 
-    * ¹¦ÄÜÃèÊö: ³õÊ¼»¯BuffÎÄ¼şµãµÄÊı¾İ
-    * ÊäÈë²ÎÊı: BuffÎÄ¼şËùÔÚÄ¿Â¼
-    * ÊäÈë²ÎÊı: ÎÄ¼şÇ°×ºÃû
-    * Êä³ö²ÎÊı: ÎŞ
-    * ·µ »Ø Öµ: ³É¹¦·µ»Øtrue£¬Ê§°Ü·µ»Øfalse
+    /*
+    * åŠŸèƒ½æè¿°: åˆå§‹åŒ–Buffæ–‡ä»¶ç‚¹çš„æ•°æ®
+    * è¾“å…¥å‚æ•°: Buffæ–‡ä»¶æ‰€åœ¨ç›®å½•
+    * è¾“å…¥å‚æ•°: æ–‡ä»¶å‰ç¼€å
+    * è¾“å‡ºå‚æ•°: æ— 
+    * è¿” å› å€¼: æˆåŠŸè¿”å›trueï¼Œå¤±è´¥è¿”å›false
     */
     bool InitBuff(const std::string &strPath, const std::string &strHname,const int &itype);
-    /* 
-    * ¹¦ÄÜÃèÊö: ¶ÁÈ¡×î½üBuffÎÄ¼şĞÅÏ¢
-    * ÊäÈë²ÎÊı: ÎŞ
-    * Êä³ö²ÎÊı: ÎŞ
-    * ·µ »Ø Öµ: ³É¹¦·µ»Øtrue£¬Ê§°Ü·µ»Øfalse
+    /*
+    * åŠŸèƒ½æè¿°: è¯»å–æœ€è¿‘Buffæ–‡ä»¶ä¿¡æ¯
+    * è¾“å…¥å‚æ•°: æ— 
+    * è¾“å‡ºå‚æ•°: æ— 
+    * è¿” å› å€¼: æˆåŠŸè¿”å›trueï¼Œå¤±è´¥è¿”å›false
     */
     bool ReadBuffFile(void);
-    /* 
-    * ¹¦ÄÜÃèÊö: ÊÍ·Å¼ÓÔØµÄµãÊı¾İĞÅÏ¢
-    * ÊäÈë²ÎÊı: ÎŞ
-    * Êä³ö²ÎÊı: ÎŞ
-    * ·µ »Ø Öµ: ÎŞ
+    /*
+    * åŠŸèƒ½æè¿°: é‡Šæ”¾åŠ è½½çš„ç‚¹æ•°æ®ä¿¡æ¯
+    * è¾“å…¥å‚æ•°: æ— 
+    * è¾“å‡ºå‚æ•°: æ— 
+    * è¿” å› å€¼: æ— 
     */
     void DestoryPoints(void);
 
-	/* 
-    * ¹¦ÄÜÃèÊö: ¼ÓÔØµÄµã¿Õ¼äÉêÇë
-    * ÊäÈë²ÎÊı: ÎŞ
-    * Êä³ö²ÎÊı: ÎŞ
-    * ·µ »Ø Öµ: ÎŞ
+    /*
+    * åŠŸèƒ½æè¿°: åŠ è½½çš„ç‚¹ç©ºé—´ç”³è¯·
+    * è¾“å…¥å‚æ•°: æ— 
+    * è¾“å‡ºå‚æ•°: æ— 
+    * è¿” å› å€¼: æ— 
     */
-	void CreatePointData(const int iCount);
+    void CreatePointData(const int iCount);
 
-	bool SentPointData(); 
+    bool SentPointData();
 public:
-    // ¹¦ÄÜÃèÊö: »ñÈ¡µç³§±àºÅ
+    // åŠŸèƒ½æè¿°: è·å–ç”µå‚ç¼–å·
     long GetFactoryTag(void);
-    // ¹¦ÄÜÃèÊö: »ñÈ¡µãµÄ¸öÊı
+    // åŠŸèƒ½æè¿°: è·å–ç‚¹çš„ä¸ªæ•°
     long GetPointCount(void);
-    // ¹¦ÄÜÃèÊö: »ñÈ¡°üµÄÉú³ÉÊ±¼ä
+    // åŠŸèƒ½æè¿°: è·å–åŒ…çš„ç”Ÿæˆæ—¶é—´
     std::string GetPacketDTime(void);
-    // ¹¦ÄÜÃèÊö: »ñÈ¡Ö¸¶¨µãÃûµÄĞÅÏ¢
+    // åŠŸèƒ½æè¿°: è·å–æŒ‡å®šç‚¹åçš„ä¿¡æ¯
     PointValue* GetPointsValue(const std::string &strPointName);
-    // ¹¦ÄÜÃèÊö: »ñÈ¡Ö¸¶¨µãÎ»ÖÃµÄĞÅÏ¢
+    // åŠŸèƒ½æè¿°: è·å–æŒ‡å®šç‚¹ä½ç½®çš„ä¿¡æ¯
     PointValue* GetPointsValue(const long &lPointBit);
 
-	// ¹¦ÄÜÃèÊö: »ñÈ¡Ö¸¶¨µãÃûµÄĞÅÏ¢
-	ModelPackageValue* GetPointsValueEx(const std::string &strPointName);
-	// ¹¦ÄÜÃèÊö: »ñÈ¡Ö¸¶¨µãÎ»ÖÃµÄĞÅÏ¢
-	ModelPackageValue* GetPointsValueEx(const long &lPointBit,const long imax);
+    // åŠŸèƒ½æè¿°: è·å–æŒ‡å®šç‚¹åçš„ä¿¡æ¯
+    ModelPackageValue* GetPointsValueEx(const std::string &strPointName);
+    // åŠŸèƒ½æè¿°: è·å–æŒ‡å®šç‚¹ä½ç½®çš„ä¿¡æ¯
+    ModelPackageValue* GetPointsValueEx(const long &lPointBit,const long imax);
 public:
-    DataMgr* m_pBuffOpt;            // BuffÎÄ¼şµã²Ù×÷¶ÔÏó
-    PointDatas m_stPoints;          // ±£´æµãĞÅÏ¢Êı¾İ
+    DataMgr* m_pBuffOpt;            // Buffæ–‡ä»¶ç‚¹æ“ä½œå¯¹è±¡
+    PointDatas m_stPoints;          // ä¿å­˜ç‚¹ä¿¡æ¯æ•°æ®
 
 private:
-	int m_FileType;
-	int m_DataType;
+    int m_FileType;
+    int m_DataType;
 };
 
 #endif//__BUFF_POINTS_H__

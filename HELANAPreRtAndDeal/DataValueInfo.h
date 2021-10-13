@@ -75,7 +75,7 @@ typedef MapStringToIntervalEX::iterator    MapStringToIntervalEX_It;
 enum GetDateWay
 {
 	eFromRtdb = 1,			//从实时数据库获取数据或者表示是子站系统
-	eFromDir = 2,		//从目录获取数据或者表示是主站系统
+    eFromDir = 2,		    //从目录获取数据或者表示是主站系统
 };
 enum PointType
 {
@@ -90,7 +90,7 @@ enum PointType
 	eDfh  = 8,					//带负荷能力
 	eDfhCome  = 9,				//带负荷能力计算引用的模型、参数类、模型参数
 	eMcond  =10	,				//模型的模式回写点
-	eMstatus  =11					//模型的启停回写点
+    eMstatus  =11			    //模型的启停回写点
 };
 struct mModelAllPointSource
 {
@@ -116,19 +116,19 @@ public:
 		mFullPointId = "";
 	}
 public:
-	double						mDValue;			//实时数据库获取的测点原始值
-	bool						m_IsGetValue;      //是否获取到原始值
-	long                        mlTime;              //测点时间
+    double						mDValue;			    //实时数据库获取的测点原始值
+    bool						m_IsGetValue;           //是否获取到原始值
+    long                        mlTime;                 //测点时间
 public:
 	std::string                 mSet;
 	std::string 				mFullPointId;			//关系数据库测点加电厂编号原始全点名
-	std::string 				mPointId;			//关系数据库测点原始全点名
-	std::string					mPSource;	    //实时数据库测点原始全点名
+    std::string 				mPointId;			    //关系数据库测点原始全点名
+    std::string					mPSource;	            //实时数据库测点原始全点名
 	PointType					mPointType;				//点类型
-	bool                        mNotInMedlePoints;//是否不存在在模型测点中 true：不存在 false：存在
+    bool                        mNotInMedlePoints;      //是否不存在在模型测点中 true：不存在 false：存在
 	bool						mRsdbPointIdIsExist;	//关系数据库中此点是否存在
-	bool						mRtdbPSourceIsExist;//实时数据库中此点是否存在
-	bool						mIsWriteRtdb;		//是否回写实时数据库
+    bool						mRtdbPSourceIsExist;    //实时数据库中此点是否存在
+    bool						mIsWriteRtdb;		    //是否回写实时数据库
 	int		  					mError;			   		//主站指标值的有效性   0--有误 1--正常    数据库中STATUS字段 1表示正常 0表示错误
 	double    					mForeVal;          		//公式计算上一个周期的值
 
@@ -202,33 +202,33 @@ public:
 
 public:
 	double						mDOrigValue;				//实时数据库获取的测点原始值
-	bool						m_IsGetOrigValue;      //是否获取到原始值
-	//double						mDWriteOrigValue;           //回写测点原始值
-	double						mDPreValue;          	//期望值
-	bool						m_IsGetPreValue;      //是否获取到期望值
-	double						mDSimValue;          	//测点健康度
-	bool						m_IsGetSimValue;      //是否获取到健康度值
-	long                        mlTime;              //测点时间
+    bool						m_IsGetOrigValue;           //是否获取到原始值
+    //double						mDWriteOrigValue;       //回写测点原始值
+    double						mDPreValue;          	    //期望值
+    bool						m_IsGetPreValue;            //是否获取到期望值
+    double						mDSimValue;          	    //测点健康度
+    bool						m_IsGetSimValue;            //是否获取到健康度值
+    long                        mlTime;                     //测点时间
 public:	
-	std::string 				mMonitPointId;		//关系数据库测点原始全点名
-    std::string 				mPointId;			//关系数据库测点原始全点名
-    std::string					mPOrigSource;	    //实时数据库测点原始全点名
-    std::string 				mPointSource;			//测点回写原始值点名
-    std::string					mPreSource;			//测点回写期望值点名
-    std::string					mSimSource;			//测点回写健康度点名
+    std::string 				mMonitPointId;		        //关系数据库测点原始全点名
+    std::string 				mPointId;			        //关系数据库测点原始全点名
+    std::string					mPOrigSource;	            //实时数据库测点原始全点名
+    std::string 				mPointSource;			    //测点回写原始值点名
+    std::string					mPreSource;			        //测点回写期望值点名
+    std::string					mSimSource;			        //测点回写健康度点名
 		
-	PointType					mPointType;				//点类型
+    PointType					mPointType;				    //点类型
     
-    bool						mRsdbPointIdIsExist;	//关系数据库中此点是否存在
+    bool						mRsdbPointIdIsExist;	    //关系数据库中此点是否存在
 	bool						mRtdbPOrigSourceIsExist;	//实时数据库中此点是否存在
 	bool						mRtdbPointSourceIsExist;	//实时数据库中此点是否存在
-	bool						mRtdbPreSourceIsExist;	//实时数据库中此点是否存在
-	bool						mRtdbSimSourceIsExist;	//实时数据库中此点是否存在
+    bool						mRtdbPreSourceIsExist;	    //实时数据库中此点是否存在
+    bool						mRtdbSimSourceIsExist;	    //实时数据库中此点是否存在
 
-	int		  					mError;			   		//主站指标值的有效性   0--有误 1--正常    数据库中STATUS字段 1表示正常 0表示错误
-	double    					mForeVal;          		//公式计算上一个周期的值
+    int		  					mError;			   		    //主站指标值的有效性   0--有误 1--正常    数据库中STATUS字段 1表示正常 0表示错误
+    double    					mForeVal;          		    //公式计算上一个周期的值
 	 	 
-	int							mIsPreAlarm;			//此点是否告警(点的状态(0:异常 1:正常))
+    int							mIsPreAlarm;			    //此点是否告警(点的状态(0:异常 1:正常))
 
 	void resetValue()
 	{

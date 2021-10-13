@@ -50,14 +50,14 @@ private:
     bool                               ismDealAlarm;
     int								mcountPoints;//写文件个数
 public:
-    GetDateWay							msysType;//系统类型1：子站系统  2：主站系统
-    GetDateWay							mGetDateType;//获取数据类型1：从实时数据库获取数据 2：从目录获取数据
-    unsigned short						mDCNo;					//电厂编号
-    std::string							m_strFactoryCode;//电厂编号
-    BuffPoints*							m_pRecOpt;                // Buff读取文件操作对象
-    std::map<std::string, BuffPoints* > m_mapSendOpt;	//发送数据目录操作集合
+    GetDateWay							msysType;                //系统类型1：子站系统  2：主站系统
+    GetDateWay							mGetDateType;            //获取数据类型1：从实时数据库获取数据 2：从目录获取数据
+    unsigned short						mDCNo;					 //电厂编号
+    std::string							m_strFactoryCode;        //电厂编号
+    BuffPoints*							m_pRecOpt;               // Buff读取文件操作对象
+    std::map<std::string, BuffPoints* > m_mapSendOpt;	         //发送数据目录操作集合
 
-    RsdbAdapter*					mQtOpt;		//QT关系数据库适配器对象
+    RsdbAdapter*					mQtOpt;		                //QT关系数据库适配器对象
     std::string						mTheadId;
     AlarmSetDeal*					mAlarmdate;
     //bool                                mInit;         //重新初始化
@@ -70,12 +70,12 @@ public:
     
     bool BuffInitial(const GetDateWay  iSysType,const GetDateWay GetWay);
 
-    void     WriteBuffer(long mCurSeCalTime);    //写文件
-    bool     RecBuffer( long &lTimeStamp,
-                        const long nowTime,
-                        MapStringToSetCfg &mMapSetInfo,
-                        MapStringToString &mMapPointSourceName,
-                        MapStringToPointData &mPointData);		//读取解析文件
+    void WriteBuffer(long mCurSeCalTime);    //写文件
+    bool RecBuffer( long &lTimeStamp,
+                    const long nowTime,
+                    MapStringToSetCfg &mMapSetInfo,
+                    MapStringToString &mMapPointSourceName,
+                    MapStringToPointData &mPointData);		//读取解析文件
     /*
      * 功能描述:  初始化实时数据库
      * 输入参数: 无
@@ -168,6 +168,7 @@ private:
     void	CheckModelAvgPointFitInfPointOnly();
     bool    InitSendBufferOpt();
     void	SetMothAvgData(MapStringToDataMode &mapModeInfo);
+
     // 功能描述: 从关系数据库中模型信息
     bool	loadModeData();
     
@@ -181,10 +182,11 @@ private:
     bool loadIndex();
 
     // 功能描述: 检查耗差指标回写指标点是否在实时数据库
-    bool	checkWriteBackCodeRtdbIsExist();
-    void	checkWritePointRtdbIsExist(MapStringToMDataValueInfo &mapPoints);
-    bool	checkReadSourceIdRtdbIsExist();
-    bool	checkIndexSourceIdRtdbIsExist();
+    bool checkWriteBackCodeRtdbIsExist();
+    void checkWritePointRtdbIsExist(MapStringToMDataValueInfo &mapPoints);
+    bool checkReadSourceIdRtdbIsExist();
+    bool checkIndexSourceIdRtdbIsExist();
+
     // 功能描述: 从实时数据库中读取采集原始值D点
     //bool	loadDPointValue(long &lTimeStamp,MapStringToMDataValueInfo mMapDataValueInfo);
 
