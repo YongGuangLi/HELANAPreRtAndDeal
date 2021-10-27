@@ -1,9 +1,9 @@
-/**************************************************************************
-* Copyright£¨C£©,2014-2090,dtxy Tech .Co.Ltd;
-* ÎÄ ¼ş Ãû: ModeMethodAvgConfig.h
-* ÎÄ¼şÃèÊö: Ä£ĞÍÆÚÍûÖµÅäÖÃ
-*  ×÷  Õß : Íõ¿­£¬15802613961
-* ´´½¨ÈÕÆÚ: 2016-1-16 16:44:33
+ï»¿/**************************************************************************
+* Copyrightï¼ˆCï¼‰,2014-2090,dtxy Tech .Co.Ltd;
+* æ–‡ ä»¶ å: ModeMethodAvgConfig.h
+* æ–‡ä»¶æè¿°: æ¨¡å‹æœŸæœ›å€¼é…ç½®
+*  ä½œ  è€… : ç‹å‡¯ï¼Œ15802613961
+* åˆ›å»ºæ—¥æœŸ: 2016-1-16 16:44:33
 **************************************************************************/
 #ifndef __MODEMETHODAVGCONFIG_H__
 #define __MODEMETHODAVGCONFIG_H__
@@ -12,9 +12,9 @@
 #include "Util.h"
 struct MethodAvg
 {
-    std::string mCondId;     //Ä£ĞÍÄ£Ê½ID
-	bool        mIsOk;       //Ä£Ê½ÑµÁ·Ñù±¾ÊÇ·ñÓĞĞ§  true£ºÓĞĞ§  false£º ÎŞĞ§
-	double      mDSimLimit;	//Ä£Ê½ÏŞÖµ
+    std::string mCondId;     //æ¨¡å‹æ¨¡å¼ID
+	bool        mIsOk;       //æ¨¡å¼è®­ç»ƒæ ·æœ¬æ˜¯å¦æœ‰æ•ˆ  trueï¼šæœ‰æ•ˆ  falseï¼š æ— æ•ˆ
+	double      mDSimLimit;	//æ¨¡å¼é™å€¼
     std::vector<std::string> mVectorModePoint;
     std::vector<std::string> mVectorTempValue;
     std::vector<std::vector<double>> mVectorFunValue;
@@ -67,7 +67,7 @@ void cleanVar()
 
 struct ModeMethodAvg
 {
-	std::string mModeId;	//Ä£ĞÍID
+	std::string mModeId;	//æ¨¡å‹ID
 	std::map<std::string, MethodAvg *>		mMapmethodavg;
 	ModeMethodAvg()
 	{

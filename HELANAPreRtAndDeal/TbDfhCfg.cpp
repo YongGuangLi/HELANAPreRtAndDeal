@@ -20,7 +20,7 @@ bool TbDfhCfg::loadDB(MapStringToSetCfg &SetInfo,std::string strCon)
     std::string strSql = PubOpt::StringOpt::StringFormat(g_strDfhSQL.c_str(),strCon.c_str());
     Aos_Assert_R(stmtPrepare(CFG_DFH, strSql), false);
     //mQtOpt->QtQuerySelect(g_strModeSQL);
-    bool is_ok=loadValue(SetInfo);
+    bool is_ok = loadValue(SetInfo);
     stmtCloseStream();
     return is_ok;
 }

@@ -49,9 +49,10 @@ void PointPreCal::CalData(MapStringToBool &mMapModleNameStatus,
                           GetDateWay itype)
 {
     //CalculateAllModeCon(mMapSetInfo,mMapPointData,pMapIndexConfInfo,mMapWrite);
-    CalculatePre(mMapModleNameStatus,mMapSetInfo,mModeMethodAvg,mMapWrite,itype);
-    CalDfh(mMapSetInfo,mMapPointData,mMapWrite);
-    if (eFromDir==itype)
+    CalculatePre(mMapModleNameStatus, mMapSetInfo, mModeMethodAvg, mMapWrite, itype);
+    CalDfh(mMapSetInfo, mMapPointData, mMapWrite);
+
+    if (eFromDir == itype)
         GetPointToMapWrite(mMapWrite,mMapPointData);
 }
 void PointPreCal::CalculateAllModeCon(MapStringToSetCfg &mMapSetInfo,

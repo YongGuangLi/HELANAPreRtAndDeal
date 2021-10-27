@@ -436,11 +436,6 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     std::string UpTime;
     int icount = 0;
-    //Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    Aos_Assert_R(Util::QtConnect(mQtOpt,m_strFactoryCode), false);
-
-    Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_POINT_RT),false);
-    Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_POINT_RT, g_strRsltPointRtValuesSQL), false);
 
     UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
 
@@ -492,32 +487,6 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
                             //listSim<<QVariant(QVariant::Double);
                             listSim<<0;
                         }
-                        if (CON_RSLT_SIZE==icount)
-                        {
-                            mQtOpt->QtbindValue(0,listValue);
-                            mQtOpt->QtbindValue(1,listPerValue);
-                            mQtOpt->QtbindValue(2,listSim);
-                            mQtOpt->QtbindValue(3,listUptime);
-                            mQtOpt->QtbindValue(4,listId);
-                            if(!mQtOpt->QtExecBatch())
-                                int i =100;
-                            nErr = stmtHandSubmit(CON_SET_DEAL_POINT_RT);
-                            if(!nErr)
-                            {
-                                Aos_WriteLog_D("2000RsltPointRtValuesRsdb err!");
-                                nErr = stmtTransRollback(CON_SET_DEAL_POINT_RT);//回滚数据库记录
-                            }
-                            stmtHandCloseStream(CON_SET_DEAL_POINT_RT);
-                            Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_POINT_RT),false); //重新打开事务
-                            Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_POINT_RT, g_strRsltPointRtValuesSQL), false);
-
-                            listValue.clear();
-                            listPerValue.clear();
-                            listSim.clear();
-                            listUptime.clear();
-                            listId.clear();
-                            icount = 0;
-                        }
                     }
                 }
 
@@ -525,28 +494,20 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
         }
 
     }
-    if (0!=icount)
+
+    for(int i = 0; i < icount; ++i)
     {
-        mQtOpt->QtbindValue(0,listValue);
-        mQtOpt->QtbindValue(1,listPerValue);
-        mQtOpt->QtbindValue(2,listSim);
-        mQtOpt->QtbindValue(3,listUptime);
-        mQtOpt->QtbindValue(4,listId);
-        if(!mQtOpt->QtExecBatch())
-            int i =100;
-        nErr = stmtHandSubmit(CON_SET_DEAL_POINT_RT);
-        if(!nErr)
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        if(fileHandler.open(QIODevice::Append))
         {
-            Aos_WriteLog_D("RsltPointRtValuesRsdb err!");
-            nErr = stmtTransRollback(CON_SET_DEAL_POINT_RT);//回滚数据库记录
+            QTextStream stream(&fileHandler);
+
+            QString sqlText = QString::fromStdString(g_strRsltPointRtValuesSQL).arg(listValue.at(i).toDouble()).arg(listPerValue.at(i).toDouble()).arg(listSim.at(i).toDouble()).arg(listUptime.at(i).toString()).arg(listId.at(i).toString());
+
+            stream<<sqlText<<'\n';
+
+            fileHandler.close();
         }
-        stmtHandCloseStream(CON_SET_DEAL_POINT_RT);
-        listUptime.clear();
-        listValue.clear();
-        listPerValue.clear();
-        listSim.clear();
-        listId.clear();
-        icount = 0;
     }
     return nErr;
 }
@@ -568,10 +529,6 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     std::string UpTime;
     int icount = 0;
-    //Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    Aos_Assert_R(Util::QtConnect(mQtOpt,m_strFactoryCode), false);
-    Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_GROUP_RT),false);
-    Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_GROUP_RT, g_strRsltGroupRtValuesSQL), false);
 
     UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
 
@@ -590,33 +547,12 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
                 for (;iter_group!= mode_info->mMapGroup.end();++iter_group)
                 {
                     model_group = iter_group->second;
-                    if (!model_group->m_GroupJkd.empty()&&mode_info->m_IsCalOk)
+                    if (!model_group->m_GroupJkd.empty() && mode_info->m_IsCalOk)
                     {
                         listValue<<model_group->m_JkdValue;
                         listUptime<<QString(UpTime.c_str());
                         listId<<QString(model_group->m_Group.c_str());
                         icount++;
-                    }
-                    if (CON_RSLT_SIZE==icount)
-                    {
-                        mQtOpt->QtbindValue(0,listValue);
-                        mQtOpt->QtbindValue(1,listUptime);
-                        mQtOpt->QtbindValue(2,listId);
-                        if(!mQtOpt->QtExecBatch())
-                            int i =100;
-                        nErr = stmtHandSubmit(CON_SET_DEAL_GROUP_RT);
-                        if(!nErr)
-                        {
-                            Aos_WriteLog_D("2000RsltPointGroupRtValuesRsdb err!");
-                            nErr = stmtTransRollback(CON_SET_DEAL_GROUP_RT);//回滚数据库记录
-                        }
-                        stmtHandCloseStream(CON_SET_DEAL_GROUP_RT);
-                        Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_GROUP_RT),false); //重新打开事务
-                        Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_GROUP_RT, g_strRsltGroupRtValuesSQL), false);
-                        listUptime.clear();
-                        listValue.clear();
-                        listId.clear();
-                        icount = 0;
                     }
                 }
 
@@ -624,25 +560,22 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
         }
         //listValue<<QVariant(QVariant::Double);
     }
-    if (0!=icount)
+
+    for(int i = 0; i < icount; ++i)
     {
-        mQtOpt->QtbindValue(0,listValue);
-        mQtOpt->QtbindValue(1,listUptime);
-        mQtOpt->QtbindValue(2,listId);
-        if(!mQtOpt->QtExecBatch())
-            int i =100;
-        nErr = stmtHandSubmit(CON_SET_DEAL_GROUP_RT);
-        if(!nErr)
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        if(fileHandler.open(QIODevice::Append))
         {
-            Aos_WriteLog_D("RsltPointGroupRtValuesRsdb err!");
-            nErr = stmtTransRollback(CON_SET_DEAL_GROUP_RT);//回滚数据库记录
+            QTextStream stream(&fileHandler);
+
+            QString sqlText = QString::fromStdString(g_strRsltGroupRtValuesSQL).arg(listValue.at(i).toDouble()).arg(listUptime.at(i).toString()).arg(listId.at(i).toString());
+
+            stream<<sqlText<<'\n';
+
+            fileHandler.close();
         }
-        stmtHandCloseStream(CON_SET_DEAL_GROUP_RT);
-        listUptime.clear();
-        listValue.clear();
-        listId.clear();
-        icount = 0;
     }
+
     return nErr;
 }
 bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
@@ -660,10 +593,6 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     std::string UpTime;
     int icount = 0;
-    //Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    Aos_Assert_R(Util::QtConnect(mQtOpt,m_strFactoryCode), false);
-    Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_MODLE_RT),false);
-    Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_MODLE_RT, g_strRsltModleRtValuesSQL), false);
 
     UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
 
@@ -705,83 +634,42 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
                     listConValue<<mode_info->mCondValue;
                     icount++;
                 }
-                if (CON_RSLT_SIZE<=icount)
-                {
-                    mQtOpt->QtbindValue(0,listUptime);
-                    mQtOpt->QtbindValue(1,listValue);
-                    mQtOpt->QtbindValue(2,listFdnlValue);
-                    mQtOpt->QtbindValue(3,listConValue);
-                    mQtOpt->QtbindValue(4,listId);
-                    if(!mQtOpt->QtExecBatch())
-                        int i =100;
-                    nErr = stmtHandSubmit(CON_SET_DEAL_MODLE_RT);
-                    if(!nErr)
-                    {
-                        Aos_WriteLog_D("2000RsltModleRtValuesRsdb err!");
-                        nErr = stmtTransRollback(CON_SET_DEAL_MODLE_RT);//回滚数据库记录
-                    }
-                    stmtHandCloseStream(CON_SET_DEAL_MODLE_RT);
-                    Aos_Assert_R(stmtHandTransaction(CON_SET_DEAL_MODLE_RT),false); //重新打开事务
-                    Aos_Assert_R(stmtHandPrepare(CON_SET_DEAL_MODLE_RT, g_strRsltModleRtValuesSQL), false);
-                    listUptime.clear();
-                    listValue.clear();
-                    listFdnlValue.clear();
-                    listConValue.clear();
-                    listId.clear();
-                    icount = 0;
-                }
             }
         }
         //listValue<<QVariant(QVariant::Double);
     }
-    if (0!=icount)
+
+    for(int i = 0; i < icount; ++i)
     {
-        mQtOpt->QtbindValue(0,listUptime);
-        mQtOpt->QtbindValue(1,listValue);
-        mQtOpt->QtbindValue(2,listFdnlValue);
-        mQtOpt->QtbindValue(3,listConValue);
-        mQtOpt->QtbindValue(4,listId);
-        if(!mQtOpt->QtExecBatch())
-            int i =100;
-        nErr = stmtHandSubmit(CON_SET_DEAL_MODLE_RT);
-        if(!nErr)
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        if(fileHandler.open(QIODevice::Append))
         {
-            Aos_WriteLog_D("RsltModleRtValuesRsdb err!");
-            nErr = stmtTransRollback(CON_SET_DEAL_MODLE_RT);//回滚数据库记录
+            QTextStream stream(&fileHandler);
+
+            QString sqlText = QString::fromStdString(g_strRsltModleRtValuesSQL).arg(listUptime.at(i).toString()).arg(listValue.at(i).toDouble()).arg(listFdnlValue.at(i).toDouble()).arg(listConValue.at(i).toDouble()).arg(listId.at(i).toString());
+
+            stream<<sqlText<<'\n';
+
+            fileHandler.close();
         }
-        stmtHandCloseStream(CON_SET_DEAL_MODLE_RT);
-        listUptime.clear();
-        listValue.clear();
-        listFdnlValue.clear();
-        listConValue.clear();
-        listId.clear();
-        icount = 0;
     }
     return nErr;
 }
 bool AlarmSetDeal::RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory)
 {
     bool nErr;
-    DataInfo* objp;
-    MapStringToPointData_It it;
-    std::string UpTime,UpTime2;
     int icount = 0;
     QVariantList listId,listUptime,listUptime_c;
     QVariantList listValue;
 
-    //Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    Aos_Assert_R(Util::QtConnect(mQtOpt,m_strFactoryCode), false);
-    Aos_Assert_R(stmtHandTransaction(CON_INDEX_RT),false);
-    Aos_Assert_R(stmtHandPrepare(CON_INDEX_RT, g_strRsltIndexRtValuesSQL), false);
+    std::string UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
+    std::string UpTime2 = PubOpt::SystemOpt::DateTmToStr(Util::getNowTime());
 
-    UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
-    UpTime2 = PubOpt::SystemOpt::DateTmToStr(Util::getNowTime());
-
-    it = mMapPointData.begin();
-    for (;it!=mMapPointData.end();++it)
+    MapStringToPointData_It it = mMapPointData.begin();
+    for (; it != mMapPointData.end(); ++it)
     {
-        objp = it->second;
-        if (eIndex!=objp->mPointType)
+        DataInfo* objp = it->second;
+        if (eIndex != objp->mPointType)
             continue;
         /*std::cout<<objp->mPointId<<std::endl;
         Aos_WriteLog_D(objp->mPointId.c_str());*/
@@ -792,51 +680,23 @@ bool AlarmSetDeal::RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,
         //listId<<QString((strFactory+"_"+objp->mPointId).c_str());
         listId<<QString(objp->mFullPointId.c_str());
         icount++;
-        if (CON_RSLT_SIZE==icount)
-        {
-            mQtOpt->QtbindValue(0,listValue);
-            mQtOpt->QtbindValue(1,listUptime);
-            mQtOpt->QtbindValue(2,listUptime_c);
-            mQtOpt->QtbindValue(3,listId);
-            if(!mQtOpt->QtExecBatch())
-                int i =100;
-            nErr = stmtHandSubmit(CON_INDEX_RT);
-            if(!nErr)
-            {
-                Aos_WriteLog_D("2000RsltIndexRtValuesRsdb err!");
-                nErr = stmtTransRollback(CON_INDEX_RT);//回滚数据库记录
-            }
-            stmtHandCloseStream(CON_INDEX_RT);
-            Aos_Assert_R(stmtHandTransaction(CON_INDEX_RT),false); //重新打开事务
-            Aos_Assert_R(stmtHandPrepare(CON_INDEX_RT, g_strRsltIndexRtValuesSQL), false);
-            listValue.clear();
-            listUptime.clear();
-            listUptime_c.clear();
-            listId.clear();
-            icount = 0;
-        }
     }
-    if (0!=icount)
+
+    for(int i = 0; i < icount; ++i)
     {
-        mQtOpt->QtbindValue(0,listValue);
-        mQtOpt->QtbindValue(1,listUptime);
-        mQtOpt->QtbindValue(2,listUptime_c);
-        mQtOpt->QtbindValue(3,listId);
-        if(!mQtOpt->QtExecBatch())
-            int i =100;
-        nErr = stmtHandSubmit(CON_INDEX_RT);
-        if(!nErr)
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        if(fileHandler.open(QIODevice::Append))
         {
-            Aos_WriteLog_D("RsltIndexRtValuesRsdb err!");
-            nErr = stmtTransRollback(CON_INDEX_RT);//回滚数据库记录
+            QTextStream stream(&fileHandler);
+
+            QString sqlText = QString::fromStdString(g_strRsltIndexRtValuesSQL).arg(listValue.at(i).toDouble()).arg(listUptime.at(i).toString()).arg(listUptime.at(i).toString()).arg(listId.at(i).toString());
+
+            stream<<sqlText<<'\n';
+
+            fileHandler.close();
         }
-        stmtHandCloseStream(CON_INDEX_RT);
-        listValue.clear();
-        listUptime.clear();
-        listUptime_c.clear();
-        listId.clear();
-        icount = 0;
     }
+
     return nErr;
 }
 bool AlarmSetDeal::RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory)
@@ -849,10 +709,6 @@ bool AlarmSetDeal::RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData
     QVariantList listId,listUptime;
     QVariantList listValue;
 
-    //Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    Aos_Assert_R(Util::QtConnect(mQtOpt,m_strFactoryCode), false);
-    Aos_Assert_R(stmtHandTransaction(CON_DPOINT_RT),false);
-    Aos_Assert_R(stmtHandPrepare(CON_DPOINT_RT, g_strRsltDpointRtValuesSQL), false);
 
     UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
 
@@ -879,47 +735,23 @@ bool AlarmSetDeal::RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData
         //listId<<QString((strFactory+"_"+objp->mPointId).c_str());
         listId<<QString(objp->mFullPointId.c_str());
         icount++;
-        if (CON_RSLT_SIZE==icount)
-        {
-            mQtOpt->QtbindValue(0,listUptime);
-            mQtOpt->QtbindValue(1,listValue);
-            mQtOpt->QtbindValue(2,listId);
-            if(!mQtOpt->QtExecBatch())
-                int i =100;
-            nErr = stmtHandSubmit(CON_DPOINT_RT);
-            if(!nErr)
-            {
-                Aos_WriteLog_D("2000RsltDpointRtValuesRsdb err!");
-                nErr = stmtTransRollback(CON_DPOINT_RT);//回滚数据库记录
-            }
-            stmtHandCloseStream(CON_DPOINT_RT);
-            Aos_Assert_R(stmtHandTransaction(CON_DPOINT_RT),false); //重新打开事务
-            Aos_Assert_R(stmtHandPrepare(CON_DPOINT_RT, g_strRsltDpointRtValuesSQL), false);
-            listUptime.clear();
-            listValue.clear();
-            listId.clear();
-            icount = 0;
-        }
     }
-    if (0!=icount)
+
+    for(int i = 0; i < icount; ++i)
     {
-        mQtOpt->QtbindValue(0,listUptime);
-        mQtOpt->QtbindValue(1,listValue);
-        mQtOpt->QtbindValue(2,listId);
-        if(!mQtOpt->QtExecBatch())
-            int i =100;
-        nErr = stmtHandSubmit(CON_DPOINT_RT);
-        if(!nErr)
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        if(fileHandler.open(QIODevice::Append))
         {
-            Aos_WriteLog_D("RsltDpointRtValuesRsdb err!");
-            nErr = stmtTransRollback(CON_DPOINT_RT);//回滚数据库记录
+            QTextStream stream(&fileHandler);
+
+            QString sqlText = QString::fromStdString(g_strRsltDpointRtValuesSQL).arg(listUptime.at(i).toString()).arg(listValue.at(i).toDouble()).arg(listId.at(i).toString());
+
+            stream<<sqlText<<'\n';
+
+            fileHandler.close();
         }
-        stmtHandCloseStream(CON_DPOINT_RT);
-        listUptime.clear();
-        listValue.clear();
-        listId.clear();
-        icount = 0;
     }
+
     return nErr;
 }
 void AlarmSetDeal::WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mMapPointData,

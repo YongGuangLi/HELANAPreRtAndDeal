@@ -7,12 +7,9 @@
 *******************************************************************************/
 
 #include "RecursiveCalculateIndex.h"
-//#include "HcxnjsErrorDef.h"
-//#include "Communal.h"
 #include "AlarmLog.h"
 #include "public_function_library.h"
 #include "mutex.h"
-//#include "StartupServer.h"
 
 #include <math.h>
 #include <iostream>

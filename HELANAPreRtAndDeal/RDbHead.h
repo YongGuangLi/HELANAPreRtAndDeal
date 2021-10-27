@@ -11,7 +11,7 @@
 
 //更新服务版本信息
 const std::string g_strUpdateServiceVersionSQL = 
-	"begin P_SYS_Update_VersionNumber(:v_service_name, :v_version_no, :v_logfile_path,:v_result); end;";
+    "CALL P_SYS_Update_VersionNumber(:v_service_name, :v_version_no, :v_logfile_path,:v_result)";
 
 const std::string g_strAlarmScoreSQL = 
 		"select id,convert(varchar(10),alarm_level),convert(varchar(10),alarm_score),\
@@ -61,7 +61,7 @@ const std::string g_strAlarmSQL ="select model_id,category_id,monit_point_id,int
 //const std::string g_strAllPointSQL=
 //	  "select id,replace(source_id_original, 'ZZ.SIS.', 'DDM.ZZS.') AS source_id_original from tb_pub_point";
 static std::string g_strAllPointSQL=
-	 "select point_code,source_id_original,set_code,full_point_code  from tb_pub_point where factory_code = '%s'";
+     "select point_code,source_id_original,set_code,full_point_code  from tb_pub_point";
 const std::string g_strModeSQL=
 	"select id,condtion_id,local_var,out_var,out_var_func,expression,\
 	monit_point_id,mode_source,point_id,source_id_original,source_id,\
@@ -79,29 +79,24 @@ const std::string g_strSetToPointSQL=
 	Fun_Pub_Num_To_Char(SET_JKD_VALUE),Fun_Pub_Num_To_Char(SYS_JKD_VALUE),Fun_Pub_Num_To_Char(MODEL_JKD_VALUE),\
 	Fun_Pub_Num_To_Char(CATEGORY_JKD_VALUE),Fun_Pub_Num_To_Char(MONIT_POINT_JKD_VALUE) \
 	from v_eids_model_monit_point_all t left join tb_eids_model_alarm_interval p\
-	on t.monit_point_id = p.monit_point_id\
-	where t.factory_code= '%s'";
+    on t.monit_point_id = p.monit_point_id";
 
 static std::string g_strDfhSQL=
 	"select set_id,set_code,set_dfhnl_id,capacity,system_id,sys_dfhnl_id,jdk_short_code,object_id,source_id,\
 	interval_id,Fun_Pub_Num_To_Char(upper_limit_value),Fun_Pub_Num_To_Char(lower_limit_value),\
 	Fun_Pub_Num_To_Char(dfhnl_value),Fun_Pub_Num_To_Char(dfhnl_source),object_category \
-	from v_eids_dfhnl_cfg_all where factory_code= '%s'";
+    from v_eids_dfhnl_cfg_all";
 
 static std::string g_strIndexSQL=
-	"select index_code,set_code,index_type,source_id,out_var||out_var_func out_var,local_var,\
-	expression,to_char(is_write_back) is_write_back,full_index_code ,to_char(is_clear_zero) stop_clear,\
-	to_char(is_steady_cal) is_steady_cal,fun_pub_num_to_char(min_value) min_value, \
-	fun_pub_num_to_char(max_value) max_value,fun_pub_num_to_char(default_value) default_value \
-	from v_pub_index t where factory_code='%s' order by full_index_code asc";
+    "select index_code, set_code, index_type, source_id, out_var||out_var_func out_var,local_var,\
+    expression,is_write_back,full_index_code ,is_clear_zero,is_steady_cal, min_value, \
+    max_value, default_value from v_pub_index t order by full_index_code asc";
 
 const std::string g_strModeMuConfSQL =
 	"select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id,\
 	t.ma_value,t.model_value,t.model_value_relation \
 	from  tb_eids_model_method_avg t left join  v_eids_model_all p\
-	on t.model_id=p.model_id \
-	where p.factory_code ='%s'\
-	order by model_id,model_condition_id";
+    on t.model_id=p.model_id order by model_id,model_condition_id";
 
 //查询指标与点的全点名
 const std::string g_strPubPointSQL = 
@@ -188,24 +183,18 @@ const std::string g_strOrcRsltPointUpBackInSQL =
 //	is_history=0,avg_similar_value=%8\
 //	where  id='%9' ";
 const std::string g_strRsltIndexRtValuesSQL =
-	"update tb_pub_index_value t set t.current_value=:1,t.update_time=to_date(:2,'yyyy-mm-dd hh24:mi:ss'), \
-	t.update_time_c=to_date(:3,'yyyy-mm-dd hh24:mi:ss') where t.full_index_code=:4";
+    "update tb_pub_index_value t set t.current_value=%1,t.update_time=str_to_date('%2','%Y-%m-%d %H:%i:%s'),t.update_time_c=str_to_date('%3','%Y-%m-%d %H:%i:%s') where t.full_index_code='%4'";
 
 const std::string g_strRsltDpointRtValuesSQL =
-	"update tb_pub_point_value t set t.update_time=to_date(:1,'yyyy-mm-dd hh24:mi:ss') , \
-	t.current_value=:2 where t.full_point_code=:3";
+    "update tb_pub_point_value t set t.update_time=str_to_date('%1','%Y-%m-%d %H:%i:%s') ,t.current_value=%2 where t.full_point_code='%3';";
 
 const std::string g_strRsltPointRtValuesSQL =
-	"update tb_eids_model_monit_point t set t.current_value=:1,t.predicted_value=:2,\
-	t.jkd_value=:3 ,update_time=to_date(:4,'yyyy-mm-dd hh24:mi:ss') where t.id=:5";
+    "update tb_eids_model_monit_point t set t.current_value=%1,t.predicted_value=%2, t.jkd_value=%3 ,update_time=str_to_date('%4','%Y-%m-%d %H:%i:%s') where t.id='%5';";
 
 const std::string g_strRsltModleRtValuesSQL =
-"update tb_eids_model t set update_time=to_date(:1,'yyyy-mm-dd hh24:mi:ss') ,jkd_value=:2,dfhnl_value=:3,\
-	condition_value=:4 where t.id=:5";
+"update tb_eids_model t set update_time=str_to_date('%1','%Y-%m-%d %H:%i:%s') ,jkd_value=%2,dfhnl_value=%3, condition_value=%4 where t.id='%5';";
 
-const std::string g_strRsltGroupRtValuesSQL = 
-	"update tb_eids_model_monit_category t set t.jkd_value=:1,update_time=to_date(:2,'yyyy-mm-dd hh24:mi:ss') \
-	where t.id=:3";
+const std::string g_strRsltGroupRtValuesSQL = "update tb_eids_model_monit_category t set t.jkd_value=%1,update_time=str_to_date('%2','%Y-%m-%d %H:%i:%s') where t.id='%3';";
 
 
 const std::string g_strRsltPointUpValuesSQL = 
@@ -319,4 +308,8 @@ const std::string g_strRslCosineUpBackInSQL =
 const std::string g_strOrcRslCosineUpBackInSQL = 
 	"update tb_eids_fault_event  set end_time=to_date(:end_time,'yyyy-mm-dd hh24:mi:ss'),duration=:duration\
 	where id=:id";
+
+
+//liyg
+#define SQL_PUB_POINT_VALUE_CUR "select full_point_code, point_value,timestamp from tb_pub_point_value_cur"
 #endif

@@ -29,7 +29,7 @@ bool initMain(void)
     std::string strModeName = SINGLETON(ServiceEIDSPreConfig)->getModeName();
     bool bLogIsEnable = SINGLETON(ServiceEIDSPreConfig)->isShowLog();
 
-    if (!SINGLETON(Log)->InitLog(strPath + "/log/", strModeName, bLogIsEnable))
+    if (!SINGLETON(Log)->InitLog(strPath + "log/", strModeName, bLogIsEnable))
     {
         Aos_WriteLog("Initial LOG Environmental Failure.");
         return false;
@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    qApp->addLibraryPath(qApp->applicationDirPath() + "/plugin");
     if (!initMain())
         return -1;
 

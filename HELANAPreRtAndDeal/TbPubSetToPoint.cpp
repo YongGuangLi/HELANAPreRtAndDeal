@@ -25,7 +25,7 @@ TbPubSetToPoint::loadDB(MapStringToSetCfg &SetInfo,MapStringToBool &mMapModleNam
     std::string strSql = PubOpt::StringOpt::StringFormat(g_strSetToPointSQL.c_str(),strCon.c_str());
     Aos_Assert_R(stmtPrepare(CFG_CONFIG, strSql), false);
     //mQtOpt->QtQuerySelect(g_strModeSQL);
-    bool is_ok=loadValue(SetInfo,mMapModleNameStatus);
+    bool is_ok = loadValue(SetInfo,mMapModleNameStatus);
     stmtCloseStream();
     return is_ok;
 }

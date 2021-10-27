@@ -37,9 +37,8 @@ TbPubModeMethodAvg::loadDB(MapStringToBool &mMapModleNameStatus,
     Aos_Assert_R(Util::QtConnect(mQtOpt), false);
     std::string strSql = PubOpt::StringOpt::StringFormat(g_strModeMuConfSQL.c_str(),strCon.c_str());
     Aos_Assert_R(stmtPrepare(MODEFUN_CONFIG, strSql), false);
-    //Aos_Assert_R(stmtPrepare(MODEFUN_CONFIG, g_strModeMuConfSQL), false);
 
-    bool is_ok = loadValue(mMapModleNameStatus,pModeFunInfo,pPointSourceName);
+    bool is_ok = loadValue(mMapModleNameStatus, pModeFunInfo, pPointSourceName);
     stmtCloseStream();
     return is_ok;
 }
@@ -103,6 +102,7 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
         }
         if(strModel=="4_zc"||strModel=="3_zc")
             int i=100;
+
         m_iter = mMapModleNameStatus.find(strModel);
         if (m_iter == mMapModleNameStatus.end())
         {
@@ -110,8 +110,9 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             Aos_Assert_S(errmsg.c_str());
             continue;
         }
+
         m_iter->second = true;
-        fun_iter=pModeFunInfo.find(strModel);
+        fun_iter = pModeFunInfo.find(strModel);
         if (fun_iter==pModeFunInfo.end())
         {
             mode_fun=new ModeMethodAvg();
@@ -140,8 +141,9 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             condtion_fun->mIsOk= false;
             continue;
         }
-        if('@'==strPointList.at(0))
-            strPointList=strPointList.substr(1,strPointList.size());
+        if('@' == strPointList.at(0))
+            strPointList = strPointList.substr(1, strPointList.size());
+
         bool nErr = Util::StringSplit(strPointList,condtion_fun->mVectorModePoint, "@");
         if(!nErr)
         {
@@ -157,24 +159,23 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             condtion_fun->mIsOk= false;
             continue;
         }
-        if('@'==strMalist.at(0))
+        if('@' == strMalist.at(0))
             strMalist=strMalist.substr(1,strMalist.size());
         tempVec.clear();
-        /*if("3_3gj"==mode_fun->mModeId)
-            int re=100;*/
-        nErr = Util::StringSplit(strMalist,tempVec, "@",false);
+
+        nErr = Util::StringSplit(strMalist, tempVec, "@", false);
         if(!nErr)
         {
-            condtion_fun->mIsOk=false;
+            condtion_fun->mIsOk = false;
             condtion_fun->cleanVar();
             strMalist.clear();
             tempVec.clear();
-            errmsg=PubOpt::StringOpt::StringFormat("mode's funcPointNames err,id：%s",strModel.c_str());
+            errmsg = PubOpt::StringOpt::StringFormat("mode's funcPointNames err,id：%s",strModel.c_str());
             Aos_Assert_S(errmsg.c_str());
             continue;
         }
         condtion_fun->mVectorMaValue.clear();
-        for (int i=0;i<tempVec.size();++i)
+        for (int i = 0; i < tempVec.size(); ++i)
         {
             condtion_fun->mVectorMaValue.push_back(Util::CharPointerConvert2Number<double>(tempVec[i].c_str()));
         }
@@ -182,7 +183,7 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
         tempVec.clear();
         if (strModelValue.empty())
         {
-            condtion_fun->mIsOk= false;
+            condtion_fun->mIsOk = false;
             continue;
         }
         if('@'==strModelValue.at(0))
@@ -237,8 +238,9 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             continue;
         }
         //Aos_Assert_S("TbPubModeMethodAvg::loadValue**G3")
-        if(strModel=="4_zc"||strModel=="3_zc")
+        if(strModel == "4_zc"||strModel == "3_zc")
             int i=100;
+
         if(!GetMuValue(tempVec,condtion_fun,condtion_fun->mVectorFunValue.size(),2))
         {
             condtion_fun->mIsOk=false;
@@ -249,7 +251,7 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             continue;
         }
         //Aos_Assert_S("TbPubModeMethodAvg::loadValue**G4")
-        if(0==condtion_fun->mVectorRelationValue.size())
+        if(0 == condtion_fun->mVectorRelationValue.size())
             condtion_fun->mIsOk = false;
 
         //std::string str1;

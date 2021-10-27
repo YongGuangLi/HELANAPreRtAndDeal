@@ -36,6 +36,7 @@ bool PreRtProduce::InitService(void)
     mStartSvr->m_strFactoryCode = m_strFactoryCode;
     mStartSvr->mHisGetNum = SINGLETON(ServiceEIDSPreConfig)->GetHisNum();
     mStartSvr->mHisToRtDevMin = SINGLETON(ServiceEIDSPreConfig)->GetHisToRtDev();
+
     int iSysType= SINGLETON(ServiceEIDSPreConfig)->GetSysType();
     if (1 == iSysType)
         rslt = mStartSvr->initial(eFromRtdb, mGetDateWay);

@@ -27,7 +27,6 @@ RDbOperationComplex::~RDbOperationComplex(void)
 bool 
 RDbOperationComplex::stmtPrepare(const std::string &classname, const std::string &str_sql)
 {
-    //bool nErr = SINGLETON(RsdbAdapter)->SQLStmtPrepare(buffer_size,str_sql);// 绑定SQL语句
     bool nErr = mQtOpt->QtQuerySelect(str_sql);
     if (!nErr)
     {
@@ -47,7 +46,6 @@ RDbOperationComplex::stmtCloseStream()
 bool
 RDbOperationComplex::stmtTransCommit(const std::string &classname)
 {
-    //bool nErr = SINGLETON(RsdbAdapter)->OtlTransCommit();
     bool nErr = mQtOpt->QtCommit();
     if (!nErr)
     {

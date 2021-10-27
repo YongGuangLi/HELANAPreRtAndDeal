@@ -37,8 +37,7 @@ void Thread::ThreadCallBack(void)
     while (m_bRunning)
     {
         this->Run();
-		std::cout<<"sasasas"<<std::endl;
-		//boost::this_thread::sleep(boost::posix_time::seconds(1));
+        std::cout<<"sasasas"<<std::endl;
         PubOpt::SystemOpt::SleepWait(m_nTimeOut);
     }
 }

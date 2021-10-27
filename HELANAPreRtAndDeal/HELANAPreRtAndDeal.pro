@@ -33,7 +33,8 @@ SOURCES += main.cpp \
     ../funlib/Kmeanfun.cpp \
     ../funlib/Matrix.cpp \
     ../funlib/PublicMatrix.cpp \
-    ../funlib/SimFunc.cpp
+    ../funlib/SimFunc.cpp \
+    pubpointvalue.cpp
 
 DISTFILES +=
 
@@ -72,7 +73,10 @@ HEADERS += \
     ../funlib/Matrix.h \
     ../funlib/PublicMatrix.h \
     ../funlib/SimFunc.h \
-    IncludeHead.h
+    IncludeHead.h \
+    pubpointvalue.h \
+    IBroadcast.h \
+    TcpClient.hpp
 
 
 unix:!macx: LIBS += -L$$PWD/../compiler/lib -lcompiler

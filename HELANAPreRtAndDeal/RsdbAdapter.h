@@ -94,7 +94,7 @@ public:
 	bool QtTransaction();
 	bool QtCommit();
 	bool QtRollback();
-	void QtbindValue(int ipos,const QVariant &val);
+    void QtbindValue(int ipos,const QVariant &val);
 	void QtbindOutValue( int ipos,const QVariant &val );
 	std::string GetOutputStrBoundValueByPos(const int &nPos);
 	//************************************

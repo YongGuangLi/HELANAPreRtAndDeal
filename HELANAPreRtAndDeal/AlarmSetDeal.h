@@ -9,6 +9,8 @@
 #ifndef __SETDEAL_H__
 #define __SETDEAL_H__
 
+
+#include <QFile>
 #include "Util.h"
 #include "TypeDef.h"
 #include "singleton.h"

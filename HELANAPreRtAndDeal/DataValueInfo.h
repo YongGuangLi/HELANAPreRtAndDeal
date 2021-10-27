@@ -558,16 +558,16 @@ struct SysCfg
 		}
 		mMapSysDfhnl.clear();
 	}
-	std::string							mSys;			//系统ID
-	std::string							mSysJkd;		//系统健康度id
+    std::string							mSys;			     //系统ID
+    std::string							mSysJkd;		     //系统健康度id
 	bool								mRtdbSysJkdIsExist;  //系统健康度是否存在
 	double								mSysJkdValue;
-	double								mSysWeight;		//系统权重
-	std::string							mSysDfh;		//系统带负荷id
+    double								mSysWeight;		     //系统权重
+    std::string							mSysDfh;		     //系统带负荷id
 	bool								mRtdbSysDfhIsExist;  //系统带负荷能力是否存在
 	double								mSysDfhValue;
-	std::map<std::string,DataMode*>		mMapModles;    //系统下所有模型配置集合
-	std::map<std::string,Dfhnl*>        mMapSysDfhnl;	//系统带负荷能力配置集合
+    std::map<std::string,DataMode*>		mMapModles;          //系统下所有模型配置集合
+    std::map<std::string,Dfhnl*>        mMapSysDfhnl;	     //系统带负荷能力配置集合
 
 };
 typedef std::map<std::string,Dfhnl*>	MapStringToDfhnl;
@@ -587,19 +587,19 @@ struct  SetCfg
 		}
 		mMapSys.clear();
 	}
-	std::string							mSet;			//机组ID
-	std::string							mSetCode;			//机组号
-	std::string							mSetJkd;		//机组健康度id
+    std::string							mSet;			     //机组ID
+    std::string							mSetCode;			 //机组号
+    std::string							mSetJkd;		     //机组健康度id
 	bool								mRtdbSetJkdIsExist;  //机组健康度是否存在
 	double								mSetJkdValue;
-	std::string							mSetDfh;		//机组带负荷id
+    std::string							mSetDfh;		     //机组带负荷id
 	bool								mRtdbSetDfhIsExist;  //机组带负荷能力是否存在
-	double								mSetDfhValue;   //机组带负荷能力值
-	double								mSetDefFh;		//机组额定功率
-	double								mSetRfFh;		//机组实时负荷
-	std::string							mSetFh;		   //机组实时负荷id
-	std::string							mSetTJ;		   //机组开停机指标id
-	std::map<std::string,SysCfg*>		mMapSys;    //机组下所有系统配置集合
+    double								mSetDfhValue;        //机组带负荷能力值
+    double								mSetDefFh;		     //机组额定功率
+    double								mSetRfFh;		     //机组实时负荷
+    std::string							mSetFh;		         //机组实时负荷id
+    std::string							mSetTJ;		         //机组开停机指标id
+    std::map<std::string,SysCfg*>		mMapSys;             //机组下所有系统配置集合
 };
 
 struct PublicDate
@@ -1050,6 +1050,9 @@ typedef  MapMonmentPoint::const_iterator		MapMonmentPoint_const_It;
 typedef  std::map<long,CMonmentDatas*>			MapMonmentDatas;
 typedef MapMonmentDatas::iterator				MapMonmentDatas_It;
 typedef MapMonmentDatas::const_iterator			MapMonmentDatas_const_It;
+
+
+
 
 
 #endif 

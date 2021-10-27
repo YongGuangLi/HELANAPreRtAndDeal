@@ -40,6 +40,7 @@ LoadConfg:: loadAlarmScore(VectorAlarmScore &mVectorAlarmScore)
     stmtCloseStream();
     return true;
 }
+
 bool 
 LoadConfg:: loadAlarmScoreValue(VectorAlarmScore &mVectorAlarmScore)
 {

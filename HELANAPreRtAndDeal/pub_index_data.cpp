@@ -31,7 +31,6 @@ bool pub_index_data::loadValue(MapStringToIndexConfInfo& m_mapIndexConfInfo,MapS
 {
     std::string strFullCode, strCode,strSet,strSource,strOutVarAndFunc,strLocalVar,strExpression;
     int iIndexType, isWriteBack;
-    //	DataValueInfo* data_value_info;
     DataInfo* point_data;
     MapStringToPointData_It point_data_it;
     IndexConfigInfo* index_conf_info;
@@ -39,7 +38,7 @@ bool pub_index_data::loadValue(MapStringToIndexConfInfo& m_mapIndexConfInfo,MapS
 
     if(mQtOpt->QtGetResultIsValid())
         return false;
-    int nNumber = 0;
+
     while (mQtOpt->SQLStmtFetch())
     {
         strCode = std::string(mQtOpt->m_query->value(0).toString().toLocal8Bit());
