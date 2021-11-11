@@ -497,7 +497,7 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     for(int i = 0; i < icount; ++i)
     {
-        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
         if(fileHandler.open(QIODevice::Append))
         {
             QTextStream stream(&fileHandler);
@@ -536,11 +536,11 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
     {
         setobj = set_iter->second;
         sys_iter = setobj->mMapSys.begin();
-        for (;sys_iter!=setobj->mMapSys.end();++sys_iter)
+        for (;sys_iter != setobj->mMapSys.end(); ++sys_iter)
         {
             sysobj = sys_iter->second;
             iter_m = sysobj->mMapModles.begin();
-            for (;iter_m!=sysobj->mMapModles.end();++iter_m)
+            for (;iter_m != sysobj->mMapModles.end(); ++iter_m)
             {
                 mode_info = iter_m->second;
                 iter_group = mode_info->mMapGroup.begin();
@@ -563,7 +563,7 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     for(int i = 0; i < icount; ++i)
     {
-        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
         if(fileHandler.open(QIODevice::Append))
         {
             QTextStream stream(&fileHandler);
@@ -641,7 +641,7 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     for(int i = 0; i < icount; ++i)
     {
-        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
         if(fileHandler.open(QIODevice::Append))
         {
             QTextStream stream(&fileHandler);
@@ -684,7 +684,7 @@ bool AlarmSetDeal::RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,
 
     for(int i = 0; i < icount; ++i)
     {
-        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
         if(fileHandler.open(QIODevice::Append))
         {
             QTextStream stream(&fileHandler);
@@ -696,6 +696,13 @@ bool AlarmSetDeal::RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,
             fileHandler.close();
         }
     }
+
+
+
+    if(QFile::exists(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt"))
+        QFile::remove(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+
+    QFile::rename(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp", QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
 
     return nErr;
 }
@@ -739,7 +746,7 @@ bool AlarmSetDeal::RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData
 
     for(int i = 0; i < icount; ++i)
     {
-        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+        QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
         if(fileHandler.open(QIODevice::Append))
         {
             QTextStream stream(&fileHandler);
@@ -758,6 +765,7 @@ void AlarmSetDeal::WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData
                              const std::string strFactory,long mCurSeCalTime)
 {
     mlCalTimeStamp = mCurSeCalTime;
+
     RsltPointRtValuesRsdb(mMapSetInfo);
     RsltPointGroupRtValuesRsdb(mMapSetInfo);
     RsltModleRtValuesRsdb(mMapSetInfo);

@@ -147,7 +147,7 @@ BasicMgr::loadIndex()
 {
 
     pub_index_data *opter = new pub_index_data(mQtOpt);
-    bool rslt = opter->loadDB(m_mapIndexConfInfo,mMapPointData,m_strFactoryCode);
+    bool rslt = opter->loadDB(m_mapIndexConfInfo, mMapPointData, m_strFactoryCode);
     delete opter;
     Aos_Assert_ERS(!m_mapIndexConfInfo.empty(), false, Rsdb_ERROR_PUBINDEX);
     return rslt;
@@ -226,9 +226,12 @@ BasicMgr::loadConfigInfo(const bool isFirstCal,bool &isModConf,long	&mCurSeCalTi
         Aos_WriteLog_D("Start loadModeData()");
         Aos_Assert_R(loadModeData(), false);
         Aos_WriteLog_D("end loadModeData()");
+
         if (eFromRtdb==msysType)
             Aos_Assert_R(loadModeMuFun(), false);
+
         Aos_Assert_R(loadFhnlData(), false);
+
         Aos_WriteLog_D("Start GetNeedPoint()");
         GetNeedPoint();
         Aos_WriteLog_D("Start CheckModelAvgPointFitInfPointOnly()");
@@ -1014,6 +1017,9 @@ BasicMgr::loadPointData(long &lTimeStamp,const long nowTime)
     //		Aos_Assert_R(RecBuffer(lTimeStamp,nowTime, mMapSetInfo,mMapPointSourceName,mMapPointData), false);
     //	}
 
+
+    pubPointValue->checkModelModifyStatus();
+
     pubPointValue->loadDB(lTimeStamp,nowTime, mMapSetInfo, mMapPointSourceName, mMapPointData);
     pubPointValue->SetModelPointValues(mMapSetInfo, mMapPointData);
     return true;
@@ -1339,6 +1345,16 @@ BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
 //	
 //}
 
+char crcTail( char* data, int length )
+{
+    ///计算检查和
+    char cursor = 0;
+    for( int i = 0 ; i < length ; i++ )
+        cursor += data[i];
+    cursor += cursor;
+    return cursor;
+}
+
 bool
 BasicMgr::WriteToRtdb(const long &lCalTimeStamp)
 {
@@ -1354,18 +1370,25 @@ BasicMgr::WriteToRtdb(const long &lCalTimeStamp)
     //rslt = SINGLETON(RtdbOpt)->rtdbSetTagValues(lCalTimeStamp, mMapWrite);
     sanityCheck(2, "saveIndexValue cost time: %ld;");
 
-    EPPackage* value = new EPPackage(10000);
-    MapStringToDouble_It it = mMapWrite.begin();
-    for(; it != mMapWrite.end(); ++it)
+    QFile outFile(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv.tmp");
+    if (outFile.open(QIODevice::WriteOnly))
     {
-        std::cout<<it->first<<"   "<<it->second<<std::endl;
-        value->AddEP(it->first, 0, (float)it->second, lCalTimeStamp, 0 );
+        MapStringToDouble_It it = mMapWrite.begin();
+        for(; it != mMapWrite.end(); ++it)
+        {
+            outFile.write(QString::fromStdString(it->first).toStdString().c_str());
+            outFile.write(",");
+            outFile.write(QString::number(it->second).toStdString().c_str());
+            outFile.write(",");
+            outFile.write(QString::number(lCalTimeStamp).toStdString().c_str());
+            outFile.write("\n");
+        }
     }
+    outFile.close();
 
-
-    TcpClient *tcpClient = new TcpClient();
-    tcpClient->Connect();
-    tcpClient->Send(value);
+    if(QFile::exists(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv"))
+        QFile::remove(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv");
+    QFile::rename(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv.tmp", QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv");
     return rslt;
 }
 
@@ -1406,7 +1429,8 @@ BasicMgr::sanityCheck(const int flag, const std::string &strmsg)
 {	
     if (!smSanityCheck) return ;
     static long s_time = 0;
-    if (flag == 1) s_time = Util::getNowTime();
+    if (flag == 1)
+        s_time = Util::getNowTime();
     if (flag == 2)
         Aos_WriteLog(PubOpt::StringOpt::StringFormat(strmsg.c_str(), Util::getNowTime() - s_time).c_str());
 

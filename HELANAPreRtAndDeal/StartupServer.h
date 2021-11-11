@@ -12,7 +12,8 @@
 #include <list>
 #include "BasicMgr.h"
 #include "PointPreCal.h"
-//class BasicMgr;
+#include "Convertor.hpp"
+
 class StartupServer
 {
 private:

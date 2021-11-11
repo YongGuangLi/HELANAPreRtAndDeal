@@ -13,12 +13,12 @@
 #include <vector>
 #include <string>
 #include <iostream>
-
+#include <QFile>
+#include <QStringList>
 #include "TypeDef.h"
 #include "AlarmSetDeal.h"
 #include "mutex.h"
 #include "pubpointvalue.h"
-#include "TcpClient.hpp"
 
 #define HELA_THREAD_ID_FACTORY_CAL			"FactoryCalThread%s"		//电厂计算线程ID
 class RDbOperationSimple;

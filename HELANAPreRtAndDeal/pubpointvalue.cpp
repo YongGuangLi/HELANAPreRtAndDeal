@@ -6,6 +6,24 @@ PubPointValue::PubPointValue(RsdbAdapter *QtOpt, std::string strCon) :
 
 }
 
+bool PubPointValue::checkModelModifyStatus()
+{
+    Aos_Assert_R(Util::QtConnect(mQtOpt), false);
+    Aos_Assert_R(stmtPrepare(PUBPOINTVALUE, SQL_MODEL_CONFIG_STATUS), false);
+
+    while(mQtOpt->SQLStmtFetch())
+    {
+        int status = mQtOpt->m_query->value(0).toInt();
+        if(status == 1)
+        {
+            Aos_Assert_R(stmtPrepare(PUBPOINTVALUE, SQL_UPDATE_MODEL_CONFIG_STATUS), false);
+            qApp->exit(RETCODE_RESTART);
+        }
+    }
+
+    stmtCloseStream();
+}
+
 
 
 
@@ -76,7 +94,6 @@ bool PubPointValue::loadDB(long &lTimeStamp, const long nowTime, MapStringToSetC
     DataMode * mode_info;
     PointGroup* model_group;
 
-    std::vector<std::string> lstRet;
     //MapStringToMDataValueInfo_It d_itr;
     MapStringToMDataValueInfo_It p_iter;
 
@@ -95,16 +112,15 @@ bool PubPointValue::loadDB(long &lTimeStamp, const long nowTime, MapStringToSetC
         if (iter == pPointSourceName.end())
             continue;
 
-        lstRet.clear();
+        std::vector<std::string> lstRet;
         rslt = Util::StringSplit(iter->second, lstRet, ",");
-        if(!rslt) continue;
+        if(!rslt)
+            continue;
+
         for (unsigned int j = 0; j < lstRet.size(); j++)
         {
-            if ("D3_FLN02AM"==lstRet[j])
-                int itemp =100;
-
             iter_allp = mMapPointData.find(lstRet[j]);
-            if (iter_allp!=mMapPointData.end())
+            if (iter_allp != mMapPointData.end())
             {
                 iter_allp->second->setCurrVar(point_value);
             }

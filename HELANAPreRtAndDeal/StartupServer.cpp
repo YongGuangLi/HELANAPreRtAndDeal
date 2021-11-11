@@ -71,13 +71,106 @@ StartupServer::stop()
 }   
 
 
+unsigned char * GenHead(int count){
+    unsigned char * data = new unsigned char[ 10];
+
+    unsigned char * cursor = data;
+
+    //编号
+    DtxyNet::Utility::IToA(64, cursor, 1);
+    cursor += 1;
+
+    //数据包标志
+    DtxyNet::Utility::IToA( 1, cursor, 4, false );
+    cursor += 4;
+
+    //点值类型标志
+    DtxyNet::Utility::IToA( 1 * 7, cursor, 1 );
+    cursor += 1;
+
+    //点数量
+    DtxyNet::Utility::IToA( count, cursor, 2, false );
+    cursor += 2;
+
+    //点集数据总长
+    DtxyNet::Utility::IToA( count * 13, cursor, 2 , false );
+
+    return data;
+}
+
+unsigned char * GenRecord( long id, long time, float value, int status ){
+    unsigned char * data   = new unsigned char[ 13 ];
+    unsigned char * cursor = data;
+
+    ///点Id
+    DtxyNet::Utility::IToA( id, cursor, 4, false );
+    cursor += 4;
+
+    ///点值
+    DtxyNet::Utility::FToA( value, cursor , 4);
+    cursor += 4;
+
+    ///时间
+    DtxyNet::Utility::IToA( time, cursor, 4, false );
+    cursor += 4;
+
+    ///状态
+    DtxyNet::Utility::IToA( status, cursor, 1 );
+
+    return data;
+}
+
+
+unsigned char *  GenTail( unsigned char * data, int length ){
+    //计算检查和
+    unsigned char * cursor = new unsigned char [ 1 ];
+    cursor[0] = 0;
+    for( int i = 0 ; i < length ; i++ )
+        cursor[0] += data[i];
+    cursor[0] += cursor[0];
+    return cursor;
+}
+
+void Fill( unsigned char * dst, unsigned char * src, int length ){
+    memcpy( dst, src, length );
+}
+
+/*
+int length = 10 + 1 * 10 + 1;
+unsigned char * data   = new unsigned char [length];
+unsigned char * cursor = data;
+
+///Package head
+unsigned char * head = GenHead(1);
+Fill( cursor, head, 10 );
+cursor += 10;
+
+///Package data
+Fill( cursor, GenRecord(1, 1, 0.1, 1), 13);
+cursor += 10;
+
+///Package tail
+unsigned char * tail = GenTail( data, length - 1 );
+
+Fill( cursor, tail, 1);
+
+
+QTcpSocket *m_tcpSocket = new QTcpSocket();
+m_tcpSocket->connectToHost("192.168.19.94", 502);
+bool connected = m_tcpSocket->waitForConnected();
+
+m_tcpSocket->write((const char*)data, length);
+m_tcpSocket->waitForBytesWritten();
+*/
+
 bool
-StartupServer::   calculate()
-{	
+StartupServer::calculate()
+{
     //导入服务配置信息
     //Aos_WriteLog("&&&&&1.");
     if (mSeLastTime == 0)
         mSeLastTime = Util::getNowTime();
+
     bool rslt = mBaseMgr->loadConfigInfo(mFirstCal,mModConf,mCurSeCalTime);
 
     //Aos_WriteLog("&&&&&2.");
@@ -86,6 +179,7 @@ StartupServer::   calculate()
 
     if (smDestory)
         return true;
+
     run();
     //mFirstCal = false;
     return true;
@@ -93,33 +187,19 @@ StartupServer::   calculate()
 
 void   StartupServer::RtimeCal()
 {
-    long nowTime,lastSeCalTime;
+    long lastSeCalTime = mSeLastTime;
     while (true)
     {
-        bool is_Recal = false;
         //Aos_Assert_S(PubOpt::StringOpt::StringFormat("应该取点个数：%d,RtdbGetTagValues取到的点个数: %d",iTagNum,iCount).c_str());
         if (smDestory)
             return ;
-        nowTime = Util::getNowTime();
-        //		SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);
-        //Aos_Assert_R(SINGLETON(RtdbOpt)->rtdbGetRtTagTime(nowTime,mBaseMgr->getMapPointSourceName()), false);
-        std::string strNow =  PubOpt::SystemOpt::DateTmToStr(nowTime);
-        std::string strCur =  PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime);
-        mNowTime = nowTime;
-        if (!mInit)
-        {
-            lastSeCalTime = mCurSeCalTime;
-        }
-        else
-        {
-            lastSeCalTime = mSeLastTime;
-        }
+
         PubOpt::SystemOpt::SleepWait(1000);
-        nowTime = Util::getNowTime();
+        long nowTime = Util::getNowTime();
         //计算  liyg
         //int ifileNum = mBaseMgr->m_pRecOpt->GetBuffFileCount();
 
-        if (nowTime - mSeLastTime >= mSeCalCycSec|| nowTime  - lastSeCalTime >= mSeCalCycSec)  //|| (ifileNum>=2&&eFromRtdb!=mBaseMgr->msysType))
+        if (nowTime - mSeLastTime >= mSeCalCycSec || nowTime  - lastSeCalTime >= mSeCalCycSec)  //|| (ifileNum>=2&&eFromRtdb!=mBaseMgr->msysType))
         {
             if (smIsStartDelay)
             {
@@ -129,10 +209,11 @@ void   StartupServer::RtimeCal()
             bool rslt = mBaseMgr->loadPointData(mCurSeCalTime, mNowTime);
             if(!rslt)
             {
-                mBaseMgr->UpdateServiceVersion(m_strSerivceName,"v1.0.0",SINGLETON(Log)->getLogPath());
+                mBaseMgr->UpdateServiceVersion(m_strSerivceName, "v1.0.0", SINGLETON(Log)->getLogPath());
                 PubOpt::SystemOpt::SleepWait(2000);
                 break;
             }
+
             //std::string strLog = PubOpt::StringOpt::StringFormat(
             //	"RTimeCal %s SeCalTime:%s,mNowTime:%s;",
             //	 m_strFactoryCode.c_str(),
@@ -140,7 +221,6 @@ void   StartupServer::RtimeCal()
             //	 PubOpt::SystemOpt::DateTmToStr(mNowTime).c_str());
             //Aos_WriteLog_D(strLog.c_str());
 
-            nowTime = Util::getNowTime();
             mBaseMgr->CleanMapWrite();
             mCalculateIndex->startCalculate(mBaseMgr->getIndexConfInfo(), mBaseMgr->getPointData(), mBaseMgr->getmMapWrite(), mCurSeCalTime);
 
@@ -156,32 +236,28 @@ void   StartupServer::RtimeCal()
                                   mBaseMgr->getmMapWrite(),
                                   mBaseMgr->msysType);
 
-            //Aos_Assert_S("WriteBuffer.");
+            Aos_Assert_S("WriteBuffer.");
             mBaseMgr->WriteBuffer(getServerCalTime());
-            //将点值回写实时数据库
-            rslt = mBaseMgr->WriteToRtdb(getServerCalTime());
-            // Aos_WriteLog(PubOpt::StringOpt::StringFormat("mmm3").c_str());
-            //将点值写入关系数据库中
 
-            //Aos_Assert_S("WriteRsdb.");
+            //将点值回写实时数据库
+            Aos_Assert_S("WriteRsdb.");
+            rslt = mBaseMgr->WriteToRtdb(getServerCalTime());
+
             if (rslt)
                 mBaseMgr->WriteRsdb(mCurSeCalTime);
 
-            //Aos_Assert_CB(rslt);
-            //PubOpt::SystemOpt::SleepWait(50);
-            nowTime = Util::getNowTime();
-            mSeLastTime = nowTime;
-            mInit = false;
+            mSeLastTime = Util::getNowTime();
+            lastSeCalTime = mCurSeCalTime;
+
             //Aos_Assert_S("UpdataCalTime.");
             mBaseMgr->UpdataCalTime(PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime),0);
             //Aos_Assert_S("UpdateServiceVersion.");
-            mBaseMgr->UpdateServiceVersion(m_strSerivceName,"v1.0.0",SINGLETON(Log)->getLogPath());
+            mBaseMgr->UpdateServiceVersion(m_strSerivceName, "v1.0.0", SINGLETON(Log)->getLogPath());
             //Aos_Assert_S("next cyc.");
             break;
         }
         PubOpt::SystemOpt::SleepWait(2000);
     }
-
 }
 
 void StartupServer::SetModelPointValues(MapStringToSetCfg	&mMapSetInfo,
@@ -353,9 +429,9 @@ void  StartupServer::HisCal(long StartTime,long EndTime)
 void
 StartupServer::run()
 {
-    bool is_Recal = false;
-    long nowTime;
-    nowTime = Util::getNowTime();
+    //    bool is_Recal = false;
+    //    long nowTime;
+    //    nowTime = Util::getNowTime();
     //SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);
     //	if(!mBaseMgr->rtdbGetRtTagTime(nowTime))
     //		SINGLETON(RtdbAdapter)->RtdbGetCurrentTime(&nowTime);

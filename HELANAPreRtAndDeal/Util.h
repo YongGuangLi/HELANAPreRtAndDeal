@@ -44,6 +44,10 @@ namespace Util
 
 	//Util::Convert<char, string>(a)
 
+
+    unsigned char crcTail(unsigned char *data, int length );
+
+
 	// 功能描述: 将数字类型转换为字符串 
 	template<class NumberType>
 	std::string Number2String(NumberType vv)
@@ -84,6 +88,6 @@ namespace Util
 	//end add
 
     std::string GetGUID();
-};
+}
 
 #endif

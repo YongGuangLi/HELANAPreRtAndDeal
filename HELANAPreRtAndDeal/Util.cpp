@@ -33,7 +33,8 @@ bool QtConnectOnce(RsdbAdapter* pQtOpt,std::string strFactoryCode)
     DBServerInfo stServerInfo;
     stServerInfo.strSessionName = SINGLETON(ServiceEIDSPreConfig)->getOciSessionName();
     stServerInfo.strUserName = SINGLETON(ServiceEIDSPreConfig)->getOciUserName();
-    stServerInfo.strPasswd = SINGLETON(ServiceEIDSPreConfig)->getOciPassWD();
+    //stServerInfo.strPasswd = SINGLETON(ServiceEIDSPreConfig)->getOciPassWD();
+    stServerInfo.strPasswd = "Tzrd#2021@db";
     stServerInfo.strRsdbType = SINGLETON(ServiceEIDSPreConfig)->getRsdbType();
     stServerInfo.strIp = SINGLETON(ServiceEIDSPreConfig)->getRsdbIp();
     stServerInfo.iPort = CharPointerConvert2Number<int>(SINGLETON(ServiceEIDSPreConfig)->getRsdbPort().c_str());
@@ -196,6 +197,17 @@ bool JudgeIsExcept(double fExceptVal)
 std::string GetGUID()
 {
     return QUuid::createUuid().toString().toStdString();
+}
+
+unsigned char crcTail(unsigned char *data, int length)
+{
+    ///计算检查和
+    char cursor = 0;
+    for( int i = 0 ; i < length ; i++ )
+        cursor += data[i];
+
+    cursor += cursor;
+    return cursor;
 }
 
 }

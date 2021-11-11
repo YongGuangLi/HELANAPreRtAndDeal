@@ -1,9 +1,7 @@
-﻿//#include "StdAfx.h"
-#include "RsdbAdapter.h"
+﻿#include "RsdbAdapter.h"
 #include "AlarmLog.h"
 #include "public_function_library.h"
 
-//IMPLEMENT_SINGLETON(RsdbAdapter);
 
 RsdbAdapter::RsdbAdapter(void)
     :
@@ -201,7 +199,8 @@ bool RsdbAdapter::QtIsConnect()
     if (!m_IsConn) return false;
     //if (m_rsdb.isValid()) return true;
     std::string strSql="select 1 from dual";
-    if (SQLDirectExecute(strSql)) return true;
+    if (SQLDirectExecute(strSql))
+        return true;
     m_IsConn = false;
     return false;
 }

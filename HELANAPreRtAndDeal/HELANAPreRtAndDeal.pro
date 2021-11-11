@@ -1,4 +1,4 @@
-QT += core sql
+QT += core sql network
 QT -= gui
 
 CONFIG += c++11
@@ -73,10 +73,9 @@ HEADERS += \
     ../funlib/Matrix.h \
     ../funlib/PublicMatrix.h \
     ../funlib/SimFunc.h \
-    IncludeHead.h \
     pubpointvalue.h \
     IBroadcast.h \
-    TcpClient.hpp
+    Convertor.hpp
 
 
 unix:!macx: LIBS += -L$$PWD/../compiler/lib -lcompiler
@@ -99,10 +98,9 @@ unix:!macx: LIBS += -L$$PWD/../waspcn/lib/ -lwaspcn
 INCLUDEPATH += $$PWD/../waspcn/inc
 DEPENDPATH += $$PWD/../waspcn/inc
 
-
-LIBS += -ldl -lpthread
-
 unix:!macx: LIBS += -L$$PWD/../boost/lib -lboost_thread -lboost_filesystem
 INCLUDEPATH += $$PWD/../boost/include
 DEPENDPATH += $$PWD/../boost/include
 
+
+LIBS += -ldl -lpthread

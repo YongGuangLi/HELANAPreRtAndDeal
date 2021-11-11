@@ -4,7 +4,8 @@
 #include <QtCore/QCoreApplication>
 #include <qcoreapplication.h>
 #include <QDir>
-
+#include <QProcess>
+#include <iostream>
 #include "mutex.h"
 #include "log.h"
 #include "AlarmLog.h"
@@ -12,7 +13,6 @@
 #include "ServiceEIDSPreConfig.h"
 #include "public_function_library.h"
 #include "ErrorDef.h"
-#include <iostream>
 
 
 MutexLock g_oScanFile;
@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
+
     if (!initMain())
         return -1;
 
@@ -51,5 +52,12 @@ int main(int argc, char *argv[])
     if (m_pOpt->InitService())
         m_pOpt->ServiceStart();
 
-    return a.exec();
+    int e = a.exec();
+    if(e == RETCODE_RESTART)
+    {
+        // 传入 qApp->applicationFilePath()，启动自己
+        QProcess::startDetached(qApp->applicationFilePath(), QStringList());
+        return 0;
+    }
+
 }
