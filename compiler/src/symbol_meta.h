@@ -1,4 +1,4 @@
-#ifndef __SYMBOL_META_H__
+ï»¿#ifndef __SYMBOL_META_H__
 #define __SYMBOL_META_H__
 
 #include <map>
@@ -25,13 +25,13 @@ public:
     CTypeMeta( int &op,PTypeMeta type,PSymbolMeta sym);
     virtual ~CTypeMeta(void);
 public:
-    // ²Ù×÷´úÂë
+    // æ“ä½œä»£ç 
     int m_op;
-    // ²Ù×÷ÀàĞÍ
+    // æ“ä½œç±»å‹
     PTypeMeta m_type;
-    //·ûºÅÀàĞÍ
+    //ç¬¦å·ç±»å‹
     PSymbolMeta m_symbol;
-    // º¯ÊıÔ­ĞÍÀàĞÍÁ´±í
+    // å‡½æ•°åŸå‹ç±»å‹é“¾è¡¨
     VPTypeMeta m_proto;
 };
 
@@ -69,21 +69,21 @@ private:
 class CSymbolMeta
 {
 public:
-    //È±Ê¡¹¹Ôìº¯Êı
+    //ç¼ºçœæ„é€ å‡½æ•°
     CSymbolMeta(void);
-    //²ÎÊı¹¹Ôìº¯Êı
+    //å‚æ•°æ„é€ å‡½æ•°
     CSymbolMeta( const string &name);
     virtual ~CSymbolMeta(void);
 public:
-    // Ãû³Æ
+    // åç§°
     string m_name;
-    // ÀàĞÍ
+    // ç±»å‹
     PTypeMeta  m_type;
-    // º¯Êı²ÎÊı·ûºÅÁ´±í
+    // å‡½æ•°å‚æ•°ç¬¦å·é“¾è¡¨
     VPSymbolMeta m_callee;
-    // Öµ
+    // å€¼
     double m_value;
-    //º¯ÊıË÷Òı
+    //å‡½æ•°ç´¢å¼•
     int m_index;
 };
 

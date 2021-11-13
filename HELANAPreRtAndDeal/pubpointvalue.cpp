@@ -65,7 +65,8 @@ void PubPointValue::SetModelPointValues(MapStringToSetCfg	&mMapSetInfo, MapStrin
                         p_iter->second->m_IsGetPreValue = false;
                         p_iter->second->m_IsGetSimValue = false;
                         iter_allp = mMapPointData.find(p_iter->second->mPointId);
-                        if(iter_allp==mMapPointData.end()) continue;
+                        if(iter_allp==mMapPointData.end())
+                            continue;
                         p_iter->second->setCurrVar(iter_allp->second->mDValue,1);
                         p_iter->second->m_IsGetOrigValue  = true;
                         //p_iter->second->mGoodState = paTags[i].lState;

@@ -1,4 +1,4 @@
-#ifndef __RECORD_H__
+ï»¿#ifndef __RECORD_H__
 #define __RECORD_H__
 
 #include "lex.h"
@@ -34,13 +34,13 @@ private:
         m_stmt.InitEnv(&m_symbol,&m_lex,&m_exp,&m_tree,&m_code);
     }
 public:
-    //ÉùÃ÷±äÁ¿
+    //å£°æ˜å˜é‡
     void DeclareVariant(string var,bool in=true);
-    //ÉùÃ÷´úÂë
+    //å£°æ˜ä»£ç 
     void DeclareCode(string code);
-    //±äÁ¿¶¨Òå
+    //å˜é‡å®šä¹‰
     void DefineVariant(string var);
-    //¼ÆËã
+    //è®¡ç®—
     void Calculate(double& result);
 };
 

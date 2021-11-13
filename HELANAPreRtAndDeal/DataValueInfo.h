@@ -361,7 +361,7 @@ struct ModelCondition
 			strOutVar = "," + strOutVar;
 			m_strOutVarFun=strOutVar;
 		}
-		m_strOutVarAndFun=m_strOutVar+m_strOutVarFun;
+        m_strOutVarAndFun= m_strOutVar + m_strOutVarFun;
 		strOutVar=m_strOutVarAndFun;
 		//数据库中存放的是 "@"格式的 要转换成 "_"格式
 		//将指标本身也作为外部变量加入到外部变量串中，防止公式中引用了自己的指标
@@ -392,13 +392,14 @@ struct ModelCondition
 			{
 				strOutVarFunc = strOutVarFunc.substr(1,strOutVarFunc.size()-1);
 			}
-			while (strOutVarFunc.find(",") != std::string::npos&&strOutVarFunc.find(",")!=strOutVarFunc.size())
+            while (strOutVarFunc.find(",") != std::string::npos && strOutVarFunc.find(",") != strOutVarFunc.size())
 			{
 				iOfLen = strOutVarFunc.find(",");
 				strICode = strOutVarFunc.substr(0,iOfLen);
 				strOutVarFunc = strOutVarFunc.substr(iOfLen+1,strOutVarFunc.size()-iOfLen-1);
 				strICode = PubOpt::StringOpt::TrimString(strICode);
-				if(!strICode.empty()) m_OutFuncVarArray.push_back(strICode);
+                if(!strICode.empty())
+                    m_OutFuncVarArray.push_back(strICode);
 			}
 		}
 

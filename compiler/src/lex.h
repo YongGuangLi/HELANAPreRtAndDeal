@@ -1,4 +1,4 @@
-#ifndef __LEX_H__
+ï»¿#ifndef __LEX_H__
 #define __LEX_H__
 
 #include "symbol.h"
@@ -12,19 +12,19 @@ public:
     virtual ~CLex(void);
 public:
     string  m_text;
-    //µ±Ç°·ûºÅÖ¸Õë
+    //å½“å‰ç¬¦å·æŒ‡é’ˆ
     unsigned char* m_cp;
-    //·ûºÅÀà
+    //ç¬¦å·ç±»
     PSymbol   m_syms;
-    //·ûºÅ´úÂë
+    //ç¬¦å·ä»£ç 
     int		m_code;
-    //·ûºÅÃû³Æ
+    //ç¬¦å·åç§°
     string	m_token;
-    //µ±Ç°·ûºÅ
+    //å½“å‰ç¬¦å·
     PSymbolMeta m_tsym;
-    //³£Á¿·ûºÅ
+    //å¸¸é‡ç¬¦å·
     CSymbolMeta  m_tval;
-    //Ç°ÏîÖ¸Õë
+    //å‰é¡¹æŒ‡é’ˆ
     unsigned char *m_precp;
 public:
     void InitEnv(string text)
@@ -32,11 +32,11 @@ public:
         m_text=text;
         m_cp=(unsigned char*)m_text.c_str();
     }
-    //»ñÈ¡ÏÂÒ»¸öµ¥´Ê
+    //è·å–ä¸‹ä¸€ä¸ªå•è¯
     void GetTok(void);
-    //»ñÈ¡ÏÂÒ»¸ö×Ö·û
+    //è·å–ä¸‹ä¸€ä¸ªå­—ç¬¦
     void GetChar(void);
-    //ÆÚÍûº¯Êı
+    //æœŸæœ›å‡½æ•°
     void ExpectChar(int tok);
 };
 

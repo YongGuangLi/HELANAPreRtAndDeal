@@ -437,7 +437,7 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
     std::string UpTime;
     int icount = 0;
 
-    UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp,0);
+    UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp, 0);
 
     for (set_iter = mMapSetInfo.begin();set_iter!=mMapSetInfo.end();++set_iter)
     {

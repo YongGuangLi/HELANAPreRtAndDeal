@@ -88,7 +88,7 @@ Fun_Pub_Num_To_Char(dfhnl_value),Fun_Pub_Num_To_Char(dfhnl_source),object_catego
 from v_eids_dfhnl_cfg_all";
 
 static std::string g_strIndexSQL=
-        "select index_code, set_code, index_type, source_id, out_var||out_var_func out_var,local_var,\
+        "select index_code, set_code, index_type, source_id, concat(out_var,out_var_func) out_var,local_var,\
         expression,is_write_back,full_index_code ,is_clear_zero,is_steady_cal, min_value, \
 max_value, default_value from v_pub_index t order by full_index_code asc";
 
@@ -109,9 +109,9 @@ const std::string g_strMaunalPointSQL =
          from tb_pub_maunal_point t where t.approve_flag = 1 ) where ord = 1";
         //"select point_id, Fun_Pub_Num_To_Char(current_value) current_value from tb_pub_maunal_point where approve_flag = 1";
 
-        //查询模型配置更改标识
-        const std::string g_strSysStatusSQL =
-        "select param_status from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
+//查询模型配置更改标识
+const std::string g_strSysStatusSQL =
+"select param_status from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
 
 
 //查询计算到什么时间

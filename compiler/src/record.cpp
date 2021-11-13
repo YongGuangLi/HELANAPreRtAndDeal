@@ -1,4 +1,4 @@
-#include "record.h"
+ï»¿#include "record.h"
 #include "except.h"
 
 #include <stdlib.h>
@@ -12,7 +12,7 @@ CRecord::~CRecord(void)
 {
 }
 
-//ÉùÃ÷±äÁ¿
+//å£°æ˜Žå˜é‡
 void CRecord::DeclareVariant(string var,bool in)
 {
     char  split=',';
@@ -34,7 +34,7 @@ void CRecord::DeclareVariant(string var,bool in)
     }
 }
 
-//ÉùÃ÷´úÂë
+//å£°æ˜Žä»£ç 
 void CRecord::DeclareCode(string code)
 {
     m_lex.InitEnv(code);
@@ -43,7 +43,7 @@ void CRecord::DeclareCode(string code)
 
 }
 
-//±äÁ¿¶¨Òå
+//å˜é‡å®šä¹‰
 void CRecord::DefineVariant(string var)
 {
     char  split0='=',split1=',';
@@ -61,7 +61,7 @@ void CRecord::DefineVariant(string var)
     {
         subvar=var.substr(first,last-first);
         first=++last;
-        psymbol=m_symbol.LookupByEx(subvar);//ÕÒ³öm_symbolÖÐ¶ÔÓ¦subvarµÄÖ¸Õë
+        psymbol=m_symbol.LookupByEx(subvar);//æ‰¾å‡ºm_symbolä¸­å¯¹åº”subvarçš„æŒ‡é’ˆ
 
         if(psymbol==NULL)
         {
@@ -71,7 +71,7 @@ void CRecord::DefineVariant(string var)
         while((last=var.find_first_of(split1,first))!=npos)
         {
             subval=var.substr(first,last-first);
-            psymbol->m_value =atof(subval.c_str());//ÉèÖÃÖµ
+            psymbol->m_value =atof(subval.c_str());//è®¾ç½®å€¼
             first=++last;
             break;
         }
@@ -85,7 +85,7 @@ void CRecord::DefineVariant(string var)
     }
 }
 
-//¼ÆËã
+//è®¡ç®—
 void CRecord::Calculate(double& result)
 {
     //COleDateTime d0=COleDateTime::GetCurrentTime();

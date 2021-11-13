@@ -211,50 +211,28 @@ bool
 BasicMgr::loadConfigInfo(const bool isFirstCal,bool &isModConf,long	&mCurSeCalTime)
 {
     //读入服务配置修改标识
-    //int isModConf;
     isModConf = mSimpleOpt->getIndexConfigStatus(m_strFactoryCode);
     mSimpleOpt->getIndexUpdataTime(m_strFactoryCode,mCurSeCalTime);
-    //std::string str1 ="";
-    //mSimpleOpt->UpdataCalTime(m_strFactoryCode,str1);
-    if (!isFirstCal && !isModConf) return true;
 
     if(isFirstCal)
     {
-        mSimpleOpt->getFactoryNo(m_strFactoryCode,mDCNo);
+        mSimpleOpt->getFactoryNo(m_strFactoryCode, mDCNo);
         Aos_Assert_R(loadIndex(), false);
+
         //读入等配置信息
         Aos_WriteLog_D("Start loadModeData()");
         Aos_Assert_R(loadModeData(), false);
         Aos_WriteLog_D("end loadModeData()");
 
-        if (eFromRtdb==msysType)
-            Aos_Assert_R(loadModeMuFun(), false);
-
-        Aos_Assert_R(loadFhnlData(), false);
+        Aos_Assert_R(loadModeMuFun(), false);
 
         Aos_WriteLog_D("Start GetNeedPoint()");
         GetNeedPoint();
+
         Aos_WriteLog_D("Start CheckModelAvgPointFitInfPointOnly()");
         CheckModelAvgPointFitInfPointOnly();
-        ////ismDealAlarm=loadAlarmSetData();//告警配置类读入
     }
-    else
-    {
-        //检测到指标配置信息修改，重新读入相关配置信息
-        cleanVar();
-        Aos_Assert_R(loadIndex(), false);
-        Aos_Assert_R(loadModeData(), false);
-        if (eFromRtdb==msysType)
-            Aos_Assert_R(loadModeMuFun(), false);
-        Aos_Assert_R(loadFhnlData(), false);
-        GetNeedPoint();
-        CheckModelAvgPointFitInfPointOnly();
-        ////ismDealAlarm=loadAlarmSetData();//告警配置类读入
-    }
-    if (isModConf)
-    {
-        Aos_Assert_R(mSimpleOpt->updateIndexConfigStatus(0,m_strFactoryCode), false);
-    }
+
     if (isFirstCal)
     {
         isModConf = false;
@@ -1135,23 +1113,11 @@ void BasicMgr::CheckModelAvgPointFitInfPointOnly()
                         continue;
                     mModeMethodAvg = con_iter->second;
                     tempVec2.swap(mode_info->mVectorParamCfgs);
-                    /*mode_info->mVectorParamCfgs.clear();*/
-                    //for (int i=0;i<mModeMethodAvg->mVectorModePoint.size();++i)
-                    //{
-                    //	for (int j = 0;j<mode_info->mVectorParamCfgs.size();++j)
-                    //	{
-                    //		if (tempVec2[j].mPoint ==mModeMethodAvg->mVectorModePoint[i])
-                    //		{
-                    //			tempVec.push_back(tempVec2[j]);
-                    //		}
-                    //	}
-                    //
-                    //}
-                    for(int i=0;i<mModeMethodAvg->mVectorModePoint.size();++i)
+                    for(int i = 0;i < mModeMethodAvg->mVectorModePoint.size();++i)
                     {
                         for(int j = 0;j<tempVec2.size();++j)
                         {
-                            if (mModeMethodAvg->mVectorModePoint[i]==tempVec2[j].mPoint)
+                            if (mModeMethodAvg->mVectorModePoint[i] == tempVec2[j].mPoint)
                             {
                                 tempVec.push_back(tempVec2[j]);
                                 break;
@@ -1161,7 +1127,7 @@ void BasicMgr::CheckModelAvgPointFitInfPointOnly()
                     mode_info->mVectorParamCfgs.clear();
                     mode_info->mVectorParamCfgs.swap(tempVec);
                     tempVec2.clear();
-                    if (!mModeMethodAvg->mIsOk||mode_info->mVectorParamCfgs.size()!=mModeMethodAvg->mVectorModePoint.size())
+                    if (!mModeMethodAvg->mIsOk || mode_info->mVectorParamCfgs.size() != mModeMethodAvg->mVectorModePoint.size())
                     {
                         mode_info->m_IsDeal=false;
                     }
@@ -1174,7 +1140,8 @@ void BasicMgr::CheckModelAvgPointFitInfPointOnly()
 void BasicMgr::SetAllMothAvgData()
 {
     //LINXIAOYU
-    if (eFromDir==msysType) return;
+    if (eFromDir==msysType)
+        return;
     MapStringToSetCfg_It iter_set;
     MapStringToSysCfg_It iter_sys;
     SetCfg *setcf;
@@ -1205,8 +1172,10 @@ BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
     {
         if(iter_m->second->mModeId=="ZZ_3_dg"||iter_m->second->mModeId=="ZZ_3_qb")
             int i=100;
+
         if((!iter_m->second->m_IsDeal)||iter_m->second->mCondId.empty())
             continue;
+
         fun_iter=mMapModeMethodAvg.find(iter_m->second->mModeId);
         if(fun_iter==mMapModeMethodAvg.end())
         {
@@ -1221,85 +1190,49 @@ BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
             continue;
         }
         mode_info->mDModeSim=con_iter->second->mDSimLimit;
-        //liyg
-        //SINGLETON(RtdbOpt)->SetFunRtValue(mode_info,con_iter->second);
+
+        SetFunRtValue(mode_info, con_iter->second);
     }
 }
-//void	
-//BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
-//{
-//	DataMode* mode_info;
-//	ModeMethodAvg* mode_fun;
-//	//MethodAvg *    cond_fun;
-//	MapStringToDataMode_It iter_m;
-//	MapStringToModeMethodAvg_It fun_iter;
-//	MapStringToMethodAvg_It		con_iter;
-//
-//	iter_m=mapModeInfo.begin();
-//	for (;iter_m!=mapModeInfo.end();++iter_m)
-//	{
-//		if(iter_m->second->mModeId=="3_qljgw"||iter_m->second->mModeId=="4_zc")
-//			int i=100;
-//		if((!iter_m->second->m_IsDeal)||iter_m->second->mCondId.empty()) 
-//			continue;
-//		fun_iter=mMapModeMethodAvg.find(iter_m->second->mModeId);
-//		if(fun_iter==mMapModeMethodAvg.end()) 
-//		{
-//			iter_m->second->m_IsDeal=false;
-//			continue;
-//		}
-//		mode_info=iter_m->second;
-//		mode_fun=fun_iter->second;
-//		con_iter=mode_fun->mMapmethodavg.find(mode_info->mCondId);
-//		if (con_iter==mode_fun->mMapmethodavg.end())
-//		{
-//			continue;
-//		}
-//		mode_info->mDModeSim=con_iter->second->mDSimLimit;
-//		SINGLETON(RtdbOpt)->SetFunRtValue(mode_info,con_iter->second);
-//
-//	}
-//}
 
-//void
-//RtdbOpt::SetFunRtValue(DataMode* mModeInfo,
-//                       MethodAvg* mModeMethodAvg)
-//{
-//    DataValueInfo* point_info;
-//    MapStringToPointData_It p_iter;
-//    MapStringToMDataValueInfo_It point_iter;
-//	PointGroup* model_group;
-//	MapStringToPointGroup_It iter_group;
-//	std::vector<VarParam>::iterator pcf_iter;
-//	int inum = 0;
-//	mModeInfo->mVectorPValues.clear();
-//	for(int i =0;i< mModeInfo->mVectorParamCfgs.size();i++)
-//	{
-//		iter_group = mModeInfo->mMapGroup.begin();
-//		for (;iter_group!=mModeInfo->mMapGroup.end();++iter_group)
-//		{
-//			model_group = iter_group->second;
-//			point_iter = model_group->mMapGroupPoint.find(mModeInfo->mVectorParamCfgs[i].mPoint);
-//			if(point_iter!=model_group->mMapGroupPoint.end())
-//			{
-//				point_info = point_iter->second;
-//				mModeInfo->mVectorPValues.push_back(point_info->mDOrigValue);
-//				mModeInfo->mVectorParamCfgs[i].mCurValue = point_info->mDOrigValue;
-//				//mModeInfo->m_IsDeal = true;
-//				inum++;
-//				break;
-//			}
-//		}
-//	}
-//	if (mModeMethodAvg->mIsOk&&inum==mModeMethodAvg->mVectorModePoint.size())
-//	{
-//		mModeInfo->m_IsDeal = true;
-//	}
-//	else
-//	{
-//		mModeInfo->m_IsDeal = false;
-//	}
-//}
+void
+BasicMgr::SetFunRtValue(DataMode* mModeInfo, MethodAvg* mModeMethodAvg)
+{
+    DataValueInfo* point_info;
+    MapStringToPointData_It p_iter;
+    MapStringToMDataValueInfo_It point_iter;
+    PointGroup* model_group;
+    MapStringToPointGroup_It iter_group;
+    std::vector<VarParam>::iterator pcf_iter;
+    int inum = 0;
+    mModeInfo->mVectorPValues.clear();
+    for(int i =0;i< mModeInfo->mVectorParamCfgs.size();i++)
+    {
+        iter_group = mModeInfo->mMapGroup.begin();
+        for (;iter_group!=mModeInfo->mMapGroup.end();++iter_group)
+        {
+            model_group = iter_group->second;
+            point_iter = model_group->mMapGroupPoint.find(mModeInfo->mVectorParamCfgs[i].mPoint);
+            if(point_iter!=model_group->mMapGroupPoint.end())
+            {
+                point_info = point_iter->second;
+                mModeInfo->mVectorPValues.push_back(point_info->mDOrigValue);
+                mModeInfo->mVectorParamCfgs[i].mCurValue = point_info->mDOrigValue;
+                //mModeInfo->m_IsDeal = true;
+                inum++;
+                break;
+            }
+        }
+    }
+    if (mModeMethodAvg->mIsOk&&inum==mModeMethodAvg->mVectorModePoint.size())
+    {
+        mModeInfo->m_IsDeal = true;
+    }
+    else
+    {
+        mModeInfo->m_IsDeal = false;
+    }
+}
 //void 
 //RtdbOpt::SetFunRtValue(DataMode* mModeInfo,
 //                       MethodAvg* mModeMethodAvg)
@@ -1358,18 +1291,6 @@ char crcTail( char* data, int length )
 bool
 BasicMgr::WriteToRtdb(const long &lCalTimeStamp)
 {
-    bool rslt = true ;
-    sanityCheck(1);
-    //	if(!SINGLETON(RtdbOpt)->RtdbIsConnect())
-    //	{
-    //		rslt = SINGLETON(RtdbAdapter)->RtdbConnect();
-    //		rslt = SINGLETON(RtdbAdapter)->RtdbIsConnect();
-    //	}
-    if(!rslt)
-        return false;
-    //rslt = SINGLETON(RtdbOpt)->rtdbSetTagValues(lCalTimeStamp, mMapWrite);
-    sanityCheck(2, "saveIndexValue cost time: %ld;");
-
     QFile outFile(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv.tmp");
     if (outFile.open(QIODevice::WriteOnly))
     {
@@ -1389,7 +1310,7 @@ BasicMgr::WriteToRtdb(const long &lCalTimeStamp)
     if(QFile::exists(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv"))
         QFile::remove(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv");
     QFile::rename(QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv.tmp", QString::fromStdString(PubOpt::SystemOpt::GetCurExePath()) + "pubPointValue.csv");
-    return rslt;
+    return true;
 }
 
 void

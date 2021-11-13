@@ -83,7 +83,7 @@ private:
     // 功能描述: 周期计算各指标
     void	run();
 
-    void    RtimeCal();		//实时计算
+    void    realtimeCal();		//实时计算
     void    HisCal(long StartTime,long EndTime);		//历史追算
     void	CalMonment(MapMonmentDatas	&mMapMonment);
     void	SetModelPointValues(MapStringToSetCfg	&mMapSetInfo,

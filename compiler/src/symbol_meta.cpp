@@ -1,6 +1,6 @@
-#include "symbol_meta.h"
+ï»¿#include "symbol_meta.h"
 
-//È±Ê¡¹¹Ôìº¯Êı
+//ç¼ºçœæ„é€ å‡½æ•°
 CTypeMeta::CTypeMeta(void)
 : m_op(0)
 , m_type(NULL)
@@ -8,7 +8,7 @@ CTypeMeta::CTypeMeta(void)
 {
 }
 
-//²ÎÊı¹¹Ôìº¯Êı
+//å‚æ•°æ„é€ å‡½æ•°
 CTypeMeta::CTypeMeta( int &op,PTypeMeta type,PSymbolMeta sym)
 : m_op(op)
 , m_type(type)
@@ -25,7 +25,7 @@ CTypeMeta::~CTypeMeta(void)
 ////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////
 
-//È±Ê¡¹¹Ôìº¯Êı
+//ç¼ºçœæ„é€ å‡½æ•°
 CSymbolMeta::CSymbolMeta(void)
 : m_name("")
 , m_type(NULL)
@@ -34,7 +34,7 @@ CSymbolMeta::CSymbolMeta(void)
 {
 }
 
-//²ÎÊı¹¹Ôìº¯Êı
+//å‚æ•°æ„é€ å‡½æ•°
 CSymbolMeta::CSymbolMeta(const string &name)
 : m_name(name)
 , m_type(NULL)

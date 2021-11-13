@@ -48,13 +48,9 @@ void PointPreCal::CalData(MapStringToBool &mMapModleNameStatus,
                           MapStringToDouble &mMapWrite,
                           GetDateWay itype)
 {
-    //CalculateAllModeCon(mMapSetInfo,mMapPointData,pMapIndexConfInfo,mMapWrite);
     CalculatePre(mMapModleNameStatus, mMapSetInfo, mModeMethodAvg, mMapWrite, itype);
-    CalDfh(mMapSetInfo, mMapPointData, mMapWrite);
-
-    if (eFromDir == itype)
-        GetPointToMapWrite(mMapWrite,mMapPointData);
 }
+
 void PointPreCal::CalculateAllModeCon(MapStringToSetCfg &mMapSetInfo,
                                       MapStringToPointData	&mMapPointData,
                                       MapStringToIndexConfInfo &pMapIndexConfInfo,
@@ -439,7 +435,7 @@ void PointPreCal::CalDfh(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mM
             {
                 dfh = d_iter->second;
                 p_iter = mMapPointData.find(dfh->m_code);
-                if (p_iter==mMapPointData.end())
+                if (p_iter == mMapPointData.end())
                 {
                     sysobj->mSysDfhValue = setobj->mSetDefFh;
                     continue;
@@ -453,7 +449,7 @@ void PointPreCal::CalDfh(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mM
             if (!sysobj->mSysDfh.empty()||""!=sysobj->mSysDfh)
             {
                 p_iter = mMapPointData.find(sysobj->mSysDfh);
-                if (p_iter!=mMapPointData.end())
+                if (p_iter != mMapPointData.end())
                 {
                     p_iter->second->mDValue = sysobj->mSysDfhValue;
                 }
@@ -471,9 +467,9 @@ void PointPreCal::CalDfh(MapStringToSetCfg &mMapSetInfo,MapStringToPointData &mM
         {
             p_iter->second->mDValue = setobj->mSetDfhValue;
         }
-        it_rw=mMapWrite.find(setobj->mSetDfh);
-        if(it_rw==mMapWrite.end())
-            mMapWrite.insert(make_pair(setobj->mSetDfh,setobj->mSetDfhValue));
+        it_rw = mMapWrite.find(setobj->mSetDfh);
+        if(it_rw == mMapWrite.end())
+            mMapWrite.insert(make_pair(setobj->mSetDfh, setobj->mSetDfhValue));
         else
             it_rw->second = setobj->mSetDfhValue;
     }
@@ -616,7 +612,7 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
     }
     mode_info->m_IsCalOk= false;
     con_iter=mModeMethodAvg.find(mode_info->mModeId);
-    if(con_iter==mModeMethodAvg.end()||!mode_info->m_IsDeal)
+    if(con_iter==mModeMethodAvg.end() || !mode_info->m_IsDeal)
     {
         if(mode_info->mRtdbSimModleIsWrite)
         {
@@ -670,52 +666,18 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
         mode_info->mDModeSim = 0;
         return;
     }
+
     mMethodAvg=con_iter->second;
     fun_iter=mMethodAvg->mMapmethodavg.find(mode_info->mCondId);
-    if(fun_iter==mMethodAvg->mMapmethodavg.end()||!mode_info->m_IsDeal)
+    if(fun_iter == mMethodAvg->mMapmethodavg.end() || !mode_info->m_IsDeal)
     {
-        /*if(mode_info->mRtdbSimModleIsWrite)
-        {
-            it_rw = mMapWrite.find(mode_info->mSimPoint);
-            if(it_rw==mMapWrite.end())
-            {
-                mMapWrite.insert(make_pair(mode_info->mSimPoint,mode_info->mDModeSim));
-            }
-            else
-            {
-                it_rw->second = mode_info->mDModeSim;
-            }
-        }*/
-
         iter_g = mode_info->mMapGroup.begin();
         for (;iter_g!=mode_info->mMapGroup.end();++iter_g)
         {
             model_group = iter_g->second;
-            /*if(model_group->mRtdbGroupJkdIsExist)
-            {
-                it_rw = mMapWrite.find(model_group->m_GroupJkd);
-                if(it_rw==mMapWrite.end())
-                {
-                    mMapWrite.insert(make_pair(model_group->m_GroupJkd,model_group->m_JkdValue));
-                }
-                else
-                {
-                    it_rw->second = model_group->m_JkdValue;
-                }
-            }*/
             it = model_group->mMapGroupPoint.begin();
             for (;it!=model_group->mMapGroupPoint.end();++it)
             {
-                /*if(!it->second->mRtdbPointSourceIsExist) continue;
-                it_rw=mMapWrite.find(it->second->mPointSource);
-                if(it_rw==mMapWrite.end())
-                {
-                    mMapWrite.insert(make_pair(it->second->mPointSource,it->second->getCurrVar(1)));
-                }
-                else
-                {
-                    it_rw->second=it->second->getCurrVar(1);
-                }*/
                 PreValueToMapWrite(it->second,mMapWrite,true);
             }
 
@@ -738,8 +700,9 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
     mt.clear();
     //Aos_WriteLog(PubOpt::StringOpt::StringFormat("SIMROWDeal start").c_str());
     //if(0==mode_info->mVectorPValues.size()||0==mode_fun->mVectorRelationValue.size())
-    if(0==mode_info->mVectorParamCfgs.size()||0==mode_fun->mVectorRelationValue.size())
+    if(0 == mode_info->mVectorParamCfgs.size() || 0 == mode_fun->mVectorRelationValue.size())
         return;
+
     if(mode_info->mModeId=="ZZ_3_ycfj2bt")
         int tem=100;
     /*errMessge=PubOpt::StringOpt::StringFormat("**模型%s计算",mode_info->mModeId.c_str());

@@ -1,4 +1,4 @@
-#include "exp.h"
+ï»¿#include "exp.h"
 #include "define.h"
 #include "except.h"
 
@@ -188,14 +188,14 @@ PTreeMeta CExp::PrimaryExpr(void)
     return p;
 }
 
-//Ìõ¼þ±í´ïÊ½·ÖÎö
+//æ¡ä»¶è¡¨è¾¾å¼åˆ†æž
 PTreeMeta CExp:: Conditional(int tok) 
 {
     return m_tree->Cond(Expression(tok));
 }
 
 
-//º¯Êý²ÎÊý·ÖÎö
+//å‡½æ•°å‚æ•°åˆ†æž
 PTreeMeta CExp::CallExp(PTreeMeta f, PTypeMeta fty) 
 {
     VPSymbolMeta callee;
@@ -207,11 +207,11 @@ PTreeMeta CExp::CallExp(PTreeMeta f, PTypeMeta fty)
     VPTypeMeta		proto = fty->m_proto;
     VPTypeMetaInt	Int = proto.begin();
 
-    //ÅÐ¶ÏÊ÷ÖÐÊÇ·ñº¬ÓÐcall²Ù×÷·ûºÅ»òmul·ûºÅ£¬¾ö¶¨ÊÇ·ñÊ¹ÓÃrightÊ÷
+    //åˆ¤æ–­æ ‘ä¸­æ˜¯å¦å«æœ‰callæ“ä½œç¬¦å·æˆ–mulç¬¦å·ï¼Œå†³å®šæ˜¯å¦ä½¿ç”¨rightæ ‘
     if (m_tree->HasCall(f))
         r = f;
 
-    //·ÖÎöº¯Êý
+    //åˆ†æžå‡½æ•°
     if (m_lex->m_code != ')')
     {
         for (;;) 
@@ -231,18 +231,18 @@ PTreeMeta CExp::CallExp(PTreeMeta f, PTypeMeta fty)
                 q=m_tree->ValueTree(q);
             }
 
-            //²úÉúÁÙÊ±±äÁ¿
+            //äº§ç”Ÿä¸´æ—¶å˜é‡
             temp=m_sym->Genident(CType::_doubletype);
             callee.push_back(temp);
 
-            //Èç¹ûÊÇcallÊ÷Ôò½¨Á¢rightÊ÷
+            //å¦‚æžœæ˜¯callæ ‘åˆ™å»ºç«‹rightæ ‘
             if (m_tree->HasCall(q))
                 r = r ? m_tree->NewTree(RIGHT, CType::_voidtype, r, q) : q;
-            //½¨Á¢argÊ÷
+            //å»ºç«‹argæ ‘
             args = m_tree->NewTree(ARG, CType::_doubletype, q, args);
             args->m_sym=temp;
 
-            //²ÎÊýÉùÃ÷½áÊø
+            //å‚æ•°å£°æ˜Žç»“æŸ
             if (m_lex->m_code != ',')
                 break;
 
@@ -250,18 +250,18 @@ PTreeMeta CExp::CallExp(PTreeMeta f, PTypeMeta fty)
         }
     }
 
-    //»ñÈ¡ÆÚÍûµÄ')'
+    //èŽ·å–æœŸæœ›çš„')'
     m_lex->ExpectChar(')');
 
     if(Int!=proto.end() && (*Int)!=CType::_voidtype)
         throw CExcept(" less param ");
 
-    //½«ÁÙÊ±±äÁ¿¼ÓÈëº¯Êý·ûºÅµÄCALLEEÖÐ
+    //å°†ä¸´æ—¶å˜é‡åŠ å…¥å‡½æ•°ç¬¦å·çš„CALLEEä¸­
     f->m_sym->m_callee=callee;
 
     if (r)
         args = m_tree->NewTree(RIGHT, CType::_voidtype, r, args);
-    //½¨Á¢callÊ÷
+    //å»ºç«‹callæ ‘
     e = m_tree->CallTree(f, rty, args, NULL);
     return e;
 }

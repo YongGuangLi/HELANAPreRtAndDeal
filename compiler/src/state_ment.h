@@ -1,4 +1,4 @@
-#ifndef __STATE_MENT_H__
+ï»¿#ifndef __STATE_MENT_H__
 #define __STATE_MENT_H__
 
 #include "lex.h"
@@ -28,12 +28,12 @@ public:
         m_code=code;
     }
 public:
-    //Óï¾äÃèÊö·ÖÎö
+    //è¯­å¥æè¿°åˆ†æ
     void Statement(int loop=0);
 private:
-    //Ìõ¼şÓï¾ä·ÖÎö
+    //æ¡ä»¶è¯­å¥åˆ†æ
     void IfStmt(int lab, int loop=0);
-    //×éºÏÓï¾ä·ÖÎö
+    //ç»„åˆè¯­å¥åˆ†æ
     void Compound(int loop=0);
 };
 #endif//__STATE_MENT_H__

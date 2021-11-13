@@ -1,4 +1,4 @@
-#include "except.h"
+ï»¿#include "except.h"
 #include "define.h"
 #include "state_ment.h"
 
@@ -18,7 +18,7 @@ CStatement::~CStatement(void)
 {
 }
 
-//Óï¾äÃèÊö·ÖÎö
+//è¯­å¥æè¿°åˆ†æž
 void CStatement::Statement(int loop) 
 {
     int t=m_lex->m_code;

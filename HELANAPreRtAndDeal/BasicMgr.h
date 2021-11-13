@@ -179,7 +179,7 @@ private:
 	void	CheckModelAvgPointFitInfPointOnly();
 	bool    InitSendBufferOpt(void);
 	void	SetMothAvgData(MapStringToDataMode &mapModeInfo);
-    void SetFunRtValue(DataMode* mModeInfo,  MethodAvg* mModeMethodAvg);
+    void  SetFunRtValue(DataMode* mModeInfo,  MethodAvg* mModeMethodAvg);
     // 功能描述: 从关系数据库中模型信息
     bool	loadModeData();
     

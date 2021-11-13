@@ -1,4 +1,4 @@
-#include "compiler.h"
+ï»¿#include "compiler.h"
 
 #include <time.h>
 #include <string>
@@ -12,29 +12,24 @@ int main(int argc, char* argv[])
     SetStdWasp(97);
     char* tag = NULL;
     char* err = NULL;
-    string exvar("a,b");
-    std::cout <<"Íâ²¿±äÁ¿ÉùÃ÷Çø:"<<std::flush;
-    getline(cin, exvar);
-    string sa1("a=100,b=200");
-    std::cout <<"Íâ²¿±äÁ¿¶¨ÒåÇø:"<<std::flush;
-    getline(cin, sa1); 
-    string invar;
-    std::cout <<"±¾µØ±äÁ¿ÉùÃ÷Çø:"<<std::flush;
-    getline(cin ,invar);
-    string incode(" return FDWHPT(1,2);");
-    std::cout <<"´úÂëÇø:"<<std::flush;
-    getline(cin, incode);
-
-    incode = "{"+incode;
-    incode += "}";
+    //string exvar(",M12_lcgrqyl,M12_lcgrqwd");  
+    //string invar(",a");  
+    //string incode("{{a=FDAHPT(M12_lcgrqyl*10,M12_lcgrqwd);return a;}}");  
+    //string sa1("M12_lcgrqyl=15.538,M12_lcgrqwd=542.037"); 
     
+	string exvar(",D1_Gdwatt");  
+    string invar(",a");  
+    string incode("{a=0;if(D1_Gdwatt > 10.0) a=1;return a;}");  
+    string sa1("D1_Gdwatt=15.538"); 
+	
     if (!PROGRAM(const_cast<char*>(exvar.c_str()), const_cast<char*>(invar.c_str()), 
         const_cast<char*>(incode.c_str()), &tag, &err))
     {
-        std::cout <<err<<std::endl;
+        std::cout <<"PROGRAM:"<<err<<std::endl;
         return -1;
     }
-    std::cout <<"ÉêÇë¼ÆËã³É¹¦"<<std::endl;
+    std::cout <<"ç”³è¯·è®¡ç®—æˆåŠŸ"<<std::endl;
+	 
     double bret;
     time_t t1 = clock();
     if (!CALCULATE(tag, const_cast<char*>(sa1.c_str()), &bret, &err))
@@ -44,8 +39,8 @@ int main(int argc, char* argv[])
         return -1;
     }
     time_t t2 = clock();
-    std::cout <<"¼ÆËã³É¹¦"<<std::endl;
-    printf("¼ÆËã½á¹û: %.8f, ºÄÊ±: %luºÁÃë\n", bret, t2-t1);
+    std::cout <<"è®¡ç®—æˆåŠŸ"<<std::endl;
+    printf("è®¡ç®—ç»“æžœ: %.8f, è€—æ—¶: %luæ¯«ç§’\n", bret, t2-t1);
     RealseRec(tag, err);
     Destory();
     return 0;

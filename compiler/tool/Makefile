@@ -1,5 +1,5 @@
 DESTINATION := tool 
-LIBPATH := -L../lib -Wl,-Bdynamic -lcompiler#增加自已的动态库
+LIBPATH := -L../lib -Wl,-Bdynamic -lcompiler -lwaspcn #增加自已的动态库
 
 LIBS := dl pthread #增加系统动态库
 INCLUDES := ../inc 

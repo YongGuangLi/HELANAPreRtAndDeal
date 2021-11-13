@@ -1,4 +1,4 @@
-#include "lex.h"
+ï»¿#include "lex.h"
 #include "define.h"
 #include "except.h"
 
@@ -155,7 +155,7 @@ CLex::~CLex(void)
 {
 }
 
-//»ñÈ¡ÏÂÒ»¸öµ¥´Ê
+//è·å–ä¸‹ä¸€ä¸ªå•è¯
 void CLex::GetTok(void) 
 {
     for (;;) 
@@ -290,7 +290,7 @@ error:
     }
 }
 
-//»ñÈ¡ÏÂÒ»¸ö×Ö·û
+//è·å–ä¸‹ä¸€ä¸ªå­—ç¬¦
 void CLex::GetChar(void) 
 {
     for (;;) 
@@ -303,7 +303,7 @@ void CLex::GetChar(void)
     }
 }
 
-//ÆÚÍûº¯Êı
+//æœŸæœ›å‡½æ•°
 void  CLex::ExpectChar(int tok)
 {
     if(m_code==tok)

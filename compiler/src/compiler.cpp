@@ -1,4 +1,4 @@
-#include "symbol.h"
+ï»¿#include "symbol.h"
 #include "record.h"
 #include "except.h"
 #include "waspcn.h"
@@ -98,14 +98,14 @@ IMPORT_TYPE bool CALCULATE(char* tag, char* ex, double* ret,char** err)
     }
     catch(...)
     {
-        strcpy(*err, "·Ç·¨Òì³££¡");
+        strcpy(*err, "éæ³•å¼‚å¸¸ï¼");
         delete record;
         m_data.erase(tag);
         return false;
     }
     return true;
 }
-//²éÕÒtagÊÇ·ñ´æÔÚm_dataÖĞ£¬Èç¹û´æÔÚ£¬¾ÍÉ¾³ı¡£
+//æŸ¥æ‰¾tagæ˜¯å¦å­˜åœ¨m_dataä¸­ï¼Œå¦‚æœå­˜åœ¨ï¼Œå°±åˆ é™¤ã€‚
 IMPORT_TYPE bool RealseRec(char* &tag, char* &err)
 {
     MPRecordInt Int=m_data.find(tag);
@@ -129,8 +129,8 @@ IMPORT_TYPE bool RealseRec(char* &tag, char* &err)
 
 IMPORT_TYPE bool Init(void)
 {
-    CType::InitEnv();//³õÊ¼»¯ÀàĞÍ±í
-    CSymbol::InitEnv();//³õÊ¼»¯·ûºÅ±í
+    CType::InitEnv();//åˆå§‹åŒ–ç±»å‹è¡¨
+    CSymbol::InitEnv();//åˆå§‹åŒ–ç¬¦å·è¡¨
     return true;
 }
 

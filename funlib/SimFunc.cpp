@@ -1,4 +1,4 @@
-#include "SimFunc.h"
+ï»¿#include "SimFunc.h"
 #include <math.h>
 #include <sstream> 
 #include <string> 
@@ -68,16 +68,16 @@ bool SimFunc::setData(const DTRows &vectorDataMu,const DTRows &vectorDataG)
 	return true;
 }
 /*******************************************************************************
-* º¯ Êı Ãû: .
-* º¯ÊıÃèÊö: Ò»×é²âµãÆÚÍûÖµ¼ÆËã
-* ²ÎÊıËµÃ÷: 
-*    Èë ²Î: const vector<double> rData Ò»×é²âµãÊı¾İ,const vector<DTRow> muData ÆÚÍûÖµ¼¯ºÏ DTRows rGData G¾ØÕó
-*    ³ö ²Î: std::vector<double> &mt Ò»×é²âµãÆÚÍûÖµ 
-* ·µ »Ø Öµ: bool
-*    ³É ¹¦:
-*    Ê§ °Ü:	
-*  ×÷  Õß : Íõ¿­£¬15802613961
-* ´´½¨ÈÕÆÚ: 2016-6-14 01:02:32
+* å‡½ æ•° å: .
+* å‡½æ•°æè¿°: ä¸€ç»„æµ‹ç‚¹æœŸæœ›å€¼è®¡ç®—
+* å‚æ•°è¯´æ˜: 
+*    å…¥ å‚: const vector<double> rData ä¸€ç»„æµ‹ç‚¹æ•°æ®,const vector<DTRow> muData æœŸæœ›å€¼é›†åˆ DTRows rGData GçŸ©é˜µ
+*    å‡º å‚: std::vector<double> &mt ä¸€ç»„æµ‹ç‚¹æœŸæœ›å€¼ 
+* è¿” å› å€¼: bool
+*    æˆ åŠŸ:
+*    å¤± è´¥:	
+*  ä½œ  è€… : ç‹å‡¯ï¼Œ15802613961
+* åˆ›å»ºæ—¥æœŸ: 2016-6-14 01:02:32
 *******************************************************************************/
 bool SimFunc::calEstValue(const DTRow &rData,const DTRows &rMuData,const DTRows &rGData,DTRow &mt)
 {
@@ -91,7 +91,7 @@ bool SimFunc::calEstValue(const DTRow &rData,const DTRows &rMuData,const DTRows 
 	//std::cout<<"--------A---------"<<std::endl;
 	GA->mul(*mG,*GW);
 	GA->setGWoVar();
-	//std::cout<<"--------A×ªÖÃ---------"<<std::endl;
+	//std::cout<<"--------Aè½¬ç½®---------"<<std::endl;
 	transDataDN->transpose(*GA);
 	//std::cout<<"--------XEST---------"<<std::endl;
 	EstData->mul(*transDataDN,*mMu);
@@ -113,7 +113,7 @@ bool SimFunc::calEstValue(const DTRowParam &rData,const DTRows &rMuData,
 	//std::cout<<"--------A---------"<<std::endl;
 	GA->mul(*mG,*GW);
 	GA->setGWoVar();
-	//std::cout<<"--------A×ªÖÃ---------"<<std::endl;
+	//std::cout<<"--------Aè½¬ç½®---------"<<std::endl;
 	transDataDN->transpose(*GA);
 	//std::cout<<"--------XEST---------"<<std::endl;
 	EstData->mul(*transDataDN,*mMu);
@@ -129,7 +129,7 @@ bool SimFunc::calEstValue(const DTRow &rData,const DTRows &rMuData,const DTRow &
 	//std::cout<<"--------A---------"<<std::endl;
 	GA->mul(*mG,*GW);
 	GA->setGWoVar();
-	//std::cout<<"--------A×ªÖÃ---------"<<std::endl;
+	//std::cout<<"--------Aè½¬ç½®---------"<<std::endl;
 	transDataDN->transpose(*GA);
 	//std::cout<<"--------XEST---------"<<std::endl;
 	EstData->mul(*transDataDN,*mMu);
@@ -137,19 +137,19 @@ bool SimFunc::calEstValue(const DTRow &rData,const DTRows &rMuData,const DTRow &
 	EstData->getVar(0,mt,msim,pm,rData,rMaData);
 	return true;
 }
-// ¹¦ÄÜÃèÊö: ÏàËÆ¶ÈËã·¨
+// åŠŸèƒ½æè¿°: ç›¸ä¼¼åº¦ç®—æ³•
 /*******************************************************************************
-* º¯ Êı Ãû: .
-* º¯ÊıÃèÊö: ÏàËÆ¶ÈËã·¨
-* ²ÎÊıËµÃ÷: 
-*    Èë ²Î: const vector<double> rcData Ò»×é²âµãÊı¾İ,const vector<DTRow> muData ÆÚÍûÖµ¼¯ºÏ
-*    ³ö ²Î: double & msim Ñù±¾ÏàËÆ¶È std::vector<double> &pm ²âµãÏàËÆ¶È¼¯ºÏ std::vector<double> &mt Ò»×é²âµãÆÚÍûÖµ int &num ÔëÉù±È
-           std::string &err Òì³£ĞÅÏ¢
-* ·µ »Ø Öµ:
-*    ³É ¹¦:
-*    Ê§ °Ü:	
-*  ×÷  Õß : Íõ¿­£¬15802613961
-* ´´½¨ÈÕÆÚ: 2016-1-5 16:44:32
+* å‡½ æ•° å: .
+* å‡½æ•°æè¿°: ç›¸ä¼¼åº¦ç®—æ³•
+* å‚æ•°è¯´æ˜: 
+*    å…¥ å‚: const vector<double> rcData ä¸€ç»„æµ‹ç‚¹æ•°æ®,const vector<DTRow> muData æœŸæœ›å€¼é›†åˆ
+*    å‡º å‚: double & msim æ ·æœ¬ç›¸ä¼¼åº¦ std::vector<double> &pm æµ‹ç‚¹ç›¸ä¼¼åº¦é›†åˆ std::vector<double> &mt ä¸€ç»„æµ‹ç‚¹æœŸæœ›å€¼ int &num å™ªå£°æ¯”
+           std::string &err å¼‚å¸¸ä¿¡æ¯
+* è¿” å› å€¼:
+*    æˆ åŠŸ:
+*    å¤± è´¥:	
+*  ä½œ  è€… : ç‹å‡¯ï¼Œ15802613961
+* åˆ›å»ºæ—¥æœŸ: 2016-1-5 16:44:32
 *******************************************************************************/
 
 bool 
@@ -177,12 +177,12 @@ SimFunc::SIMROWDeal(const DTRow &rData,const DTRows &GData, const DTRow &maData,
 	err=4;
     if (0==muData.size())
     {
-        err="ÆÚÍûÖµ¼¯ºÏÎª¿Õ";
+        err="æœŸæœ›å€¼é›†åˆä¸ºç©º";
         return false;
     }
 	if (maData.size()!=rData.size())
 	{
-		oss <<"\nÊı¾İ¼¯ºÏrDataÓëÆÚÍûÖµ¼¯ºÏmaDataĞĞÊı¾İ¸öÊı²»Æ¥Åä";
+		oss <<"\næ•°æ®é›†åˆrDataä¸æœŸæœ›å€¼é›†åˆmaDataè¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
 		err += oss.str();
 		return false;
 	}
@@ -197,12 +197,12 @@ SimFunc::SIMROWDeal(const DTRow &rData,const DTRows &GData, const DTRow &maData,
     {
         if (0==muData[i].size())
         {
-            err=" ÆÚÍûÖµ¾ØÕóÓĞĞĞÊı¾İÎª¿Õ";
+            err=" æœŸæœ›å€¼çŸ©é˜µæœ‰è¡Œæ•°æ®ä¸ºç©º";
             continue;
         }
         if (rData.size()!=muData[i].size()||maData.size()!=rData.size())
         {
-            oss <<"\nÊı¾İ¼¯ºÏÓëÆÚÍûÖµ¼¯ºÏµÚ" << i<<"ĞĞÊı¾İ¸öÊı²»Æ¥Åä";
+            oss <<"\næ•°æ®é›†åˆä¸æœŸæœ›å€¼é›†åˆç¬¬" << i<<"è¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
             err += oss.str();
             continue;
         }
@@ -259,12 +259,12 @@ SimFunc::SIMROWDealEx(DTRowParam rData,const DTRows &GData,const DTRow &maData,c
 	err=4;
 	if (0==muData.size())
 	{
-		err="ÆÚÍûÖµ¼¯ºÏÎª¿Õ";
+		err="æœŸæœ›å€¼é›†åˆä¸ºç©º";
 		return false;
 	}
 	if (maData.size()!=rData.size())
 	{
-		oss <<"\nÊı¾İ¼¯ºÏrDataÓëÆÚÍûÖµ¼¯ºÏmaDataĞĞÊı¾İ¸öÊı²»Æ¥Åä";
+		oss <<"\næ•°æ®é›†åˆrDataä¸æœŸæœ›å€¼é›†åˆmaDataè¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
 		err += oss.str();
 		return false;
 	}
@@ -292,7 +292,7 @@ SimFunc::SIMDeal(const DTRows &rcData,const DTRows &GData,const DTRow &maData,co
     {
         if (0==muData.size())
         {
-            err="ÆÚÍûÖµ¼¯ºÏÎª¿Õ";
+            err="æœŸæœ›å€¼é›†åˆä¸ºç©º";
             minSim=1;
             maxSim=1;
             avSim=1;
@@ -323,19 +323,19 @@ SimFunc::SIMDeal(const DTRows &rcData,const DTRows &GData,const DTRow &maData,co
         //{
         //    if (0==muData[m].size())
         //    {
-        //        err+=" ÆÚÍûÖµ¾ØÕóÓĞĞĞÊı¾İÎª¿Õ";
+        //        err+=" æœŸæœ›å€¼çŸ©é˜µæœ‰è¡Œæ•°æ®ä¸ºç©º";
         //        continue;
         //    }
         //    /*ss<<i;
-        //    ss <<"Êı¾İ¼¯ºÏµÚ"<< i<<"ĞĞÓëÆÚÍûÖµ¼¯ºÏµÚ" << m<<"ĞĞÊı¾İ¸öÊı²»Æ¥Åä";
-        //    oss <<"Êı¾İ¼¯ºÏµÚ"<< i<<"ĞĞÓëÆÚÍûÖµ¼¯ºÏµÚ" << m<<"ĞĞÊı¾İ¸öÊı²»Æ¥Åä";
+        //    ss <<"æ•°æ®é›†åˆç¬¬"<< i<<"è¡Œä¸æœŸæœ›å€¼é›†åˆç¬¬" << m<<"è¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
+        //    oss <<"æ•°æ®é›†åˆç¬¬"<< i<<"è¡Œä¸æœŸæœ›å€¼é›†åˆç¬¬" << m<<"è¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
         //        strTemp += oss.str();
-        //    err+="Êı¾İ¼¯ºÏµÚ%dĞĞÓëÆÚÍûÖµ¼¯ºÏµÚ%dĞĞÊı¾İ¸öÊı²»Æ¥Åä";*/
+        //    err+="æ•°æ®é›†åˆç¬¬%dè¡Œä¸æœŸæœ›å€¼é›†åˆç¬¬%dè¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";*/
         //    if (rcData[i].size()!=muData[m].size()||maData.size()!=rcData[i].size())
         //    {
-        //        oss <<"\nÊı¾İ¼¯ºÏµÚ"<< i<<"ĞĞÓëÆÚÍûÖµ¼¯ºÏµÚ" << m<<"ĞĞÊı¾İ¸öÊı²»Æ¥Åä";
+        //        oss <<"\næ•°æ®é›†åˆç¬¬"<< i<<"è¡Œä¸æœŸæœ›å€¼é›†åˆç¬¬" << m<<"è¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";
         //        /*strTemp += oss.str();
-        //        err+="Êı¾İ¼¯ºÏµÚ%dĞĞÓëÆÚÍûÖµ¼¯ºÏµÚ%dĞĞÊı¾İ¸öÊı²»Æ¥Åä";*/
+        //        err+="æ•°æ®é›†åˆç¬¬%dè¡Œä¸æœŸæœ›å€¼é›†åˆç¬¬%dè¡Œæ•°æ®ä¸ªæ•°ä¸åŒ¹é…";*/
         //        err += oss.str();
         //        return false;
         //    }
@@ -375,7 +375,7 @@ SimFunc::SIMDeal(const DTRows &rcData,const DTRows &GData,const DTRow &maData,co
     }
     if (0==rcData.size())
     {
-        err="Ñù±¾Êı¾İÎª¿Õ";
+        err="æ ·æœ¬æ•°æ®ä¸ºç©º";
         minSim=1;
         maxSim=1;
         avSim=1;

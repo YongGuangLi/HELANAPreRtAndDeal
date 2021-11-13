@@ -1,4 +1,4 @@
-#ifndef __SIMFUNC_H__
+ï»¿#ifndef __SIMFUNC_H__
 #define __SIMFUNC_H__
 
 #include "AlgoVarDef.h"
@@ -7,10 +7,10 @@
 class SimFunc
 {
 public:
-	unsigned int			mNSampleNum;		// Ñù±¾ÊıÄ¿
-	unsigned int			mDPointNum;			// ²âµã¸öÊı
-	PublicMatrixPtr			mMu;				// ¾ùÖµ	  ĞĞ:²âµã¸öÊı,ÁĞÔëÒô¼¶±ğ
-	//PublicMatrixPtr			mData;				// Ñù±¾Êı¾İ ĞĞ:Ñù±¾Êı¾İ×éµÄ¸öÊı,ÁĞ:²âµã¸öÊı
+	unsigned int			mNSampleNum;		// æ ·æœ¬æ•°ç›®
+	unsigned int			mDPointNum;			// æµ‹ç‚¹ä¸ªæ•°
+	PublicMatrixPtr			mMu;				// å‡å€¼	  è¡Œ:æµ‹ç‚¹ä¸ªæ•°,åˆ—å™ªéŸ³çº§åˆ«
+	//PublicMatrixPtr			mData;				// æ ·æœ¬æ•°æ® è¡Œ:æ ·æœ¬æ•°æ®ç»„çš„ä¸ªæ•°,åˆ—:æµ‹ç‚¹ä¸ªæ•°
 	PublicMatrixPtr			mG;
 	PublicMatrixPtr			GW;
 	PublicMatrixPtr			GA;
@@ -27,42 +27,42 @@ public:
 
 	bool calEstValue(const DTRowParam &rData,const DTRows &rMuData,
 					const DTRow &rMaData,const DTRows &rGData,DTRow &mt,
-					double & msim,std::vector<double> &pm);//add ·¢µçÄÜÁ¦¹¦ÄÜÀ©Õ¹
+					double & msim,std::vector<double> &pm);//add å‘ç”µèƒ½åŠ›åŠŸèƒ½æ‰©å±•
 //private:
 	bool setMerry(const DTRows &vectorDataMu,const DTRows &vectorDataG);
 	bool setData(const DTRows &vectorDataMu,const DTRows &vectorDataG);
 	//void getData(DTRows &rGData);
 
-	// ¹¦ÄÜÃèÊö: ÀúÊ·µ÷ÓÃÏàËÆ¶ÈËã·¨
+	// åŠŸèƒ½æè¿°: å†å²è°ƒç”¨ç›¸ä¼¼åº¦ç®—æ³•
 	/*******************************************************************************
-	* º¯ Êı Ãû: SIMDeal
-	* º¯ÊıÃèÊö: ÀúÊ·µ÷ÓÃÏàËÆ¶ÈËã·¨
-	* ²ÎÊıËµÃ÷: 
-	*    Èë ²Î: const vector<DTRow> rcData ÀúÊ·Ñù±¾¼¯ºÏ const vector<DTRow> muData ÆÚÍûÖµ¼¯ºÏ
-	*    ³ö ²Î: double &minSim ÏàËÆ¶ÈÏŞÖµ double &maxSimÑù±¾Êı¾İÏàËÆ¶È×î´óÖµ double &avSimÑù±¾Êı¾İÏàËÆ¶ÈÆ½¾ùÖµ
- 				DTRow &vSimÑù±¾ÏàËÆ¶È¼¯ºÏ DTRows &vpmÑù±¾²âµãÏàËÆ¶È¼¯ºÏ DTRows &vmtÑù±¾ÆÚÍûÖµ¼¯ºÏ
-	* ·µ »Ø Öµ:
-	*    ³É ¹¦:
-	*    Ê§ °Ü:	
-	*  ×÷  Õß : Íõ¿­£¬15802613961
-	* ´´½¨ÈÕÆÚ: 2016-1-6 15:03:34
+	* å‡½ æ•° å: SIMDeal
+	* å‡½æ•°æè¿°: å†å²è°ƒç”¨ç›¸ä¼¼åº¦ç®—æ³•
+	* å‚æ•°è¯´æ˜: 
+	*    å…¥ å‚: const vector<DTRow> rcData å†å²æ ·æœ¬é›†åˆ const vector<DTRow> muData æœŸæœ›å€¼é›†åˆ
+	*    å‡º å‚: double &minSim ç›¸ä¼¼åº¦é™å€¼ double &maxSimæ ·æœ¬æ•°æ®ç›¸ä¼¼åº¦æœ€å¤§å€¼ double &avSimæ ·æœ¬æ•°æ®ç›¸ä¼¼åº¦å¹³å‡å€¼
+ 				DTRow &vSimæ ·æœ¬ç›¸ä¼¼åº¦é›†åˆ DTRows &vpmæ ·æœ¬æµ‹ç‚¹ç›¸ä¼¼åº¦é›†åˆ DTRows &vmtæ ·æœ¬æœŸæœ›å€¼é›†åˆ
+	* è¿” å› å€¼:
+	*    æˆ åŠŸ:
+	*    å¤± è´¥:	
+	*  ä½œ  è€… : ç‹å‡¯ï¼Œ15802613961
+	* åˆ›å»ºæ—¥æœŸ: 2016-1-6 15:03:34
 	*******************************************************************************/
 
 	 bool SIMDeal(const DTRows &rcData,const DTRows &GData,const DTRow &maData,const DTRows &muData,double &minSim,double &maxSim,double &avSim,DTRow &vSim,DTRows &vpm,DTRows &vmt,std::string &err);
 		//
-	// ¹¦ÄÜÃèÊö: ÊµÊ±µ÷ÓÃÏàËÆ¶ÈËã·¨
+	// åŠŸèƒ½æè¿°: å®æ—¶è°ƒç”¨ç›¸ä¼¼åº¦ç®—æ³•
 	/*******************************************************************************
-	* º¯ Êı Ãû: SIMROWDeal
-	* º¯ÊıÃèÊö: ÏàËÆ¶ÈËã·¨
-	* ²ÎÊıËµÃ÷: 
-	*    Èë ²Î: const vector<double> rcData Ò»×é²âµãÊı¾İ,const vector<DTRow> muData ÆÚÍûÖµ¼¯ºÏ
-	*    ³ö ²Î: double & msim Ñù±¾ÏàËÆ¶È std::vector<double> &pm ²âµãÏàËÆ¶È¼¯ºÏ std::vector<double> &mt Ò»×é²âµãÆÚÍûÖµ int &num ÔëÉù±È
-			   std::string &err Òì³£ĞÅÏ¢
-	* ·µ »Ø Öµ:
-	*    ³É ¹¦:
-	*    Ê§ °Ü:	
-	*  ×÷  Õß : Íõ¿­£¬15802613961
-	* ´´½¨ÈÕÆÚ: 2016-1-5 16:44:32
+	* å‡½ æ•° å: SIMROWDeal
+	* å‡½æ•°æè¿°: ç›¸ä¼¼åº¦ç®—æ³•
+	* å‚æ•°è¯´æ˜: 
+	*    å…¥ å‚: const vector<double> rcData ä¸€ç»„æµ‹ç‚¹æ•°æ®,const vector<DTRow> muData æœŸæœ›å€¼é›†åˆ
+	*    å‡º å‚: double & msim æ ·æœ¬ç›¸ä¼¼åº¦ std::vector<double> &pm æµ‹ç‚¹ç›¸ä¼¼åº¦é›†åˆ std::vector<double> &mt ä¸€ç»„æµ‹ç‚¹æœŸæœ›å€¼ int &num å™ªå£°æ¯”
+			   std::string &err å¼‚å¸¸ä¿¡æ¯
+	* è¿” å› å€¼:
+	*    æˆ åŠŸ:
+	*    å¤± è´¥:	
+	*  ä½œ  è€… : ç‹å‡¯ï¼Œ15802613961
+	* åˆ›å»ºæ—¥æœŸ: 2016-1-5 16:44:32
 	*******************************************************************************/
 	 bool SIMROWDeal(const DTRow &rData,const DTRows &GData,const DTRow &maData,const DTRows &muData,
                             double & msim,std::vector<double> &pm,std::vector<double> &mt,std::string &err);
@@ -74,11 +74,11 @@ public:
 class BaseSim  
 {
 	public:
-		unsigned int			mNSampleNum;		// Ñù±¾ÊıÄ¿
-		unsigned int			mDPointNum;			// ²âµã¸öÊı
-		PublicMatrixPtr			mData;				// Ñù±¾Êı¾İ ĞĞ:Ñù±¾Êı¾İ×éµÄ¸öÊı,ÁĞ:²âµã¸öÊı
-		PublicMatrixPtr			mGMu;				// ¾ùÖµ	  ĞĞ:²âµã¸öÊı,ÁĞÔëÒô¼¶±ğ
-		PublicMatrixPtr			mGnMu;				// ¾ùÖµ	  ĞĞ:²âµã¸öÊı,ÁĞÔëÒô¼¶±ğ
+		unsigned int			mNSampleNum;		// æ ·æœ¬æ•°ç›®
+		unsigned int			mDPointNum;			// æµ‹ç‚¹ä¸ªæ•°
+		PublicMatrixPtr			mData;				// æ ·æœ¬æ•°æ® è¡Œ:æ ·æœ¬æ•°æ®ç»„çš„ä¸ªæ•°,åˆ—:æµ‹ç‚¹ä¸ªæ•°
+		PublicMatrixPtr			mGMu;				// å‡å€¼	  è¡Œ:æµ‹ç‚¹ä¸ªæ•°,åˆ—å™ªéŸ³çº§åˆ«
+		PublicMatrixPtr			mGnMu;				// å‡å€¼	  è¡Œ:æµ‹ç‚¹ä¸ªæ•°,åˆ—å™ªéŸ³çº§åˆ«
 		std::string				mStrErrorMessage;
 		BaseSim(void);
 		~BaseSim(void);

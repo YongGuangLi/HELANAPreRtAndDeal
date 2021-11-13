@@ -1,9 +1,9 @@
-/*******************************************************************************
-* Copyright£¨C£©,2010-2015,DTXY Tech .Co.Ltd;
-* ÎÄ ¼þ Ãû: AlgoFunc.cpp
-* ÎÄ¼þÃèÊö: Õï¶ÏËã·¨
-*  ×÷  Õß : %ÁÖÏþÓê%
-* ´´½¨ÈÕÆÚ: 2016-1-18 16:21:37
+ï»¿/*******************************************************************************
+* Copyrightï¼ˆCï¼‰,2010-2015,DTXY Tech .Co.Ltd;
+* æ–‡ ä»¶ å: AlgoFunc.cpp
+* æ–‡ä»¶æè¿°: è¯Šæ–­ç®—æ³•
+*  ä½œ  è€… : %æž—æ™“é›¨%
+* åˆ›å»ºæ—¥æœŸ: 2016-1-18 16:21:37
 *******************************************************************************/
 #include "AlgoFunc.h"
 
@@ -19,7 +19,7 @@ bool TRAINSAMPLEDeal(unsigned short rM,
 								 const DTRow &rMa, 
 								 TrainSampleResult &lTrainSampleRslt)
 {
-	//KmeanËã·¨
+	//Kmeanç®—æ³•
 	if (rM > rData.size()) return false;
 	DTRow alphaKmeanRet, muKmeanRet, sigmaKmeanRet;
 	unsigned int rSiLine, rSiDim, rSiLineLine;
@@ -27,7 +27,7 @@ bool TRAINSAMPLEDeal(unsigned short rM,
 	Kmeanfun::KmeanFun(rM, rData, alphaKmeanRet, rAlLine, rAlDim, muKmeanRet, rMu0Line, 
 						rMu0Dim, sigmaKmeanRet, rSiLine, rSiDim, rSiLineLine);
 
-	//GMM-EMËã·¨
+	//GMM-EMç®—æ³•
 	unsigned int lNSampleNum = rData.size();
 	if (lNSampleNum == 0) return false;
 
@@ -65,7 +65,7 @@ bool TRAINSAMPLEDeal(unsigned short rM,
 		return false;
 	}
 	delete simfunc;
-	//°Ù·Ö±ÈÏÔÊ¾
+	//ç™¾åˆ†æ¯”æ˜¾ç¤º
 	lTrainSampleRslt.mAvSim	*= 100;
 	lTrainSampleRslt.mMinSim *= 100;
 	lTrainSampleRslt.mMaxSim *= 100;
@@ -103,7 +103,7 @@ bool SIMROWDeal(const DTRow &rData,
 		return false;
 	}
 	delete simfunc;
-   //°Ù·Ö±ÈÏÔÊ¾
+   //ç™¾åˆ†æ¯”æ˜¾ç¤º
    msim *= 100;
    for (unsigned int i = 0; i < pm.size(); i++)
    {
@@ -130,7 +130,7 @@ bool SIMROWDealEx(DTRowParam rData,
 		return false;
 	}
 	delete simfunc;
-	//°Ù·Ö±ÈÏÔÊ¾
+	//ç™¾åˆ†æ¯”æ˜¾ç¤º
 	/*msim *= 100;
 	for (unsigned int i = 0; i < pm.size(); i++)
 	{

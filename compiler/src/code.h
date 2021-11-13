@@ -1,4 +1,4 @@
-#ifndef __CODE_H__
+ï»¿#ifndef __CODE_H__
 #define __CODE_H__
 
 #include "tree.h"
@@ -33,19 +33,19 @@ public:
         m_node=node;
     }
 public:
-    //´´½¨ĞÂµÄ´úÂë
+    //åˆ›å»ºæ–°çš„ä»£ç 
     void NewCode(int kind);
-    //½«±êºÅ¶¨ÒåÌí¼Óµ½´úÂë±íÖĞ
+    //å°†æ ‡å·å®šä¹‰æ·»åŠ åˆ°ä»£ç è¡¨ä¸­
     void DefineLab(int lab);
-    //·ÖÖ§º¯Êı
+    //åˆ†æ”¯å‡½æ•°
     void Branch(int lab);
-    //²úÉúÌø×ª¹¦ÄÜ
+    //äº§ç”Ÿè·³è½¬åŠŸèƒ½
     PNodeMeta Jump(int lab);
-    //×ª»»treeÎªdag,²¢²úÉú´úÂë
+    //è½¬æ¢treeä¸ºdag,å¹¶äº§ç”Ÿä»£ç 
     void Walk(PTreeMeta tp, int tlab=0, int flab=0);
-    //tree×ªÎªdag
+    //treeè½¬ä¸ºdag
     PNodeMeta ListNodes(PTreeMeta tp, int tlab=0, int flab=0);
-    //¼ÆËã
+    //è®¡ç®—
     void  Calculate(double& result);
 };
 

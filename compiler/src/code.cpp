@@ -1,4 +1,4 @@
-#include "code.h"
+ï»¿#include "code.h"
 #include "define.h"
 #include "except.h"
 
@@ -62,7 +62,7 @@ CCode::~CCode(void)
     }
 }
 
-//´´½¨ÐÂµÄ´úÂë
+//åˆ›å»ºæ–°çš„ä»£ç 
 void CCode::NewCode(int kind) 
 {
     PCodeMeta code=new CCodeMeta(kind,m_forest);
@@ -70,14 +70,14 @@ void CCode::NewCode(int kind)
     m_forest.clear();
 }
 
-//×ª»»treeÎªdag
+//è½¬æ¢treeä¸ºdag
 void CCode::Walk(PTreeMeta tp, int tlab, int flab) 
 {
     ListNodes(tp, tlab, flab);
     NewCode(Gen);
 }
 
-//tree×ªÎªdag
+//treeè½¬ä¸ºdag
 PNodeMeta CCode::ListNodes(PTreeMeta tp, int tlab, int flab)
 {
     PNodeMeta  p=NULL, l=NULL, r=NULL;
@@ -205,7 +205,7 @@ PNodeMeta CCode::ListNodes(PTreeMeta tp, int tlab, int flab)
 }
 
 
-//½«±êºÅ¶¨ÒåÌí¼Óµ½´úÂë±íÖÐ
+//å°†æ ‡å·å®šä¹‰æ·»åŠ åˆ°ä»£ç è¡¨ä¸­
 void CCode::DefineLab(int lab) 
 {
     PSymbolMeta p = m_syms->LabelSym(lab);
@@ -214,7 +214,7 @@ void CCode::DefineLab(int lab)
     NewCode(Label);
 }
 
-//·ÖÖ§º¯Êý
+//åˆ†æ”¯å‡½æ•°
 void CCode::Branch(int lab) 
 {
     //PSymbolMeta p = m_syms->LabelSym(lab);
@@ -224,7 +224,7 @@ void CCode::Branch(int lab)
 }
 
 
-//²úÉúÌø×ª¹¦ÄÜ
+//äº§ç”Ÿè·³è½¬åŠŸèƒ½
 PNodeMeta CCode::Jump(int lab) 
 {
     PSymbolMeta sym = m_syms->LabelSym(lab);
@@ -232,7 +232,7 @@ PNodeMeta CCode::Jump(int lab)
     return m_node->NewNode(JUMP, node , NULL, NULL);
 }
 
-//¼ÆËã
+//è®¡ç®—
 void  CCode::Calculate(double& result)
 {
     result=0;
@@ -350,7 +350,7 @@ void CALLCal(PPNodeMeta  p)
 
     if(index>=DFUNC && index<SFUNC)
     {
-        if(index==4)  //double FDAHPS(double pa,double sa); Í¨¹ýÑ¹Á¦ºÍìØÇóÆøÌåµÄìÊ 
+        if(index==4)  //double FDAHPS(double pa,double sa); é€šè¿‡åŽ‹åŠ›å’Œç†µæ±‚æ°”ä½“çš„ç„“ 
         {
             double tmpvalue = (*bInt)->m_value ;
             if(tmpvalue==0)
@@ -365,7 +365,7 @@ void CALLCal(PPNodeMeta  p)
     }
     else if(index<VFUNC)
     {
-        if(index==20) //double FSTSP(double t); Í¨¹ýÑ¹Á¦ÇóÎÂ¶È ,²ÎÊý£½0»ò>1290»áµ¼ÖÂ³ÌÐòÕ¼ÓÃCPU 100%×ÊÔ´
+        if(index==20) //double FSTSP(double t); é€šè¿‡åŽ‹åŠ›æ±‚æ¸©åº¦ ,å‚æ•°ï¼0æˆ–>1290ä¼šå¯¼è‡´ç¨‹åºå ç”¨CPU 100%èµ„æº
         {
             double tmpvalue = (*bInt)->m_value ;
             if(tmpvalue==0||tmpvalue>1290)
