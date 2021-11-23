@@ -155,17 +155,9 @@ BasicMgr::loadIndex()
 bool
 BasicMgr::loadModeData()
 {
-    /*TbPubMode* opt=new TbPubMode();
-
-    bool rslt = opt->loadDB(mMapModeInfo);
-    opt->loadDBPoint(mMapAllPointSourceName);
-    opt->GetNeedPoint(mMapAllPointSourceName,mMapPointSourceName,mMapModeInfo);
-    delete opt;
-    Aos_Assert_ERS(!mMapModeInfo.empty(), false, Rsdb_ERROR_PUBMODEINFO);*/
-
     TbPubSetToPoint *opter = new TbPubSetToPoint(mQtOpt);
-    bool rslt = opter->loadDB(mMapSetInfo,mMapModleNameStatus,m_strFactoryCode);
-    opter->loadDBPoint(mMapAllPointSourceName,m_strFactoryCode);
+    bool rslt = opter->loadDB(mMapSetInfo, mMapModleNameStatus, m_strFactoryCode);
+    opter->loadDBPoint(mMapAllPointSourceName, m_strFactoryCode);
     delete opter;
     Aos_Assert_ERS(!mMapSetInfo.empty(), false, Rsdb_ERROR_PUBMODEINFO);
     return rslt;
@@ -183,26 +175,13 @@ bool
 BasicMgr::loadModeMuFun()
 {
     TbPubModeMethodAvg* opt=new TbPubModeMethodAvg(mQtOpt);
-    bool rslt = opt->loadDB(mMapModleNameStatus,mMapModeMethodAvg,mMapPointSourceName,m_strFactoryCode);
+    bool rslt = opt->loadDB(mMapModleNameStatus, mMapModeMethodAvg, mMapPointSourceName, m_strFactoryCode);
     delete opt;
-    opt=NULL;
+    opt = NULL;
     Aos_Assert_ERS(!mMapModeMethodAvg.empty(), false, Rsdb_ERROR_PUBMODEFUNINFO);
     return rslt;
 }
-//bool
-//BasicMgr::initialRtdb()
-//{
-//	std::string strFname = PubOpt::SystemOpt::GetCurExePath() + RTDB_CONFIG_FILE;
-//	if (!PubOpt::FileOpt::IsFindFile(strFname))
-//	{
-//		Aos_Assert_S(PubOpt::StringOpt::StringFormat(Rtdb_ERROR_RTDB_CONF,strFname.c_str()).c_str());
-//		return false;
-//	}
-//	SINGLETON(RtdbAdapter)->RtdbInitial(strFname);
-//
-//	Aos_Assert_R(SINGLETON(RtdbAdapter)->RtdbConnect(), false);
-//	return true;
-//}
+
 bool BasicMgr::UpdataCalTime(std::string strcalTime,const int itype)
 {
     return mSimpleOpt->UpdataCalTime(m_strFactoryCode,strcalTime,itype);
@@ -217,14 +196,26 @@ BasicMgr::loadConfigInfo(const bool isFirstCal,bool &isModConf,long	&mCurSeCalTi
     if(isFirstCal)
     {
         mSimpleOpt->getFactoryNo(m_strFactoryCode, mDCNo);
+        //select index_code, set_code, index_type, source_id, concat(out_var,out_var_func) out_var,local_var, expression,is_write_back,full_index_code ,is_clear_zero,is_steady_cal, min_value, \
+        max_value, default_value from v_pub_index t order by full_index_code asc
+
+                Aos_WriteLog_D("Start loadIndex()");
         Aos_Assert_R(loadIndex(), false);
+        Aos_WriteLog_D("End loadIndex()");
 
         //读入等配置信息
         Aos_WriteLog_D("Start loadModeData()");
+        //select * from v_eids_model_monit_point_all
+        //select point_code,source_id_original,set_code,full_point_code  from tb_pub_point
         Aos_Assert_R(loadModeData(), false);
-        Aos_WriteLog_D("end loadModeData()");
+        Aos_WriteLog_D("End loadModeData()");
 
+        //select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id, t.ma_value,t.model_value,t.model_value_relation \
+        from  tb_eids_model_method_avg t left join  v_eids_model_all p  on t.model_id=p.model_id order by model_id,model_condition_id
+
+        Aos_WriteLog_D("Start loadModeMuFun()");
         Aos_Assert_R(loadModeMuFun(), false);
+        Aos_WriteLog_D("End loadModeMuFun()");
 
         Aos_WriteLog_D("Start GetNeedPoint()");
         GetNeedPoint();
@@ -707,66 +698,70 @@ BasicMgr::checkWriteBackCodeRtdbIsExist()
     //DataValueInfo * point;
 
     set_itr = mMapSetInfo.begin();
-    //	for (;set_itr!=mMapSetInfo.end();++set_itr)
-    //	{
-    //		setobj = set_itr->second;
-    //		setobj->mRtdbSetJkdIsExist = true;
-    //		if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetJkd,NOExitSetJkd)||setobj->mSetJkd.empty())
-    //		{
-    //			setobj->mRtdbSetJkdIsExist = false;
-    //			Aos_Assert_S("*************");
-    //			Aos_WriteLog_D(PubOpt::StringOpt::StringFormat("名为:%s的原始值回写点配置错误!", source_id.c_str()).c_str());
-    //		}
-    //		setobj->mRtdbSetDfhIsExist = true;
-    //		if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetDfh,NOExitSetDfh)||setobj->mSetDfh.empty())
-    //		{
-    //			setobj->mRtdbSetDfhIsExist = false;
-    //		}
-    //		sys_itr = setobj->mMapSys.begin();
-    //		for (;sys_itr!=setobj->mMapSys.end();++sys_itr)
-    //		{
-    //			sysobj =sys_itr->second;
-    //			sysobj->mRtdbSysJkdIsExist = true;
-    //			if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysJkd,NOExitSysJkd)||sysobj->mSysJkd.empty())
-    //			{
-    //				sysobj->mRtdbSysJkdIsExist = false;
-    //			}
-    //			sysobj->mRtdbSysDfhIsExist = true;
-    //			if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysDfh,NOExitSysDfh)||sysobj->mSysDfh.empty())
-    //			{
-    //				sysobj->mRtdbSysDfhIsExist = false;
-    //			}
-    //			m_itr = sysobj->mMapModles.begin();
-    //			for (;m_itr!=sysobj->mMapModles.end();++m_itr)
-    //			{
-    //				model = m_itr->second;
-    //				if(model->mModeId=="ZZ2_3_1gj")
-    //					int ir = 100;
-    //				model->mRtdbSimModleIsWrite = true;
-    //				if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mSimPoint,NOExitModSim)||model->mSimPoint.empty())
-    //				{
-    //					model->mRtdbSimModleIsWrite = false;
-    //				}
-    //				model->mRtdbModleConIsWrite = true;
-    //				if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mCondIdSource,NOExitModCon)||model->mCondIdSource.empty())
-    //				{
-    //					model->mRtdbModleConIsWrite = false;
-    //				}
-    //				g_itr = model->mMapGroup.begin();
-    //				for (;g_itr!=model->mMapGroup.end();++g_itr)
-    //				{
-    //					groupobj = g_itr->second;
-    //					groupobj->mRtdbGroupJkdIsExist = true;
-    //					if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(groupobj->m_GroupJkd,NOExitGroupSim)||groupobj->m_GroupJkd.empty())
-    //					{
-    //						groupobj->mRtdbGroupJkdIsExist = false;
-    //					}
-    //					checkWritePointRtdbIsExist(groupobj->mMapGroupPoint);
-    //				}
+    for (;set_itr!=mMapSetInfo.end();++set_itr)
+    {
+        setobj = set_itr->second;
+        setobj->mRtdbSetJkdIsExist = true;
 
-    //			}
-    //		}
-    //	}
+//        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetJkd, NOExitSetJkd) ||setobj->mSetJkd.empty())
+//        {
+//            setobj->mRtdbSetJkdIsExist = false;
+//            Aos_Assert_S("*************");
+//            Aos_WriteLog_D(PubOpt::StringOpt::StringFormat("名为:%s的原始值回写点配置错误!", source_id.c_str()).c_str());
+//        }
+        setobj->mRtdbSetDfhIsExist = true;
+
+//        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetDfh,NOExitSetDfh)||setobj->mSetDfh.empty())
+//        {
+//            setobj->mRtdbSetDfhIsExist = false;
+//        }
+
+        sys_itr = setobj->mMapSys.begin();
+        for (;sys_itr!=setobj->mMapSys.end();++sys_itr)
+        {
+            sysobj =sys_itr->second;
+            sysobj->mRtdbSysJkdIsExist = true;
+//            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysJkd,NOExitSysJkd)||sysobj->mSysJkd.empty())
+//            {
+//                sysobj->mRtdbSysJkdIsExist = false;
+//            }
+            sysobj->mRtdbSysDfhIsExist = true;
+//            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysDfh,NOExitSysDfh)||sysobj->mSysDfh.empty())
+//            {
+//                sysobj->mRtdbSysDfhIsExist = false;
+//            }
+            m_itr = sysobj->mMapModles.begin();
+            for (;m_itr!=sysobj->mMapModles.end();++m_itr)
+            {
+                model = m_itr->second;
+                model->mRtdbSimModleIsWrite = true;
+//                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mSimPoint,NOExitModSim) || model->mSimPoint.empty())
+//                {
+//                    model->mRtdbSimModleIsWrite = false;
+//                }
+
+                model->mRtdbModleConIsWrite = true;
+//                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mCondIdSource,NOExitModCon)||model->mCondIdSource.empty())
+//                {
+//                    model->mRtdbModleConIsWrite = false;
+//                }
+                g_itr = model->mMapGroup.begin();
+
+                for (;g_itr!=model->mMapGroup.end();++g_itr)
+                {
+                    groupobj = g_itr->second;
+                    groupobj->mRtdbGroupJkdIsExist = true;
+//                    if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(groupobj->m_GroupJkd,NOExitGroupSim)||groupobj->m_GroupJkd.empty())
+//                    {
+//                        groupobj->mRtdbGroupJkdIsExist = false;
+//                    }
+                    checkWritePointRtdbIsExist(groupobj->mMapGroupPoint);
+                }
+
+            }
+        }
+    }
+
     sanityCheck(2, "checkWriteBackCodeRtdbIsExist cost time: %ld;");
     Aos_WriteLog_D("checkWriteBackCodeRtdbIsExist end!");
     return true;
@@ -984,18 +979,6 @@ BasicMgr::rtdbGetRtTagTime(long &lTimeStamp)
 bool
 BasicMgr::loadPointData(long &lTimeStamp,const long nowTime)
 {
-    //Aos_Assert_R(loadDPointValue(lTimeStamp,mMapDataValueInfo), false);
-    //Aos_Assert_R(SINGLETON(RtdbOpt)->GetTagValues(lTimeStamp,nowTime, mMapModeInfo,mMapPointSourceName), false);
-    //	if (eFromRtdb==msysType)
-    //	{
-    //        Aos_Assert_R(SINGLETON(RtdbOpt)->GetTagValues(lTimeStamp,nowTime, mMapSetInfo,mMapPointSourceName,mMapPointData), false);
-    //	}
-    //	else
-    //	{
-    //		Aos_Assert_R(RecBuffer(lTimeStamp,nowTime, mMapSetInfo,mMapPointSourceName,mMapPointData), false);
-    //	}
-
-
     pubPointValue->checkModelModifyStatus();
 
     pubPointValue->loadDB(lTimeStamp,nowTime, mMapSetInfo, mMapPointSourceName, mMapPointData);
@@ -1173,7 +1156,7 @@ BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
         if(iter_m->second->mModeId=="ZZ_3_dg"||iter_m->second->mModeId=="ZZ_3_qb")
             int i=100;
 
-        if((!iter_m->second->m_IsDeal)||iter_m->second->mCondId.empty())
+        if((!iter_m->second->m_IsDeal) || iter_m->second->mCondId.empty())
             continue;
 
         fun_iter=mMapModeMethodAvg.find(iter_m->second->mModeId);

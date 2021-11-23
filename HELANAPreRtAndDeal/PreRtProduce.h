@@ -17,7 +17,7 @@
 class PreRtProduce : public Thread
 {
 public:
-    PreRtProduce(const std::string &strFactoryCode);
+    PreRtProduce(const std::string &strFactoryCode = "");
     virtual ~PreRtProduce(void);
 public:
     // 功能描述: 初始化计算服务

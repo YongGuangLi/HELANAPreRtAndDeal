@@ -2,6 +2,7 @@
 #define PUBPOINTVALUE_H
 #include <QCoreApplication>
 #include <string>
+#include <unistd.h>
 #include "RDbOperationComplex.h"
 #include "RsdbAdapter.h"
 #include "RDbHead.h"

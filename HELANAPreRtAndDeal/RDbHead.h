@@ -95,8 +95,8 @@ max_value, default_value from v_pub_index t order by full_index_code asc";
 const std::string g_strModeMuConfSQL =
         "select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id,\
         t.ma_value,t.model_value,t.model_value_relation \
-from  tb_eids_model_method_avg t left join  v_eids_model_all p \
-on t.model_id=p.model_id order by model_id,model_condition_id";
+from  tb_eids_model_method_avg t left join  tb_eids_model p \
+on t.model_id=p.id order by model_id,model_condition_id";
 
 //查询指标与点的全点名
 const std::string g_strPubPointSQL = 
@@ -120,7 +120,7 @@ const std::string g_strSysCalTimeSQL =
 
 //更新系统计算时间
 const std::string g_strUpdateSysCalTimeSQL = 
-        "update TB_PUB_PARAM set param_value = '%s',compute_type=%d where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
+        "update TB_PUB_PARAM set param_value = '%s',compute_type=%d where param_code='MODEL_IS_MODIFY';";
 
 //查询模型配置更改标识
 const std::string g_strFactoryNoSQL = 
@@ -313,9 +313,8 @@ const std::string g_strRslCosineUpBackInSQL =
 //liyg
 #define SQL_PUB_POINT_VALUE_CUR "select full_point_code, point_value,timestamp from tb_pub_point_value_cur"
 
-#define SQL_MODEL_CONFIG_STATUS "select param_value from tb_pub_param where param_code = 'ModelConfigStatus'"
+#define SQL_MODEL_CONFIG_STATUS "select param_status from tb_pub_param where param_code = 'MODEL_IS_MODIFY'"
 
-
-#define SQL_UPDATE_MODEL_CONFIG_STATUS "update tb_pub_param set param_value = 0  where param_code = 'ModelConfigStatus'"
+#define SQL_UPDATE_MODEL_CONFIG_STATUS "update tb_pub_param set param_status = 0  where param_code = 'MODEL_IS_MODIFY'"
 
 #endif

@@ -53,7 +53,7 @@ RecursiveCalculateIndex::startCalculate(
 	Aos_Assert_R(pRtdbTime > 0, false);
 
 	//mCnPeriodDateTm = (time_t)lTime;
-	calculateSetCondition(pMapIndexConfInfo, pMapDataValue);	
+    //calculateSetCondition(pMapIndexConfInfo, pMapDataValue);
 	calculateIndex(pMapIndexConfInfo, pMapDataValue,mMapWrite);
 	//sanityCheck(pMapDataValueInfo);
 	/*sanityCheck1(pMapDataValueInfo);

@@ -111,7 +111,7 @@ RDbOperationSimple::getIndexUpdataTime(std::string strFactoryCode,long &calTime)
 }
 bool 
 RDbOperationSimple::UpdataCalTime(std::string strFactoryCode,std::string strcalTime,const int itype)
-{	
+{
     //std::string strTime ="2018-5-29 12:12:28";
     //strcalTime = strTime;
     //bool nErr;

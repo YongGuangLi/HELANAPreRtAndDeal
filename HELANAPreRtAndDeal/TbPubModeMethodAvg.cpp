@@ -123,16 +123,17 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
 
         mode_fun->mModeId = strModel;
 
-        if(strConditionId.empty()) continue;
-        modCon_iter=mode_fun->mMapmethodavg.find(strConditionId);
-        if (modCon_iter==mode_fun->mMapmethodavg.end())
+        if(strConditionId.empty())
+            continue;
+        modCon_iter = mode_fun->mMapmethodavg.find(strConditionId);
+        if (modCon_iter == mode_fun->mMapmethodavg.end())
         {
-            condtion_fun=new MethodAvg();
+            condtion_fun = new MethodAvg();
             condtion_fun->mCondId = strConditionId;
-            mode_fun->mMapmethodavg.insert(make_pair(strConditionId,condtion_fun));
+            mode_fun->mMapmethodavg.insert(make_pair(strConditionId, condtion_fun));
         }
         else
-            condtion_fun=modCon_iter->second;
+            condtion_fun = modCon_iter->second;
 
         condtion_fun->mDSimLimit = Util::CharPointerConvert2Number<double>(strSimLimit.c_str());
 
@@ -154,11 +155,13 @@ TbPubModeMethodAvg::loadValue(MapStringToBool &mMapModleNameStatus,MapStringToMo
             strPointList.clear();
             continue;
         }
+
         if (strMalist.empty())
         {
             condtion_fun->mIsOk= false;
             continue;
         }
+
         if('@' == strMalist.at(0))
             strMalist=strMalist.substr(1,strMalist.size());
         tempVec.clear();

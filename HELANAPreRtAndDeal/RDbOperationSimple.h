@@ -34,7 +34,7 @@ public:
 	
 	//获取电厂计算更新的时间
 	bool getIndexUpdataTime(std::string strFactoryCode,long &calTime);
-	bool UpdataCalTime(std::string strFactoryCode,std::string strcalTime,const int itype);
+    bool UpdataCalTime(std::string strFactoryCode,std::string strcalTime,const int itype);
 	bool isSaveTemp(const std::string pointId, const std::string setCode);
 
 		/* 

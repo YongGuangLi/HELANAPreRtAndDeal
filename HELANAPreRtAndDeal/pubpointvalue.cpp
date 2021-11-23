@@ -16,8 +16,10 @@ bool PubPointValue::checkModelModifyStatus()
         int status = mQtOpt->m_query->value(0).toInt();
         if(status == 1)
         {
+            Aos_Assert_S("MODEL_IS_MODIFY");
+            sleep(5);
             Aos_Assert_R(stmtPrepare(PUBPOINTVALUE, SQL_UPDATE_MODEL_CONFIG_STATUS), false);
-            qApp->exit(RETCODE_RESTART);
+            qApp->exit(0);
         }
     }
 
@@ -85,42 +87,24 @@ bool PubPointValue::loadDB(long &lTimeStamp, const long nowTime, MapStringToSetC
     Aos_Assert_R(stmtPrepare(PUBPOINTVALUE, SQL_PUB_POINT_VALUE_CUR), false);
 
 
-    MapStringToSetCfg_It iter_set;
-    MapStringToSysCfg_It iter_sys;
-    MapStringToDataMode_It iter_m;
-    MapStringToPointGroup_It iter_group;
-    MapStringToPointData_It  iter_allp;
-    SetCfg * setcf;
-    SysCfg * syscf;
-    DataMode * mode_info;
-    PointGroup* model_group;
-
-    //MapStringToMDataValueInfo_It d_itr;
-    MapStringToMDataValueInfo_It p_iter;
-
-    std::vector<VarParam>::iterator pcf_iter;
-    bool rslt;
-
-    MapStringToString_It iter = pPointSourceName.begin();
-
     while (mQtOpt->SQLStmtFetch())
     {
         std::string full_point_code = mQtOpt->m_query->value(0).toString().toStdString();
         double point_value = mQtOpt->m_query->value(1).toDouble();
         uint timestamp = mQtOpt->m_query->value(2).toDateTime().toTime_t();
 
-        iter = pPointSourceName.find(full_point_code);
+        MapStringToString_It iter = pPointSourceName.find(full_point_code);
         if (iter == pPointSourceName.end())
             continue;
 
         std::vector<std::string> lstRet;
-        rslt = Util::StringSplit(iter->second, lstRet, ",");
+        bool rslt = Util::StringSplit(iter->second, lstRet, ",");
         if(!rslt)
             continue;
 
         for (unsigned int j = 0; j < lstRet.size(); j++)
         {
-            iter_allp = mMapPointData.find(lstRet[j]);
+            MapStringToPointData_It iter_allp = mMapPointData.find(lstRet[j]);
             if (iter_allp != mMapPointData.end())
             {
                 iter_allp->second->setCurrVar(point_value);

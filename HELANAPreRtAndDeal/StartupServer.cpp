@@ -95,12 +95,15 @@ void   StartupServer::realtimeCal()
 
             mBaseMgr->CleanMapWrite();
 
+            //计算机组、系统、模型的Eps
             mCalculateIndex->startCalculate(mBaseMgr->getIndexConfInfo(), mBaseMgr->getPointData(), mBaseMgr->getmMapWrite(), mCurSeCalTime);
 
+            //计算模型的Con
             mPointPreCal->CalculateAllModeCon(mBaseMgr->getmMapSetInfo(),mBaseMgr->getPointData(), mBaseMgr->getIndexConfInfo(),mBaseMgr->getmMapWrite());
 
             mBaseMgr->SetAllMothAvgData();
 
+            //计算机组 系统 模型 SIM 健康度
             mPointPreCal->CalData(mBaseMgr->getMapModleNameStatus(),
                                   mBaseMgr->getmMapSetInfo(),
                                   mBaseMgr->getmMapModeMethodAvg(),
@@ -115,9 +118,6 @@ void   StartupServer::realtimeCal()
 
             mBaseMgr->WriteRsdb(mCurSeCalTime);
 
-            mBaseMgr->UpdataCalTime(PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime),0);
-
-            mBaseMgr->UpdateServiceVersion(m_strSerivceName, "v1.0.0", SINGLETON(Log)->getLogPath());
 
             lastSeCalTime =  Util::getNowTime();;
         }

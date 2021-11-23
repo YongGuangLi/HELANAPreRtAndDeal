@@ -434,10 +434,9 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
     QVariantList listId,listUptime;
     QVariantList listValue,listPerValue,listSim;
 
-    std::string UpTime;
     int icount = 0;
 
-    UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp, 0);
+    std::string UpTime = PubOpt::SystemOpt::DateTmToStr(mlCalTimeStamp, 0);
 
     for (set_iter = mMapSetInfo.begin();set_iter!=mMapSetInfo.end();++set_iter)
     {
@@ -466,27 +465,17 @@ bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
                             icount++;
                         }
                         else
-                        {
                             continue;
-                        }
+
                         if (point->m_IsGetPreValue)
-                        {
                             listPerValue<<point->mDPreValue;
-                        }
                         else
-                        {
-                            //listPerValue<<QVariant(QVariant::Double);
                             listPerValue<<0;
-                        }
+
                         if (point->m_IsGetSimValue)
-                        {
                             listSim<<point->mDSimValue;
-                        }
                         else
-                        {
-                            //listSim<<QVariant(QVariant::Double);
                             listSim<<0;
-                        }
                     }
                 }
 
@@ -603,7 +592,8 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
         {
             listUptime<<QString(UpTime.c_str());
             listValue<<setobj->mSetJkdValue;
-            listFdnlValue<<setobj->mSetDfhValue;
+            //listFdnlValue<<setobj->mSetDfhValue;
+            listFdnlValue<<QVariant(QVariant::Double);
             listId<<QString(setobj->mSet.c_str());
             listConValue<<QVariant(QVariant::Double);
             icount++;
@@ -616,7 +606,8 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
             {
                 listUptime<<QString(UpTime.c_str());
                 listValue<<sysobj->mSysJkdValue;
-                listFdnlValue<<sysobj->mSysDfhValue;
+                //listFdnlValue<<sysobj->mSysDfhValue;
+                listFdnlValue<<QVariant(QVariant::Double);
                 listId<<QString(sysobj->mSys.c_str());
                 listConValue<<QVariant(QVariant::Double);
                 icount++;
@@ -636,7 +627,6 @@ bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
                 }
             }
         }
-        //listValue<<QVariant(QVariant::Double);
     }
 
     for(int i = 0; i < icount; ++i)
@@ -696,13 +686,6 @@ bool AlarmSetDeal::RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,
             fileHandler.close();
         }
     }
-
-
-
-    if(QFile::exists(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt"))
-        QFile::remove(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
-
-    QFile::rename(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp", QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
 
     return nErr;
 }
@@ -766,11 +749,38 @@ void AlarmSetDeal::WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData
 {
     mlCalTimeStamp = mCurSeCalTime;
 
+    QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
+    if(fileHandler.open(QIODevice::Append))
+    {
+        QTextStream stream(&fileHandler);
+
+        stream<<"begin;"<<'\n';
+
+        fileHandler.close();
+    }
+
     RsltPointRtValuesRsdb(mMapSetInfo);
     RsltPointGroupRtValuesRsdb(mMapSetInfo);
     RsltModleRtValuesRsdb(mMapSetInfo);
     RsltDpointRtValuesRsdb(mMapPointData,strFactory);
     RsltIndexRtValuesRsdb(mMapPointData,strFactory);
+
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strUpdateSysCalTimeSQL.c_str(),PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime).c_str(), 1);
+
+    if(fileHandler.open(QIODevice::Append))
+    {
+        QTextStream stream(&fileHandler);
+
+        stream<<QString::fromStdString(strSQL)<<'\n';
+        stream<<"commit;"<<'\n';
+
+        fileHandler.close();
+    }
+
+    if(QFile::exists(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt"))
+        QFile::remove(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+
+    QFile::rename(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp", QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
 }
 
 bool AlarmSetDeal::RsltPointUpValuesRsdb()

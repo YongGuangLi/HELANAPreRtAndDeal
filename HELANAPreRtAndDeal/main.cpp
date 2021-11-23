@@ -48,16 +48,9 @@ int main(int argc, char *argv[])
     if (!initMain())
         return -1;
 
-    PreRtProduce* m_pOpt = new PreRtProduce("TS");
+    PreRtProduce* m_pOpt = new PreRtProduce();
     if (m_pOpt->InitService())
         m_pOpt->ServiceStart();
 
-    int e = a.exec();
-    if(e == RETCODE_RESTART)
-    {
-        // 传入 qApp->applicationFilePath()，启动自己
-        QProcess::startDetached(qApp->applicationFilePath(), QStringList());
-        return 0;
-    }
-
+    return a.exec();
 }
