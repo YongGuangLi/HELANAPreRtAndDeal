@@ -33,7 +33,7 @@ public:
 	bool updateIndexConfigStatus(const int &status,std::string strFactory);
 	
 	//获取电厂计算更新的时间
-	bool getIndexUpdataTime(std::string strFactoryCode,long &calTime);
+    bool getIndexUpdataTime(long &calTime);
     bool UpdataCalTime(std::string strFactoryCode,std::string strcalTime,const int itype);
 	bool isSaveTemp(const std::string pointId, const std::string setCode);
 

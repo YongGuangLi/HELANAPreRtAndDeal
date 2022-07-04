@@ -91,12 +91,12 @@ RDbOperationSimple::getIndexConfigStatus(std::string strFactoryCode)
 }
 
 bool 
-RDbOperationSimple::getIndexUpdataTime(std::string strFactoryCode,long &calTime)
+RDbOperationSimple::getIndexUpdataTime(long &calTime)
 {	
     std::string strTime;
 
     Aos_Assert_R(Util::QtConnect(mQtOpt), false);
-    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysCalTimeSQL.c_str(),strFactoryCode.c_str());
+    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strSysCalTimeSQL.c_str());
     Aos_Assert_R(stmtPrepare("getIndexConfigStatus",strSQL), false);
 
     while (mQtOpt->SQLStmtFetch())

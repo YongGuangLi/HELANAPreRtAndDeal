@@ -53,10 +53,10 @@ public:
                    const std::string strFactory,long mCurSeCalTime);
     bool UpdateServiceVersion(std::string strServiceName,std::string strVersion,std::string strLog);
 private:
-
+    bool TbPubPointValueCurToTxt();
     bool RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
     bool RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
-    bool RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
+    bool RsltModelRtValuesRsdb(MapStringToSetCfg &mMapSetInfo);
 
     bool RsltIndexRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);
     bool RsltDpointRtValuesRsdb(IN MapStringToPointData &mMapPointData,const std::string strFactory);

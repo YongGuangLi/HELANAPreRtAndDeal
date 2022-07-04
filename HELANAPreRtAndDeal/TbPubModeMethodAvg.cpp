@@ -58,10 +58,11 @@ TbPubModeMethodAvg::GetMuValue(std::vector<std::string>& tempVec,MethodAvg* cond
     }
     for (std::vector<std::string>::iterator it=tempVec.begin();it!=tempVec.end();++it)
     {
-        if('@'==(*it).at(0)) (*it)=(*it).substr(1,(*it).size());
+        if('@'==(*it).at(0))
+            (*it)=(*it).substr(1,(*it).size());
         condtion_fun->mVectorTempValue.clear();
-        rslt=Util::StringSplit(*it,condtion_fun->mVectorTempValue, ",",false);
-        if (!rslt||condtion_fun->mVectorTempValue.size()!=num)
+        rslt=  Util::StringSplit(*it,condtion_fun->mVectorTempValue, ",",false);
+        if (!rslt || condtion_fun->mVectorTempValue.size() != num)
             return false;
         if(!condtion_fun->CheckIntoFunValue(typeVec))
             return false;

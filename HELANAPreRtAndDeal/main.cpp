@@ -14,6 +14,7 @@
 #include "public_function_library.h"
 #include "ErrorDef.h"
 
+#define VERSION "2.0.0"
 
 MutexLock g_oScanFile;
 
@@ -43,6 +44,21 @@ bool initMain(void)
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
+
+    int optch = 0;
+    while((optch = getopt(argc, argv, "vV")) != -1)
+    {
+        // printf("optind: %d\n", optind); //下一个检索位置，即选项的参数位置
+        switch (optch)
+        {
+        case 'V':
+        case 'v':
+            printf("version %s\n", VERSION);
+            return 0;
+        default:
+            break;
+        }
+    }
 
 
     if (!initMain())

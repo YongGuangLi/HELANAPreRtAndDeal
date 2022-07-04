@@ -116,7 +116,7 @@ const std::string g_strSysStatusSQL =
 
 //查询计算到什么时间
 const std::string g_strSysCalTimeSQL = 
-        "select param_value from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY' and factory_code = '%s'";
+        "select param_value from TB_PUB_PARAM where param_code='MODEL_IS_MODIFY'";
 
 //更新系统计算时间
 const std::string g_strUpdateSysCalTimeSQL = 
@@ -312,6 +312,8 @@ const std::string g_strRslCosineUpBackInSQL =
 
 //liyg
 #define SQL_PUB_POINT_VALUE_CUR "select full_point_code, point_value,timestamp from tb_pub_point_value_cur"
+
+#define SQL_INSERT_PUB_POINT_VALUE_CUR  "INSERT INTO tb_pub_point_value_cur(model_id, full_point_code, full_index_code, point_value, timeStamp) VALUES (NULL, '%1', NULL, '%2', '%3');"
 
 #define SQL_MODEL_CONFIG_STATUS "select param_status from tb_pub_param where param_code = 'MODEL_IS_MODIFY'"
 

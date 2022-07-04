@@ -24,13 +24,13 @@ MutexLock*   RecursiveCalculateIndex::smMutexLock = new MutexLock();
 
 RecursiveCalculateIndex::RecursiveCalculateIndex()
 {
-	mCnPeriodDateTm = 0;
-	mPeriodTime = SINGLETON(ServiceEIDSPreConfig)->getServiceCalCycSec();
-	mFirstCal = false;
-	mElefTime = 0;
-	mElefFrontTime = 0;
-	Init();
-	SetStdWasp(97);
+    mCnPeriodDateTm = 0;
+    mPeriodTime = SINGLETON(ServiceEIDSPreConfig)->getServiceCalCycSec();
+    mFirstCal = false;
+    mElefTime = 0;
+    mElefFrontTime = 0;
+    Init();
+    SetStdWasp(97);
 }
 
 
@@ -41,37 +41,37 @@ RecursiveCalculateIndex::~RecursiveCalculateIndex()
 
 bool
 RecursiveCalculateIndex::startCalculate(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValue,
-			MapStringToDouble &mMapWrite,
-			const long &pRtdbTime)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValue,
+        MapStringToDouble &mMapWrite,
+        const long &pRtdbTime)
 {
-	//std::cout << pMapIndexConfInfo.size() << ":" << pMapPubSetInfo.size() << ":" << pMapDataValueInfo.size() << ";"<< std::endl;
-	Aos_Assert_R(!pMapDataValue.empty(), false);
-	//Aos_Assert_R(!pMapPubSetInfo.empty(), false);
-	Aos_Assert_R(!pMapIndexConfInfo.empty(), false);
-	Aos_Assert_R(pRtdbTime > 0, false);
+    //std::cout << pMapIndexConfInfo.size() << ":" << pMapPubSetInfo.size() << ":" << pMapDataValueInfo.size() << ";"<< std::endl;
+    Aos_Assert_R(!pMapDataValue.empty(), false);
+    //Aos_Assert_R(!pMapPubSetInfo.empty(), false);
+    Aos_Assert_R(!pMapIndexConfInfo.empty(), false);
+    Aos_Assert_R(pRtdbTime > 0, false);
 
-	//mCnPeriodDateTm = (time_t)lTime;
+    //mCnPeriodDateTm = (time_t)lTime;
     //calculateSetCondition(pMapIndexConfInfo, pMapDataValue);
-	calculateIndex(pMapIndexConfInfo, pMapDataValue,mMapWrite);
-	//sanityCheck(pMapDataValueInfo);
-	/*sanityCheck1(pMapDataValueInfo);
-	sanityCheck2(pMapDataValueInfo);
-	sanityCheck3(pMapDataValueInfo);*/
-	return true;
+    calculateIndex(pMapIndexConfInfo, pMapDataValue,mMapWrite);
+    //sanityCheck(pMapDataValueInfo);
+    /*sanityCheck1(pMapDataValueInfo);
+    sanityCheck2(pMapDataValueInfo);
+    sanityCheck3(pMapDataValueInfo);*/
+    return true;
 }
 
- // 功能描述: 
+// 功能描述:
 void
 RecursiveCalculateIndex::calculateSetCondition(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo)
 {
 
-	//MapStringToIndexConfInfo_It i_itr;
+    //MapStringToIndexConfInfo_It i_itr;
 
-	//calIndexParam(pMapIndexConfInfo, pMapDataValueInfo, i_itr->second);
+    //calIndexParam(pMapIndexConfInfo, pMapDataValueInfo, i_itr->second);
 
 }
 
@@ -87,16 +87,16 @@ RecursiveCalculateIndex::calculateSetCondition(
 /*---------------------------------------------------------------------------------*/
 void 
 RecursiveCalculateIndex::calculateIndex(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo,
-			MapStringToDouble &mMapWrite)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        MapStringToDouble &mMapWrite)
 {
     MapStringToIndexConfInfo_It iter;
 
-	MapStringToPointData_It  dp_iter;
-	MapStringToDouble_It	 rw_iter;
-	PubSetInfo* pub_set_info = NULL;
-	IndexConfigInfo* index_conf_info = NULL;
+    MapStringToPointData_It  dp_iter;
+    MapStringToDouble_It	 rw_iter;
+    PubSetInfo* pub_set_info = NULL;
+    IndexConfigInfo* index_conf_info = NULL;
 
     //开始计算指标
     for(iter = pMapIndexConfInfo.begin(); iter != pMapIndexConfInfo.end(); ++iter)
@@ -108,22 +108,22 @@ RecursiveCalculateIndex::calculateIndex(
             calIndexParam(pMapIndexConfInfo,pMapDataValueInfo, index_conf_info);
         }
 
-		if (!index_conf_info->mIsWriteRdtb)
-		{
-			std::string strLog = PubOpt::StringOpt::StringFormat("%s is_write_back = 0.",index_conf_info->mIndexCode.c_str());
-			Aos_WriteLog_D(strLog.c_str());
-			continue;
-		}
+        if (!index_conf_info->mIsWriteRdtb)
+        {
+            std::string strLog = PubOpt::StringOpt::StringFormat("%s is_write_back = 0.",index_conf_info->mIndexCode.c_str());
+            Aos_WriteLog_D(strLog.c_str());
+            continue;
+        }
 
-		dp_iter = pMapDataValueInfo.find(index_conf_info->mIndexCode);
-		if (dp_iter !=pMapDataValueInfo.end())   //回写插入启停指标
-		{
-			rw_iter = mMapWrite.find(dp_iter->second->mPSource);
-			if (rw_iter==mMapWrite.end())
-				mMapWrite.insert(make_pair(dp_iter->second->mPSource,dp_iter->second->getCurrVar(1)));
-			else
-				rw_iter->second = dp_iter->second->getCurrVar(1);
-		}
+        dp_iter = pMapDataValueInfo.find(index_conf_info->mIndexCode);
+        if (dp_iter !=pMapDataValueInfo.end())   //回写插入启停指标
+        {
+            rw_iter = mMapWrite.find(dp_iter->second->mPSource);
+            if (rw_iter==mMapWrite.end())
+                mMapWrite.insert(make_pair(dp_iter->second->mPSource,dp_iter->second->getCurrVar(1)));
+            else
+                rw_iter->second = dp_iter->second->getCurrVar(1);
+        }
     }
 
 }
@@ -141,16 +141,16 @@ RecursiveCalculateIndex::calculateIndex(
 /*---------------------------------------------------------------------------------*/
 void 
 RecursiveCalculateIndex::calIndexParam(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo,
-			IndexConfigInfo* pIndexConfInfo) 
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        IndexConfigInfo* pIndexConfInfo)
 {
-        //用计算引擎计算配置公式
-        mForeIndexForUsed.clear();
-        mForeIndexForUsed.push_back(pIndexConfInfo->mIndexCode);
-		calculateArith(pMapIndexConfInfo,pMapDataValueInfo, pIndexConfInfo);    //根据指标的计算公式进行指标计算，得到指标值
+    //用计算引擎计算配置公式
+    mForeIndexForUsed.clear();
+    mForeIndexForUsed.push_back(pIndexConfInfo->mIndexCode);
+    calculateArith(pMapIndexConfInfo,pMapDataValueInfo, pIndexConfInfo);    //根据指标的计算公式进行指标计算，得到指标值
 
-        mForeIndexForUsed.clear();
+    mForeIndexForUsed.clear();
 }
 
 
@@ -164,14 +164,14 @@ RecursiveCalculateIndex::calIndexParam(
 /*----------------------------------------------------------------------------*/
 void 
 RecursiveCalculateIndex::calculateArith(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo,
-			IndexConfigInfo* pIndexConfInfo)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        IndexConfigInfo* pIndexConfInfo)
 {
     pIndexConfInfo->mIsCalState = 1;           //绩效指标当前正在计算
 
-	std::string strLocVar = pIndexConfInfo->mLocalVar;                  //本地变量
-    if (!strLocVar.empty()&&strLocVar.substr(strLocVar.size()-1,1) == ",")						
+    std::string strLocVar = pIndexConfInfo->mLocalVar;                  //本地变量
+    if (!strLocVar.empty()&&strLocVar.substr(strLocVar.size()-1,1) == ",")
     {
         strLocVar = strLocVar.substr(0,strLocVar.size()-1);
     }
@@ -181,7 +181,7 @@ RecursiveCalculateIndex::calculateArith(
     }
     strLocVar= PubOpt::StringOpt::TrimString(strLocVar);
 
-	std::string strExp = pIndexConfInfo->mExpression;
+    std::string strExp = pIndexConfInfo->mExpression;
     strExp= PubOpt::StringOpt::TrimString(strExp);
 
     int iIndex = 0;
@@ -192,7 +192,7 @@ RecursiveCalculateIndex::calculateArith(
         strTemp = pIndexConfInfo->mOutFuncVarArray[i];
         strICode = strTemp;
         iIndex = strTemp.find("@");
-        if (iIndex != -1)	
+        if (iIndex != -1)
         {
             strICode = PubOpt::StringOpt::StringReplace(strICode,"@","_");
         }
@@ -203,40 +203,39 @@ RecursiveCalculateIndex::calculateArith(
         strOutVarVal += strValue;
         strOutVarVal += ",";
     }
-     //去掉最后的","(逗号)
+    //去掉最后的","(逗号)
     if (!strOutVarVal.empty())
     {
         strOutVarVal = strOutVarVal.substr(0,strOutVarVal.size()-1);     //外部变量
     }
 
-	////此指标配置有机组才计算
-	/*if(pMapPubSetInfo.find(pIndexConfInfo->mSetCode) == pMapPubSetInfo.end())
-	{
-		return;
-	}*/
-//if (pIndexConfInfo->mIndexCode=="M3_FH"||pIndexConfInfo->mIndexCode=="M4_FH")
-//	int tep = 100;
+    ////此指标配置有机组才计算
+    /*if(pMapPubSetInfo.find(pIndexConfInfo->mSetCode) == pMapPubSetInfo.end())
+    {
+        return;
+    }*/
+    //if (pIndexConfInfo->mIndexCode=="M3_FH"||pIndexConfInfo->mIndexCode=="M4_FH")
+    //	int tep = 100;
     double fValue = 0;
     try
     {
         if(!strExp.empty())
         {
             fValue = calEngine(pIndexConfInfo->mIndexCode, pIndexConfInfo->mTranOutVarAndFun, strLocVar, strOutVarVal, strExp);
-//if (pIndexConfInfo->mIndexCode == "M3_2yhtpfqdhgbz" || pIndexConfInfo->mIndexCode == "M1_SWDL")
-//{
-//std::string tt = PubOpt::StringOpt::StringFormat(
-//	"calEngine mTranOutVarAndFun:%s,strLocVar:%s,strOutVarVal:%s,value %s=%f;",
-// pIndexConfInfo->mTranOutVarAndFun.c_str(),
-// strLocVar.c_str(),
-// strOutVarVal.c_str(),
-// pIndexConfInfo->mIndexCode.c_str(),
-//fValue);
-//Aos_WriteLog_D(tt.c_str());
-//}
-		}
+            if (fValue == 0)
+            {
+                std::string tt = PubOpt::StringOpt::StringFormat("calEngine strExp:%s mTranOutVarAndFun:%s strOutVarVal:%s value:%s=%f;",
+                                                                 strExp.c_str(),
+                                                                 pIndexConfInfo->mTranOutVarAndFun.c_str(),
+                                                                 strOutVarVal.c_str(),
+                                                                 pIndexConfInfo->mIndexCode.c_str(),
+                                                                 fValue);
+                Aos_WriteLog_D(tt.c_str());
+            }
+        }
         
     }
-    catch (...) 
+    catch (...)
     {
         MapStringToPointData_It iter = pMapDataValueInfo.find(pIndexConfInfo->mIndexCode);
         if(iter != pMapDataValueInfo.end())
@@ -244,17 +243,17 @@ RecursiveCalculateIndex::calculateArith(
             iter->second->mError = 0;
         }
         
-		std::string strInfo;
-		if (pIndexConfInfo->mExpression.size() > 400)
-		{
-			strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, pIndexConfInfo->mIndexCode.c_str(), "公式字符过长", pIndexConfInfo->mTranOutVarAndFun.c_str());
-		}
-		else
-		{
-			strInfo = PubOpt::StringOpt::StringFormat(
-				IDS_INDEX_CONFIG_ERROR, pIndexConfInfo->mIndexCode.c_str(), 
-				pIndexConfInfo->mExpression.c_str(),pIndexConfInfo->mFDefaultVal);
-		}
+        std::string strInfo;
+        if (pIndexConfInfo->mExpression.size() > 400)
+        {
+            strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, pIndexConfInfo->mIndexCode.c_str(), "公式字符过长", pIndexConfInfo->mTranOutVarAndFun.c_str());
+        }
+        else
+        {
+            strInfo = PubOpt::StringOpt::StringFormat(
+                        IDS_INDEX_CONFIG_ERROR, pIndexConfInfo->mIndexCode.c_str(),
+                        pIndexConfInfo->mExpression.c_str(),pIndexConfInfo->mFDefaultVal);
+        }
         
         Aos_Assert_S(strInfo.c_str());
         fValue = pIndexConfInfo->mFDefaultVal;
@@ -281,33 +280,33 @@ RecursiveCalculateIndex::calculateArith(
 /*----------------------------------------------------------------------------*/
 double 
 RecursiveCalculateIndex::calEngine(std::string szICode,
-                            std::string szEngOutVar,
-                            std::string szEngLocVar,
-                            std::string szEngEvalVar,
-                            std::string szEngExp)
+                                   std::string szEngOutVar,
+                                   std::string szEngLocVar,
+                                   std::string szEngEvalVar,
+                                   std::string szEngExp)
 {
-	AutoLock autoLock(*smMutexLock);
+    AutoLock autoLock(*smMutexLock);
     double fVal = 0;
 
     static char*CbTag=NULL;
     static char* CbError=NULL;
     try
     {
-		PROGRAM(const_cast<char*>(szEngOutVar.c_str()),const_cast<char*>(szEngLocVar.c_str()),const_cast<char*>(szEngExp.c_str()),&CbTag,&CbError);
+        PROGRAM(const_cast<char*>(szEngOutVar.c_str()),const_cast<char*>(szEngLocVar.c_str()),const_cast<char*>(szEngExp.c_str()),&CbTag,&CbError);
     }
     catch(...)
     {
-		std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_PROGRAM, szICode.c_str());
-		Aos_Assert_S(strInfo.c_str());
+        std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_PROGRAM, szICode.c_str());
+        Aos_Assert_S(strInfo.c_str());
     }
 
-	if (CbTag == NULL)
-	{
-		std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_PROGRAM, szICode.c_str());
-		//LINXIAOYU
+    if (CbTag == NULL)
+    {
+        std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_PROGRAM, szICode.c_str());
+        //LINXIAOYU
         Aos_Assert_S(strInfo.c_str());
-		return 0;
-	}
+        return 0;
+    }
 
     try
     {
@@ -315,11 +314,11 @@ RecursiveCalculateIndex::calEngine(std::string szICode,
     }
     catch(...)
     {
-		std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_CALCULATE, szICode.c_str());
-		Aos_Assert_S(strInfo.c_str());
+        std::string strInfo = PubOpt::StringOpt::StringFormat(IDS_CALCULATE, szICode.c_str());
+        Aos_Assert_S(strInfo.c_str());
     }
-	if (CbTag != NULL)
-		RealseRec(CbTag,CbError);
+    if (CbTag != NULL)
+        RealseRec(CbTag,CbError);
     if (CbTag != NULL)
     {
         delete []CbTag;
@@ -346,57 +345,57 @@ RecursiveCalculateIndex::calEngine(std::string szICode,
 /*----------------------------------------------------------------------------*/
 void 
 RecursiveCalculateIndex::checkIndexValue(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo,
-			IndexConfigInfo* pIndexConfInfo,
-			std::string szICode,
-			double fIndexVal,
-			double fDefaultVal)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        IndexConfigInfo* pIndexConfInfo,
+        std::string szICode,
+        double fIndexVal,
+        double fDefaultVal)
 {
     //double fMinVal = 0;
     //double fMaxVal = 0;
     double fValue = 0;
     //double fFhVal = 0;
     //double fJqVal = 0;
-   // double fFhAddVal = 0;
-	DataInfo* data_value_info ;
+    // double fFhAddVal = 0;
+    DataInfo* data_value_info ;
     MapStringToPointData_It iter = pMapDataValueInfo.find(szICode);
     if(iter!= pMapDataValueInfo.end())
     {
-    	data_value_info = iter->second;
+        data_value_info = iter->second;
     }
-	else
-	{
-		data_value_info = new DataInfo();
-		data_value_info->mPointId = szICode;
-		data_value_info->setCurrVar(fIndexVal);
-		pMapDataValueInfo.insert(make_pair(szICode,data_value_info));
-		Aos_Assert_S(PubOpt::StringOpt::StringFormat("%s不存在于DataValueInfo重新生成插入;", szICode.c_str()).c_str());
-	}
-	data_value_info->mForeVal = data_value_info->getCurrVar(true);   //保存上一个周期的值
-	
-	if (!judgeIsExcept(fIndexVal))
-	{
-		std::string strInfo;
-		if (pIndexConfInfo->mExpression.size() > 400)
-		{
-			strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, szICode.c_str(), "公式字符过长", pIndexConfInfo->mTranOutVarAndFun.c_str());
-		}
-		else
-		{
-			strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, szICode.c_str(), pIndexConfInfo->mExpression.c_str(), pIndexConfInfo->mTranOutVarAndFun.c_str());  
-		}
-		data_value_info->mError = 0;
-		fValue = fDefaultVal;
-	}
-	else
-	{
-		data_value_info->mForeVal = data_value_info->getCurrVar(true);   //保存上一个周期的值
-		data_value_info->mError = 1;
-		fValue = fIndexVal;
-	}
-	//将指标值更新到内存
-	data_value_info->setCurrVar(fValue);
+    else
+    {
+        data_value_info = new DataInfo();
+        data_value_info->mPointId = szICode;
+        data_value_info->setCurrVar(fIndexVal);
+        pMapDataValueInfo.insert(make_pair(szICode,data_value_info));
+        Aos_Assert_S(PubOpt::StringOpt::StringFormat("%s不存在于DataValueInfo重新生成插入;", szICode.c_str()).c_str());
+    }
+    data_value_info->mForeVal = data_value_info->getCurrVar(true);   //保存上一个周期的值
+
+    if (!judgeIsExcept(fIndexVal))
+    {
+        std::string strInfo;
+        if (pIndexConfInfo->mExpression.size() > 400)
+        {
+            strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, szICode.c_str(), "公式字符过长", pIndexConfInfo->mTranOutVarAndFun.c_str());
+        }
+        else
+        {
+            strInfo = PubOpt::StringOpt::StringFormat(IDS_INDEX_CONFVAR_ERROR, szICode.c_str(), pIndexConfInfo->mExpression.c_str(), pIndexConfInfo->mTranOutVarAndFun.c_str());
+        }
+        data_value_info->mError = 0;
+        fValue = fDefaultVal;
+    }
+    else
+    {
+        data_value_info->mForeVal = data_value_info->getCurrVar(true);   //保存上一个周期的值
+        data_value_info->mError = 1;
+        fValue = fIndexVal;
+    }
+    //将指标值更新到内存
+    data_value_info->setCurrVar(fValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -410,13 +409,13 @@ RecursiveCalculateIndex::checkIndexValue(
 /*----------------------------------------------------------------------------*/
 std::string 
 RecursiveCalculateIndex::getParamValue(
-			MapStringToIndexConfInfo &pMapIndexConfInfo, 
-			MapStringToPointData &pMapDataValueInfo,
-			std::string szParentId, 
-			std::string szChildId)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        std::string szParentId,
+        std::string szChildId)
 {
     double fValue = 0;
-    double fTemp = 0;  
+    double fTemp = 0;
     double fFirParam = 0;
     double fSecParam = 0;
     std::string strValue, strTemp, strICode, strInfo;
@@ -425,21 +424,21 @@ RecursiveCalculateIndex::getParamValue(
     std::string strEleUpper;
     std::string strFirParam, strSecParam,strTarType;
 
-	std::string strUpperParam = szChildId;
-	strUpperParam = PubOpt::StringOpt::StringUpper(strUpperParam);
-	strUpperParam = PubOpt::StringOpt::TrimString(strUpperParam);
+    std::string strUpperParam = szChildId;
+    strUpperParam = PubOpt::StringOpt::StringUpper(strUpperParam);
+    strUpperParam = PubOpt::StringOpt::TrimString(strUpperParam);
 
-	std::string strLocalParam = szChildId;
+    std::string strLocalParam = szChildId;
     strLocalParam = PubOpt::StringOpt::TrimString(strLocalParam);
 
-    if (strLocalParam.empty())                                   
+    if (strLocalParam.empty())
     {
         strValue = "0";
         return strValue;
     }
 
     int iIndex = strLocalParam.find("@");
-    if (iIndex != -1)  //外部函数变量为实时点、耗差指标、手工指标、绩效指标	
+    if (iIndex != -1)  //外部函数变量为实时点、耗差指标、手工指标、绩效指标
     {
         if(M_SUB == strUpperParam.substr(0,4))    //自减函数	SUB(M1_FH) SUB@M1_FH  SUB_M1_FH
         {
@@ -453,10 +452,10 @@ RecursiveCalculateIndex::getParamValue(
                 {
                     if (mFirstCal)
                     {
-						std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s !",
-								szParentId.c_str(), strICode.c_str(), strICode.c_str(), strLocalParam.c_str());
-						Aos_Assert_S(strInfo.c_str());
-                    }	
+                        std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s !",
+                                                                              szParentId.c_str(), strICode.c_str(), strICode.c_str(), strLocalParam.c_str());
+                        Aos_Assert_S(strInfo.c_str());
+                    }
                 }
                 else
                 {
@@ -473,14 +472,14 @@ RecursiveCalculateIndex::getParamValue(
         }
         else if(M_NOW == strUpperParam.substr(0,4))
         {
-			//NOW(0)表示当前时间
-			//系统时间 "小时.分"
+            //NOW(0)表示当前时间
+            //系统时间 "小时.分"
             t = mCnPeriodDateTm;
             fValue = PubOpt::SystemOpt::GetHour(t);
             fTemp = PubOpt::SystemOpt::GetMinute(t);
             fValue = fValue + fTemp/100;
         }
-         //YEAR(0)表示当前时间的年，MONTH(0)表示当前时间的月，DAY(0)表示当前时间的日
+        //YEAR(0)表示当前时间的年，MONTH(0)表示当前时间的月，DAY(0)表示当前时间的日
         else if(M_YEAR == strUpperParam.substr(0,5))
         {
             t = mCnPeriodDateTm;
@@ -502,8 +501,8 @@ RecursiveCalculateIndex::getParamValue(
             fValue = PubOpt::SystemOpt::GetDay(t);
         }
 
-		//PERIODTIME(0)  最后一次计算周期与上一次计算的时间差 秒为单位
-		//系统实时计算周期 单位秒
+        //PERIODTIME(0)  最后一次计算周期与上一次计算的时间差 秒为单位
+        //系统实时计算周期 单位秒
         else if(M_PERIODTIME == strUpperParam.substr(0,11))
         {
             fValue = mPeriodTime;
@@ -517,60 +516,60 @@ RecursiveCalculateIndex::getParamValue(
             fTemp = atof(strValue.c_str());
             fValue = log(fTemp);
         }
-        else if(M_PRE ==strUpperParam.substr(0,4))                           
+        else if(M_PRE ==strUpperParam.substr(0,4))
         {
-			//         //预测值函数 PRE(M1_FH) PRE@M1_FH PRE_M1_FH
-			//         //AfxExtractSubString(strICode,strLocalParam,1,'@');			//预测指标id
-			//         strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
-			//// Linda Linda Linda
-			//         fValue = GetPreValue(strICode.c_str());
-			Aos_Assert_S("预测指标");
+            //         //预测值函数 PRE(M1_FH) PRE@M1_FH PRE_M1_FH
+            //         //AfxExtractSubString(strICode,strLocalParam,1,'@');			//预测指标id
+            //         strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
+            //// Linda Linda Linda
+            //         fValue = GetPreValue(strICode.c_str());
+            Aos_Assert_S("预测指标");
         }
         else if(M_FILT ==strUpperParam.substr(0,5))
         {
-			//         //滤波（平滑）值函数 FILT(M1_FH)  FILT@M1_FH  FILT_M1_FH
-			//         //AfxExtractSubString(strICode,strLocalParam,1,'@');			//过滤指标id
-			//         strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
-			////Linda Linda Linda
-			//         fValue	= GetFiltValue(strICode);
-			Aos_Assert_S("过滤指标");
+            //         //滤波（平滑）值函数 FILT(M1_FH)  FILT@M1_FH  FILT_M1_FH
+            //         //AfxExtractSubString(strICode,strLocalParam,1,'@');			//过滤指标id
+            //         strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
+            ////Linda Linda Linda
+            //         fValue	= GetFiltValue(strICode);
+            Aos_Assert_S("过滤指标");
         }
-        else if(M_AIMU3D == strUpperParam.substr(0,7) || 
-            M_AIMU2D == strUpperParam.substr(0,7) || 
-            M_MAX == strUpperParam.substr(0,4))
+        else if(M_AIMU3D == strUpperParam.substr(0,7) ||
+                M_AIMU2D == strUpperParam.substr(0,7) ||
+                M_MAX == strUpperParam.substr(0,4))
         {
-			////上限值函数
-			////AfxExtractSubString(strICode,strLocalParam,1,'@');			//最大值指标id
-			//strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
-			//fValue = GetMaxValue(strICode);
-			Aos_Assert_S("max Index");
+            ////上限值函数
+            ////AfxExtractSubString(strICode,strLocalParam,1,'@');			//最大值指标id
+            //strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
+            //fValue = GetMaxValue(strICode);
+            Aos_Assert_S("max Index");
         }
-        else if(M_AIMD3D == strUpperParam.substr(0,7) || 
-            M_AIMD2D == strUpperParam.substr(0,7) || 
-            M_MIN == strUpperParam.substr(0,4))
+        else if(M_AIMD3D == strUpperParam.substr(0,7) ||
+                M_AIMD2D == strUpperParam.substr(0,7) ||
+                M_MIN == strUpperParam.substr(0,4))
         {
-			////下限值函数
-			////AfxExtractSubString(strICode,strLocalParam,1,'@');			//最小值指标id
-			//strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
-			//fValue = GetMinValue(strICode)
-			Aos_Assert_S("min index");
+            ////下限值函数
+            ////AfxExtractSubString(strICode,strLocalParam,1,'@');			//最小值指标id
+            //strICode = PubOpt::StringOpt::StringSplit(strLocalParam, 1, "@");
+            //fValue = GetMinValue(strICode)
+            Aos_Assert_S("min index");
         }
 
         strValue = PubOpt::StringOpt::StringFormat("%.06f",fValue);
     }
     else      //外部变量中
     {
-		//D--实时点打头库  H--手工指标打头 
-		if((strUpperParam.substr(0,1) == "D") ||
-			(strUpperParam.substr(0,1) == "H")) //如果打头是D、M、H的参数
-		{
-			if (!getDasValue(pMapDataValueInfo,strLocalParam, strValue))
-			{
-				std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s",
-					szParentId.c_str(), strLocalParam.c_str(), strLocalParam.c_str(), strLocalParam.c_str());  
-				//LINXIAOYU,2018/07/11
-				//Aos_Assert_S(strInfo.c_str());
-			}
+        //D--实时点打头库  H--手工指标打头
+        if((strUpperParam.substr(0,1) == "D") ||
+                (strUpperParam.substr(0,1) == "H")) //如果打头是D、M、H的参数
+        {
+            if (!getDasValue(pMapDataValueInfo,strLocalParam, strValue))
+            {
+                std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s",
+                                                                      szParentId.c_str(), strLocalParam.c_str(), strLocalParam.c_str(), strLocalParam.c_str());
+                //LINXIAOYU,2018/07/11
+                //Aos_Assert_S(strInfo.c_str());
+            }
         }
         else if(strUpperParam.substr(0,1) == "M") //如果打头是M的参数
         {
@@ -581,14 +580,14 @@ RecursiveCalculateIndex::getParamValue(
                 strValue = "0";
                 if (mFirstCal)
                 {
-					std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s !",
-						szParentId.c_str(), strICode.c_str(), strICode.c_str(), strICode.c_str());  
-					Aos_Assert_S(strInfo.c_str());    
+                    std::string strInfo = PubOpt::StringOpt::StringFormat("没有取到父指标%s的元素指标%s的值,元素指标%s的值用当前指标值或实时值代替,函数组合体%s !",
+                                                                          szParentId.c_str(), strICode.c_str(), strICode.c_str(), strICode.c_str());
+                    Aos_Assert_S(strInfo.c_str());
                 }
             }
             else
             {
-				IndexConfigInfo* index_conf_info = iter->second;
+                IndexConfigInfo* index_conf_info = iter->second;
                 aheadCalIndex(pMapIndexConfInfo, pMapDataValueInfo, index_conf_info,szParentId, strICode);
                 getDasValue(pMapDataValueInfo,strICode,strValue);
             }
@@ -610,65 +609,65 @@ RecursiveCalculateIndex::getParamValue(
 /*----------------------------------------------------------------------------*/
 void 
 RecursiveCalculateIndex::aheadCalIndex(
-									   MapStringToIndexConfInfo &pMapIndexConfInfo, 
-									   MapStringToPointData &pMapDataValueInfo,
-									   IndexConfigInfo* pIndexConfInfo,
-									   std::string szPareID,
-									   std::string szParamID)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        MapStringToPointData &pMapDataValueInfo,
+        IndexConfigInfo* pIndexConfInfo,
+        std::string szPareID,
+        std::string szParamID)
 {
-	int iInner=0;
-	//PubSetInfo* pTemp = NULL;
-	if (szPareID == szParamID) return;
-	if ((pIndexConfInfo->mNew))    //此指标在本轮周期里面已经计算
-	{
-		return;
-	}
-	else
-	{
-		//获取父指标对应的信息 
-		MapStringToIndexConfInfo_It iter = pMapIndexConfInfo.find(szPareID);
-		if (iter == pMapIndexConfInfo.end())
-		{
-			return;
-		}
-		else
-		{
-			IndexConfigInfo* pare_index_conf_info = iter->second;
-		}
+    int iInner=0;
+    //PubSetInfo* pTemp = NULL;
+    if (szPareID == szParamID) return;
+    if ((pIndexConfInfo->mNew))    //此指标在本轮周期里面已经计算
+    {
+        return;
+    }
+    else
+    {
+        //获取父指标对应的信息
+        MapStringToIndexConfInfo_It iter = pMapIndexConfInfo.find(szPareID);
+        if (iter == pMapIndexConfInfo.end())
+        {
+            return;
+        }
+        else
+        {
+            IndexConfigInfo* pare_index_conf_info = iter->second;
+        }
 
-		//获取当前指标对应的机组状态信息 
-	
-		//查看该指标是否已经在当前循环中
-		for(iInner=0;iInner<mForeIndexForUsed.size();iInner++)
-		{
-			if(mForeIndexForUsed[iInner]==szParamID)       
-			{
-				break;														//指标正在计算本身
-			}
-		}
-		if(iInner==mForeIndexForUsed.size())                            //此指标没有计算                     
-		{
-			mForeIndexForUsed.push_back(szParamID);							    //将此指标保存在当前循环中
-			//如果此指标本轮没有计算，那么就计算
-			if(!pIndexConfInfo->mNew)
-			{
-				switch(pIndexConfInfo->mIsCalState) {
-					case 0:
-						{
-							if (!isExistState(pMapIndexConfInfo, szParamID,szPareID))          //要计算子指标
-							{
-								calIndexParam(pMapIndexConfInfo,pMapDataValueInfo, pIndexConfInfo);
-							}
-						}
-						break;
-					case 1:
-						break;
-					default:
-						break;
-				}
-			}
-		}
-	}
+        //获取当前指标对应的机组状态信息
+
+        //查看该指标是否已经在当前循环中
+        for(iInner=0;iInner<mForeIndexForUsed.size();iInner++)
+        {
+            if(mForeIndexForUsed[iInner]==szParamID)
+            {
+                break;														//指标正在计算本身
+            }
+        }
+        if(iInner==mForeIndexForUsed.size())                            //此指标没有计算
+        {
+            mForeIndexForUsed.push_back(szParamID);							    //将此指标保存在当前循环中
+            //如果此指标本轮没有计算，那么就计算
+            if(!pIndexConfInfo->mNew)
+            {
+                switch(pIndexConfInfo->mIsCalState) {
+                case 0:
+                {
+                    if (!isExistState(pMapIndexConfInfo, szParamID,szPareID))          //要计算子指标
+                    {
+                        calIndexParam(pMapIndexConfInfo,pMapDataValueInfo, pIndexConfInfo);
+                    }
+                }
+                    break;
+                case 1:
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+    }
 }
 
 
@@ -696,16 +695,16 @@ RecursiveCalculateIndex::aheadCalIndex(
 /*---------------------------------------------------------------------------------------*/
 bool 
 RecursiveCalculateIndex::isExistState(
-		MapStringToIndexConfInfo &pMapIndexConfInfo, 
-		std::string szFatherID,
-		std::string szSunID)
+        MapStringToIndexConfInfo &pMapIndexConfInfo,
+        std::string szFatherID,
+        std::string szSunID)
 {
     int iNum = 0;
     int iIndex = 0;
     bool bState = true;
     std::string strUpper,strTemp;
     strUpper = szSunID;
-	strUpper = PubOpt::StringOpt::StringUpper(strUpper);
+    strUpper = PubOpt::StringOpt::StringUpper(strUpper);
     if (strUpper[0] == 'M')
     {
         MapStringToIndexConfInfo_It iter = pMapIndexConfInfo.find(szFatherID);
@@ -773,10 +772,10 @@ RecursiveCalculateIndex::judgeIsExcept(double fExceptVal)
 {
     bool bExcept = true;
     std::string strTemp;
-	strTemp= PubOpt::StringOpt::StringFormat("%f",fExceptVal);
+    strTemp= PubOpt::StringOpt::StringFormat("%f",fExceptVal);
     if (strcmp(strTemp.c_str(),"1.#QNAN0")==0||strcmp(strTemp.c_str(),"-1.#INF00")==0||
-        strcmp(strTemp.c_str(),"1.#INF00")==0||strcmp(strTemp.c_str(),"1.#SNAN0")==0||
-        strcmp(strTemp.c_str(),"-1.#IND00")==0||strcmp(strTemp.c_str(),"-nan")==0)
+            strcmp(strTemp.c_str(),"1.#INF00")==0||strcmp(strTemp.c_str(),"1.#SNAN0")==0||
+            strcmp(strTemp.c_str(),"-1.#IND00")==0||strcmp(strTemp.c_str(),"-nan")==0)
     {
         bExcept = false;
     }
@@ -795,16 +794,16 @@ RecursiveCalculateIndex::judgeIsExcept(double fExceptVal)
 bool 
 RecursiveCalculateIndex::getDasValue(MapStringToPointData &pMapDataValueInfo, std::string szID,std::string& szValue)
 {
-	bool b = false;
-	std::string strValue = "0";
-	MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
-	if (iter != pMapDataValueInfo.end())
-	{
-		b = true;
-		strValue = PubOpt::StringOpt::StringFormat("%.06f", iter->second->getCurrVar(true));
-	}
-	szValue = strValue;
-	return b;
+    bool b = false;
+    std::string strValue = "0";
+    MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
+    if (iter != pMapDataValueInfo.end())
+    {
+        b = true;
+        strValue = PubOpt::StringOpt::StringFormat("%.06f", iter->second->getCurrVar(true));
+    }
+    szValue = strValue;
+    return b;
 }
 
 
@@ -819,14 +818,14 @@ RecursiveCalculateIndex::getDasValue(MapStringToPointData &pMapDataValueInfo, st
 double 
 RecursiveCalculateIndex::getForeValue(MapStringToPointData &pMapDataValueInfo, std::string szID)
 {
-	double fValue = 0;
-	MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
-	if (iter != pMapDataValueInfo.end())
-	{
-		fValue = iter->second->mForeVal;
-	}
+    double fValue = 0;
+    MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
+    if (iter != pMapDataValueInfo.end())
+    {
+        fValue = iter->second->mForeVal;
+    }
 
-	return fValue;
+    return fValue;
 }
 
 
@@ -842,119 +841,119 @@ RecursiveCalculateIndex::getForeValue(MapStringToPointData &pMapDataValueInfo, s
 double 
 RecursiveCalculateIndex::getDasValue(MapStringToPointData &pMapDataValueInfo, std::string szID)
 {
-	double fValue = 0;
-	MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
-	if (iter != pMapDataValueInfo.end())
-	{
-		fValue = iter->second->getCurrVar(true);
-	}
-	return fValue;
+    double fValue = 0;
+    MapStringToPointData_It iter = pMapDataValueInfo.find(szID);
+    if (iter != pMapDataValueInfo.end())
+    {
+        fValue = iter->second->getCurrVar(true);
+    }
+    return fValue;
 }
 
 
 bool
 RecursiveCalculateIndex::sanityCheck(MapStringToPointData &pMapDataValueInfo)
 {
-	//M4_1kyqrkecfwzcz {{a=28;return a;}}
-	std::string pointId = "M4_1kyqrkecfwzcz";
-	MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double vv = itr->second->getCurrVar(true);
-	Aos_Assert_R(vv == 28, false);
+    //M4_1kyqrkecfwzcz {{a=28;return a;}}
+    std::string pointId = "M4_1kyqrkecfwzcz";
+    MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double vv = itr->second->getCurrVar(true);
+    Aos_Assert_R(vv == 28, false);
 
-	// M4_kyqqjdmbz {{a=1;return a;}}
-	pointId = "M4_kyqqjdmbz"; 
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	Aos_Assert_R(vv == 1, false);
+    // M4_kyqqjdmbz {{a=1;return a;}}
+    pointId = "M4_kyqqjdmbz";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    Aos_Assert_R(vv == 1, false);
 
-	//M3_glxlsjz {{ return 91.7;}}
-	pointId = "M3_glxlsjz"; 
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	Aos_Assert_R(vv == 91.7, false);
+    //M3_glxlsjz {{ return 91.7;}}
+    pointId = "M3_glxlsjz";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    Aos_Assert_R(vv == 91.7, false);
 
-	//M3_zrwdmbz {{a=537;return a;}}
-	pointId = "M3_zrwdmbz";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	Aos_Assert_R(vv == 537, false);
-	return true;
+    //M3_zrwdmbz {{a=537;return a;}}
+    pointId = "M3_zrwdmbz";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    Aos_Assert_R(vv == 537, false);
+    return true;
 }
 
 
 bool
 RecursiveCalculateIndex::sanityCheck1(MapStringToPointData &pMapDataValueInfo)
 {
-	//D3_glzgswd
-	std::string pointId = "D3_glzgswd";
-	MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double a = itr->second->getCurrVar(true);
+    //D3_glzgswd
+    std::string pointId = "D3_glzgswd";
+    MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double a = itr->second->getCurrVar(true);
 
-	//M3_zzgswd {{a=D3_glzgswd;return a;}} 
-	pointId = "M3_zzgswd";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double vv = itr->second->getCurrVar(true);
+    //M3_zzgswd {{a=D3_glzgswd;return a;}}
+    pointId = "M3_zzgswd";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double vv = itr->second->getCurrVar(true);
 
-	int v11 = vv;// * 100;
-	int a11 = a ;//* 100;
-	Aos_Assert_R(v11 == a11, false);
-	
-	//D3_1kyqrkhyl1
-	pointId = "D3_1kyqrkhyl1";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	a = itr->second->getCurrVar(true);
+    int v11 = vv;// * 100;
+    int a11 = a ;//* 100;
+    Aos_Assert_R(v11 == a11, false);
 
-	//M3_1kyqrkhyl {a=D3_1kyqrkhyl1;return a;}}
-	pointId = "M3_1kyqrkhyl";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	v11 = vv * 100;
-	a11 = a * 100;
-	Aos_Assert_R(v11 == a11, false);
+    //D3_1kyqrkhyl1
+    pointId = "D3_1kyqrkhyl1";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    a = itr->second->getCurrVar(true);
+
+    //M3_1kyqrkhyl {a=D3_1kyqrkhyl1;return a;}}
+    pointId = "M3_1kyqrkhyl";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    v11 = vv * 100;
+    a11 = a * 100;
+    Aos_Assert_R(v11 == a11, false);
 
 
-	//D3_1kyqckhyl
-	pointId = "D3_1kyqckhyl";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	a = itr->second->getCurrVar(true);
+    //D3_1kyqckhyl
+    pointId = "D3_1kyqckhyl";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    a = itr->second->getCurrVar(true);
 
-	//M3_1ckglxs  {{a=21/(21-D3_1kyqckhyl);return a;}}
-	pointId = "M3_1ckglxs";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	double a1 = 21/(21 - a);
-	if ((int)a != 20)
-	{
-		v11 = vv * 100;
-		a11 = a1 * 100;
-		Aos_Assert_R(v11 == a11, false);
-	}
+    //M3_1ckglxs  {{a=21/(21-D3_1kyqckhyl);return a;}}
+    pointId = "M3_1ckglxs";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    double a1 = 21/(21 - a);
+    if ((int)a != 20)
+    {
+        v11 = vv * 100;
+        a11 = a1 * 100;
+        Aos_Assert_R(v11 == a11, false);
+    }
 
-	//H4_Mar
-	pointId = "H4_Mar";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	a = itr->second->getCurrVar(true);
+    //H4_Mar
+    pointId = "H4_Mar";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    a = itr->second->getCurrVar(true);
 
-	//M4_Mar {{a=H4_Mar;return a;}}
-	pointId = "M4_Mar";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
-	v11 = vv * 100;
-	a11 = a * 100;
-	Aos_Assert_R(v11 == a11, false);
-	return true;
+    //M4_Mar {{a=H4_Mar;return a;}}
+    pointId = "M4_Mar";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+    v11 = vv * 100;
+    a11 = a * 100;
+    Aos_Assert_R(v11 == a11, false);
+    return true;
 }
 
 
@@ -963,104 +962,104 @@ RecursiveCalculateIndex::sanityCheck1(MapStringToPointData &pMapDataValueInfo)
 bool
 RecursiveCalculateIndex::sanityCheck2(MapStringToPointData &pMapDataValueInfo)
 {
-	//D3_5djsswd
-	std::string pointId = "D3_5djsswd";
-	MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double a = itr->second->getCurrVar(true);
+    //D3_5djsswd
+    std::string pointId = "D3_5djsswd";
+    MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double a = itr->second->getCurrVar(true);
 
-	//D3_6djcknjswd
-	pointId = "D3_6djcknjswd";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double b = itr->second->getCurrVar(true);
+    //D3_6djcknjswd
+    pointId = "D3_6djcknjswd";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double b = itr->second->getCurrVar(true);
 
-	//M3_5djxdc  "{{a=D3_5djsswd-D3_6djcknjswd;return a;}}"
-	pointId = "M3_5djxdc";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double vv = itr->second->getCurrVar(true);
+    //M3_5djxdc  "{{a=D3_5djsswd-D3_6djcknjswd;return a;}}"
+    pointId = "M3_5djxdc";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double vv = itr->second->getCurrVar(true);
 
-	int v11 = vv * 100;
-	int a11 = (a - b) * 100;
-	Aos_Assert_R(v11 == a11, false);
+    int v11 = vv * 100;
+    int a11 = (a - b) * 100;
+    Aos_Assert_R(v11 == a11, false);
 
-	//D3_LPxhsjswd1
-	pointId = "D3_LPxhsjswd1";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	a = itr->second->getCurrVar(true);
-	  
-	//D3_LPxhsjswd2
-	pointId = "D3_LPxhsjswd2";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	b = itr->second->getCurrVar(true);
+    //D3_LPxhsjswd1
+    pointId = "D3_LPxhsjswd1";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    a = itr->second->getCurrVar(true);
 
-	//M3_WT {a=(D3_LPxhsjswd1+D3_LPxhsjswd2)/2;return a;}}
-	pointId = "M3_WT";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
+    //D3_LPxhsjswd2
+    pointId = "D3_LPxhsjswd2";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    b = itr->second->getCurrVar(true);
 
-	v11 = vv * 100;
-	a11 = ((a + b)/2) * 100;
-	Aos_Assert_R(v11 == a11, false);
+    //M3_WT {a=(D3_LPxhsjswd1+D3_LPxhsjswd2)/2;return a;}}
+    pointId = "M3_WT";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
 
-	//D3_zzqwdL
-	pointId = "D3_zzqwdL";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	a = itr->second->getCurrVar(true);
+    v11 = vv * 100;
+    a11 = ((a + b)/2) * 100;
+    Aos_Assert_R(v11 == a11, false);
 
-	//D3_zzqwdR
-	pointId = "D3_zzqwdR";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	b = itr->second->getCurrVar(true);
+    //D3_zzqwdL
+    pointId = "D3_zzqwdL";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    a = itr->second->getCurrVar(true);
 
-	//M3_zzqwd {{a=(D3_zzqwdL+D3_zzqwdR)/2;return a;}}
-	pointId = "M3_zzqwd";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	vv = itr->second->getCurrVar(true);
+    //D3_zzqwdR
+    pointId = "D3_zzqwdR";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    b = itr->second->getCurrVar(true);
 
-	v11 = vv * 100;
-	a11 = ((a + b)/2) * 100;
-	Aos_Assert_R(v11 == a11, false);
-   return true;
+    //M3_zzqwd {{a=(D3_zzqwdL+D3_zzqwdR)/2;return a;}}
+    pointId = "M3_zzqwd";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    vv = itr->second->getCurrVar(true);
+
+    v11 = vv * 100;
+    a11 = ((a + b)/2) * 100;
+    Aos_Assert_R(v11 == a11, false);
+    return true;
 }
 
 
 bool
 RecursiveCalculateIndex::sanityCheck3(MapStringToPointData &pMapDataValueInfo)
 {
-	//H4_Sad
-	std::string pointId = "H4_Sad";
-	MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double a = itr->second->getCurrVar(true);
+    //H4_Sad
+    std::string pointId = "H4_Sad";
+    MapStringToPointData_It itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double a = itr->second->getCurrVar(true);
 
-	//H4_Mar
-	pointId = "H4_Mar";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double b = itr->second->getCurrVar(true);
+    //H4_Mar
+    pointId = "H4_Mar";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double b = itr->second->getCurrVar(true);
 
-	//H4_Mad
-	pointId = "H4_Mad";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double c = itr->second->getCurrVar(true);
+    //H4_Mad
+    pointId = "H4_Mad";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double c = itr->second->getCurrVar(true);
 
-	//M4_Sar  {{a=H4_Sad*(100-H4_Mar)/(100-H4_Mad);return a;}}
-	pointId = "M4_Sar";
-	itr = pMapDataValueInfo.find(pointId);
-	Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
-	double vv = itr->second->getCurrVar(true);
+    //M4_Sar  {{a=H4_Sad*(100-H4_Mar)/(100-H4_Mad);return a;}}
+    pointId = "M4_Sar";
+    itr = pMapDataValueInfo.find(pointId);
+    Aos_Assert_R(itr != pMapDataValueInfo.end(), false);
+    double vv = itr->second->getCurrVar(true);
 
-	int v11 = vv * 100;
-	int a11 = (a*(100-b)/(100-c)) * 100;
-	Aos_Assert_R(v11 == a11, false);
-	return true;
+    int v11 = vv * 100;
+    int a11 = (a*(100-b)/(100-c)) * 100;
+    Aos_Assert_R(v11 == a11, false);
+    return true;
 }

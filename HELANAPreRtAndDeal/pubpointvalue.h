@@ -12,6 +12,12 @@
 #define PUBPOINTVALUE "PubPointValue"
 #define RETCODE_RESTART 773
 
+typedef struct
+{
+    std::string full_point_code;
+    double point_value;
+    QDateTime timestamp;
+}stCurPointValue;
 
 class PubPointValue : public RDbOperationComplex
 {
@@ -20,10 +26,11 @@ public:
 
     bool checkModelModifyStatus();
 
-    bool loadDB(long &lTimeStamp, const long nowTime, MapStringToSetCfg &mMapSetInfo, MapStringToString &pPointSourceName,  MapStringToPointData &mPointData, std::string strCon = "TS");
+    bool loadDB(long &lTimeStamp, MapStringToString &pPointSourceName,  MapStringToPointData &mPointData, std::string strCon = "TS");
 
     void SetModelPointValues(MapStringToSetCfg	&mMapSetInfo, MapStringToPointData &mMapPointData);
 
+    QList<stCurPointValue> listCurPointValue;
 };
 
 #endif // PUBPOINTVALUE_H

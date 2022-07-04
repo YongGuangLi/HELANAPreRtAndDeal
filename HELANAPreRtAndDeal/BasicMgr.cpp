@@ -187,58 +187,47 @@ bool BasicMgr::UpdataCalTime(std::string strcalTime,const int itype)
     return mSimpleOpt->UpdataCalTime(m_strFactoryCode,strcalTime,itype);
 }
 bool
-BasicMgr::loadConfigInfo(const bool isFirstCal,bool &isModConf,long	&mCurSeCalTime)
+BasicMgr::loadConfigInfo()
 {
-    //读入服务配置修改标识
-    isModConf = mSimpleOpt->getIndexConfigStatus(m_strFactoryCode);
-    mSimpleOpt->getIndexUpdataTime(m_strFactoryCode,mCurSeCalTime);
+    //select index_code, set_code, index_type, source_id, concat(out_var,out_var_func) out_var,local_var, expression,is_write_back,full_index_code ,is_clear_zero,is_steady_cal, min_value, \
+    //max_value, default_value from v_pub_index t order by full_index_code asc
 
-    if(isFirstCal)
-    {
-        mSimpleOpt->getFactoryNo(m_strFactoryCode, mDCNo);
-        //select index_code, set_code, index_type, source_id, concat(out_var,out_var_func) out_var,local_var, expression,is_write_back,full_index_code ,is_clear_zero,is_steady_cal, min_value, \
-        max_value, default_value from v_pub_index t order by full_index_code asc
+    Aos_WriteLog_D("Start loadIndex()");
+    Aos_Assert_R(loadIndex(), false);
+    Aos_WriteLog_D("End loadIndex()");
 
-                Aos_WriteLog_D("Start loadIndex()");
-        Aos_Assert_R(loadIndex(), false);
-        Aos_WriteLog_D("End loadIndex()");
+    //读入等配置信息
+    Aos_WriteLog_D("Start loadModeData()");
+    //select * from v_eids_model_monit_point_all
+    //select point_code,source_id_original,set_code,full_point_code  from tb_pub_point
+    Aos_Assert_R(loadModeData(), false);
+    Aos_WriteLog_D("End loadModeData()");
 
-        //读入等配置信息
-        Aos_WriteLog_D("Start loadModeData()");
-        //select * from v_eids_model_monit_point_all
-        //select point_code,source_id_original,set_code,full_point_code  from tb_pub_point
-        Aos_Assert_R(loadModeData(), false);
-        Aos_WriteLog_D("End loadModeData()");
+    //select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id, t.ma_value,t.model_value,t.model_value_relation \
+    from  tb_eids_model_method_avg t left join  v_eids_model_all p  on t.model_id=p.model_id order by model_id,model_condition_id
 
-        //select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id, t.ma_value,t.model_value,t.model_value_relation \
-        from  tb_eids_model_method_avg t left join  v_eids_model_all p  on t.model_id=p.model_id order by model_id,model_condition_id
+            Aos_WriteLog_D("Start loadModeMuFun()");
+    Aos_Assert_R(loadModeMuFun(), false);
+    Aos_WriteLog_D("End loadModeMuFun()");
 
-        Aos_WriteLog_D("Start loadModeMuFun()");
-        Aos_Assert_R(loadModeMuFun(), false);
-        Aos_WriteLog_D("End loadModeMuFun()");
+    Aos_WriteLog_D("Start GetNeedPoint()");
+    GetNeedPoint();
 
-        Aos_WriteLog_D("Start GetNeedPoint()");
-        GetNeedPoint();
+    Aos_WriteLog_D("Start CheckModelAvgPointFitInfPointOnly()");
+    CheckModelAvgPointFitInfPointOnly();
 
-        Aos_WriteLog_D("Start CheckModelAvgPointFitInfPointOnly()");
-        CheckModelAvgPointFitInfPointOnly();
-    }
+    Aos_WriteLog("checkWriteBackCodeRtdb begin.");
+    Aos_Assert_R(checkWriteBackCodeRtdbIsExist(),false);
+    Aos_Assert_R(checkReadSourceIdRtdbIsExist(), false);
+    Aos_Assert_R(checkIndexSourceIdRtdbIsExist(), false);
+    Aos_WriteLog("checkWriteBackCodeRtdb finish.");
 
-    if (isFirstCal)
-    {
-        isModConf = false;
-        Aos_WriteLog("checkWriteBackCodeRtdb begin.");
-        Aos_Assert_R(checkWriteBackCodeRtdbIsExist(),false);
-        Aos_Assert_R(checkReadSourceIdRtdbIsExist(), false);
-        Aos_Assert_R(checkIndexSourceIdRtdbIsExist(), false);
-        Aos_WriteLog("checkWriteBackCodeRtdb finish.");
-    }
     return true;
 }
 
 void
 BasicMgr::cleanVar()
-{	
+{
     MapStringToSetCfg_It iter = mMapSetInfo.begin();
     for (;iter !=mMapSetInfo.end();++iter)
     {
@@ -588,7 +577,41 @@ void BasicMgr::BuffIntoData(BuffPoints *buffWrite)
 }
 void BasicMgr::WriteRsdb(const long mCurSeCalTime)
 {
+    QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
+    if(fileHandler.open(QIODevice::Append))
+    {
+        QTextStream stream(&fileHandler);
+
+        stream<<"begin;"<<'\n';
+
+        stream<<"delete from tb_pub_point_value_cur;"<<'\n';
+
+        QList<stCurPointValue> listCurPointValue = pubPointValue->listCurPointValue;
+        for(int i = 0; i < listCurPointValue.size(); ++i)
+        {
+            stCurPointValue curPointValue = listCurPointValue.at(i);
+            QString strInsertSQL = QString(SQL_INSERT_PUB_POINT_VALUE_CUR).arg(curPointValue.full_point_code.c_str()).arg(curPointValue.point_value).arg(curPointValue.timestamp.toString("yyyy-MM-dd hh:mm:ss"));
+            stream<<strInsertSQL<<'\n';
+        }
+
+        fileHandler.close();
+    }
+
     mAlarmdate->WriteRsdb(mMapSetInfo,mMapPointData,m_strFactoryCode,mCurSeCalTime);
+
+    if(fileHandler.open(QIODevice::Append))
+    {
+        QTextStream stream(&fileHandler);
+        std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strUpdateSysCalTimeSQL.c_str(),PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime).c_str(), 1);
+        stream<<QString::fromStdString(strSQL)<<'\n';
+        stream<<"commit;"<<'\n';
+        fileHandler.close();
+    }
+
+    if(QFile::exists(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt"))
+        QFile::remove(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
+
+    QFile::rename(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp", QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
 }
 bool BasicMgr::UpdateServiceVersion(std::string strServiceName,std::string strVersion,std::string strLog)
 {
@@ -703,58 +726,58 @@ BasicMgr::checkWriteBackCodeRtdbIsExist()
         setobj = set_itr->second;
         setobj->mRtdbSetJkdIsExist = true;
 
-//        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetJkd, NOExitSetJkd) ||setobj->mSetJkd.empty())
-//        {
-//            setobj->mRtdbSetJkdIsExist = false;
-//            Aos_Assert_S("*************");
-//            Aos_WriteLog_D(PubOpt::StringOpt::StringFormat("名为:%s的原始值回写点配置错误!", source_id.c_str()).c_str());
-//        }
+        //        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetJkd, NOExitSetJkd) ||setobj->mSetJkd.empty())
+        //        {
+        //            setobj->mRtdbSetJkdIsExist = false;
+        //            Aos_Assert_S("*************");
+        //            Aos_WriteLog_D(PubOpt::StringOpt::StringFormat("名为:%s的原始值回写点配置错误!", source_id.c_str()).c_str());
+        //        }
         setobj->mRtdbSetDfhIsExist = true;
 
-//        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetDfh,NOExitSetDfh)||setobj->mSetDfh.empty())
-//        {
-//            setobj->mRtdbSetDfhIsExist = false;
-//        }
+        //        if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(setobj->mSetDfh,NOExitSetDfh)||setobj->mSetDfh.empty())
+        //        {
+        //            setobj->mRtdbSetDfhIsExist = false;
+        //        }
 
         sys_itr = setobj->mMapSys.begin();
         for (;sys_itr!=setobj->mMapSys.end();++sys_itr)
         {
             sysobj =sys_itr->second;
             sysobj->mRtdbSysJkdIsExist = true;
-//            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysJkd,NOExitSysJkd)||sysobj->mSysJkd.empty())
-//            {
-//                sysobj->mRtdbSysJkdIsExist = false;
-//            }
+            //            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysJkd,NOExitSysJkd)||sysobj->mSysJkd.empty())
+            //            {
+            //                sysobj->mRtdbSysJkdIsExist = false;
+            //            }
             sysobj->mRtdbSysDfhIsExist = true;
-//            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysDfh,NOExitSysDfh)||sysobj->mSysDfh.empty())
-//            {
-//                sysobj->mRtdbSysDfhIsExist = false;
-//            }
+            //            if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(sysobj->mSysDfh,NOExitSysDfh)||sysobj->mSysDfh.empty())
+            //            {
+            //                sysobj->mRtdbSysDfhIsExist = false;
+            //            }
             m_itr = sysobj->mMapModles.begin();
             for (;m_itr!=sysobj->mMapModles.end();++m_itr)
             {
                 model = m_itr->second;
                 model->mRtdbSimModleIsWrite = true;
-//                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mSimPoint,NOExitModSim) || model->mSimPoint.empty())
-//                {
-//                    model->mRtdbSimModleIsWrite = false;
-//                }
+                //                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mSimPoint,NOExitModSim) || model->mSimPoint.empty())
+                //                {
+                //                    model->mRtdbSimModleIsWrite = false;
+                //                }
 
                 model->mRtdbModleConIsWrite = true;
-//                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mCondIdSource,NOExitModCon)||model->mCondIdSource.empty())
-//                {
-//                    model->mRtdbModleConIsWrite = false;
-//                }
+                //                if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(model->mCondIdSource,NOExitModCon)||model->mCondIdSource.empty())
+                //                {
+                //                    model->mRtdbModleConIsWrite = false;
+                //                }
                 g_itr = model->mMapGroup.begin();
 
                 for (;g_itr!=model->mMapGroup.end();++g_itr)
                 {
                     groupobj = g_itr->second;
                     groupobj->mRtdbGroupJkdIsExist = true;
-//                    if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(groupobj->m_GroupJkd,NOExitGroupSim)||groupobj->m_GroupJkd.empty())
-//                    {
-//                        groupobj->mRtdbGroupJkdIsExist = false;
-//                    }
+                    //                    if (!SINGLETON(RtdbAdapter)->RtdbIsExistPoint(groupobj->m_GroupJkd,NOExitGroupSim)||groupobj->m_GroupJkd.empty())
+                    //                    {
+                    //                        groupobj->mRtdbGroupJkdIsExist = false;
+                    //                    }
                     checkWritePointRtdbIsExist(groupobj->mMapGroupPoint);
                 }
 
@@ -881,7 +904,7 @@ BasicMgr::checkReadSourceIdRtdbIsExist()
 //					//sanityCheck(2, paTags[i].szName);
 //
 //					lstRet.clear();
-//					rslt = Util::StringSplit(iter->second, lstRet, ",");   
+//					rslt = Util::StringSplit(iter->second, lstRet, ",");
 //					if(!rslt) continue;
 //					for (unsigned int j = 0; j < lstRet.size(); j++)
 //					{
@@ -895,7 +918,7 @@ BasicMgr::checkReadSourceIdRtdbIsExist()
 //						{
 //							model_group = iter_group->second;
 //							p_iter = model_group->mMapGroupPoint.find(lstRet[j]);
-//							if (p_iter !=  model_group->mMapGroupPoint.end())								
+//							if (p_iter !=  model_group->mMapGroupPoint.end())
 //							{
 //								p_iter->second->m_IsGetOrigValue  = false;
 //								p_iter->second->m_IsGetPreValue = false;
@@ -903,7 +926,7 @@ BasicMgr::checkReadSourceIdRtdbIsExist()
 //								p_iter->second->setCurrVar(iter_Mp->second->dValue,1);
 //								//p_iter->second->mGoodState = paTags[i].lState;
 //								//取所有指标最大时间作为服务的当前计算时间
-//								//if (lTimeStamp <= monment->lTimeStamp) 
+//								//if (lTimeStamp <= monment->lTimeStamp)
 //									lTimeStamp = monment->lTimeStamp;
 //								break;
 //							}
@@ -965,7 +988,7 @@ bool BasicMgr::loadHisPointData(const long StartTime,const long EndTime)
     //	}
     return true;
 }
-bool 
+bool
 BasicMgr::rtdbGetRtTagTime(long &lTimeStamp)
 {
     if (eFromRtdb==msysType)
@@ -977,11 +1000,11 @@ BasicMgr::rtdbGetRtTagTime(long &lTimeStamp)
 
 
 bool
-BasicMgr::loadPointData(long &lTimeStamp,const long nowTime)
+BasicMgr::loadPointData(long &lTimeStamp)
 {
     pubPointValue->checkModelModifyStatus();
 
-    pubPointValue->loadDB(lTimeStamp,nowTime, mMapSetInfo, mMapPointSourceName, mMapPointData);
+    pubPointValue->loadDB(lTimeStamp, mMapPointSourceName, mMapPointData);
     pubPointValue->SetModelPointValues(mMapSetInfo, mMapPointData);
     return true;
 }
@@ -1122,57 +1145,40 @@ void BasicMgr::CheckModelAvgPointFitInfPointOnly()
 }
 void BasicMgr::SetAllMothAvgData()
 {
-    //LINXIAOYU
-    if (eFromDir==msysType)
-        return;
-    MapStringToSetCfg_It iter_set;
-    MapStringToSysCfg_It iter_sys;
-    SetCfg *setcf;
-    //SysCfg *syscf;
-    iter_set = mMapSetInfo.begin();
+    MapStringToSetCfg_It iter_set = mMapSetInfo.begin();
     for (;iter_set!=mMapSetInfo.end();++iter_set)
     {
-        setcf = iter_set->second;
-        iter_sys = setcf->mMapSys.begin();
-        for (;iter_sys!=setcf->mMapSys.end();++iter_sys)
+        SetCfg *setcf = iter_set->second;
+        MapStringToSysCfg_It iter_sys = setcf->mMapSys.begin();
+        for (;iter_sys != setcf->mMapSys.end(); ++iter_sys)
         {
             SetMothAvgData(iter_sys->second->mMapModles);
         }
     }
 }
-void	
+void
 BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
 {
-    DataMode* mode_info;
-    ModeMethodAvg* mode_fun;
-    //MethodAvg *    cond_fun;
-    MapStringToDataMode_It iter_m;
-    MapStringToModeMethodAvg_It fun_iter;
-    MapStringToMethodAvg_It		con_iter;
-
-    iter_m=mapModeInfo.begin();
+    MapStringToDataMode_It iter_m=mapModeInfo.begin();
     for (;iter_m!=mapModeInfo.end();++iter_m)
     {
-        if(iter_m->second->mModeId=="ZZ_3_dg"||iter_m->second->mModeId=="ZZ_3_qb")
-            int i=100;
-
         if((!iter_m->second->m_IsDeal) || iter_m->second->mCondId.empty())
             continue;
 
-        fun_iter=mMapModeMethodAvg.find(iter_m->second->mModeId);
+        MapStringToModeMethodAvg_It fun_iter=mMapModeMethodAvg.find(iter_m->second->mModeId);
         if(fun_iter==mMapModeMethodAvg.end())
         {
             iter_m->second->m_IsDeal=false;
             continue;
         }
-        mode_info=iter_m->second;
-        mode_fun=fun_iter->second;
-        con_iter=mode_fun->mMapmethodavg.find(mode_info->mCondId);
-        if (con_iter==mode_fun->mMapmethodavg.end())
-        {
+
+        DataMode* mode_info = iter_m->second;
+        ModeMethodAvg* mode_fun = fun_iter->second;
+        MapStringToMethodAvg_It con_iter = mode_fun->mMapmethodavg.find(mode_info->mCondId);
+        if (con_iter == mode_fun->mMapmethodavg.end())
             continue;
-        }
-        mode_info->mDModeSim=con_iter->second->mDSimLimit;
+
+        mode_info->mDModeSim = con_iter->second->mDSimLimit;
 
         SetFunRtValue(mode_info, con_iter->second);
     }
@@ -1181,24 +1187,17 @@ BasicMgr::SetMothAvgData(MapStringToDataMode &mapModeInfo)
 void
 BasicMgr::SetFunRtValue(DataMode* mModeInfo, MethodAvg* mModeMethodAvg)
 {
-    DataValueInfo* point_info;
-    MapStringToPointData_It p_iter;
-    MapStringToMDataValueInfo_It point_iter;
-    PointGroup* model_group;
-    MapStringToPointGroup_It iter_group;
-    std::vector<VarParam>::iterator pcf_iter;
     int inum = 0;
     mModeInfo->mVectorPValues.clear();
-    for(int i =0;i< mModeInfo->mVectorParamCfgs.size();i++)
+    for(int i = 0;i < mModeInfo->mVectorParamCfgs.size(); i++)
     {
-        iter_group = mModeInfo->mMapGroup.begin();
-        for (;iter_group!=mModeInfo->mMapGroup.end();++iter_group)
+        for(MapStringToPointGroup_It iter_group = mModeInfo->mMapGroup.begin() ;iter_group!=mModeInfo->mMapGroup.end();++iter_group)
         {
-            model_group = iter_group->second;
-            point_iter = model_group->mMapGroupPoint.find(mModeInfo->mVectorParamCfgs[i].mPoint);
+            PointGroup* model_group = iter_group->second;
+            MapStringToMDataValueInfo_It point_iter = model_group->mMapGroupPoint.find(mModeInfo->mVectorParamCfgs[i].mPoint);
             if(point_iter!=model_group->mMapGroupPoint.end())
             {
-                point_info = point_iter->second;
+                DataValueInfo* point_info = point_iter->second;
                 mModeInfo->mVectorPValues.push_back(point_info->mDOrigValue);
                 mModeInfo->mVectorParamCfgs[i].mCurValue = point_info->mDOrigValue;
                 //mModeInfo->m_IsDeal = true;
@@ -1207,16 +1206,13 @@ BasicMgr::SetFunRtValue(DataMode* mModeInfo, MethodAvg* mModeMethodAvg)
             }
         }
     }
-    if (mModeMethodAvg->mIsOk&&inum==mModeMethodAvg->mVectorModePoint.size())
-    {
+
+    if (mModeMethodAvg->mIsOk && inum == mModeMethodAvg->mVectorModePoint.size())
         mModeInfo->m_IsDeal = true;
-    }
     else
-    {
         mModeInfo->m_IsDeal = false;
-    }
 }
-//void 
+//void
 //RtdbOpt::SetFunRtValue(DataMode* mModeInfo,
 //                       MethodAvg* mModeMethodAvg)
 //{
@@ -1258,7 +1254,7 @@ BasicMgr::SetFunRtValue(DataMode* mModeInfo, MethodAvg* mModeMethodAvg)
 //BasicMgr::CalMode()
 //{
 //    SINGLETON(PointPreCal)->CalculatePre(mMapSetInfo,mMapModeMethodAvg,mMapWrite);
-//	
+//
 //}
 
 char crcTail( char* data, int length )
@@ -1330,7 +1326,7 @@ BasicMgr::saveToRdb(const long &lCalTimeStamp)
 
 void
 BasicMgr::sanityCheck(const int flag, const std::string &strmsg)
-{	
+{
     if (!smSanityCheck) return ;
     static long s_time = 0;
     if (flag == 1)
@@ -1342,7 +1338,7 @@ BasicMgr::sanityCheck(const int flag, const std::string &strmsg)
 
 void
 BasicMgr::sanityCheck1(const int flag, const std::string &prefix)
-{	
+{
     if (!smSanityCheck) return ;
     static long s_time;
     if (flag == 1) s_time = Util::getNowTime();
@@ -1467,7 +1463,7 @@ void BasicMgr::ModelFunCheck(VectorString &condtionPoints,MapStringToPointGroup 
         }
     }
 }
-void 
+void
 BasicMgr::GetNeedPoint()
 {
     std::string strSouce,strCode,strFullPointId;

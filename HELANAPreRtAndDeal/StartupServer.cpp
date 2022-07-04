@@ -75,7 +75,7 @@ StartupServer::stop()
 bool
 StartupServer::calculate()
 {
-    bool rslt = mBaseMgr->loadConfigInfo(mFirstCal,mModConf,mCurSeCalTime);
+    bool rslt = mBaseMgr->loadConfigInfo();
     Aos_Assert_R(rslt, false);
 
     realtimeCal();
@@ -91,19 +91,20 @@ void   StartupServer::realtimeCal()
 
         if (nowTime  - lastSeCalTime >= mSeCalCycSec)
         {
-            mBaseMgr->loadPointData(mCurSeCalTime, mNowTime);
+            //从数据库获取实时值
+            mBaseMgr->loadPointData(mCurSeCalTime);
 
             mBaseMgr->CleanMapWrite();
 
-            //计算机组、系统、模型的Eps
+            //计算机组、系统、模型的Eps状态
             mCalculateIndex->startCalculate(mBaseMgr->getIndexConfInfo(), mBaseMgr->getPointData(), mBaseMgr->getmMapWrite(), mCurSeCalTime);
 
-            //计算模型的Con
+            //计算模型的Con状态
             mPointPreCal->CalculateAllModeCon(mBaseMgr->getmMapSetInfo(),mBaseMgr->getPointData(), mBaseMgr->getIndexConfInfo(),mBaseMgr->getmMapWrite());
 
             mBaseMgr->SetAllMothAvgData();
 
-            //计算机组 系统 模型 SIM 健康度
+            //计算机组系统、模型、SIM健康度
             mPointPreCal->CalData(mBaseMgr->getMapModleNameStatus(),
                                   mBaseMgr->getmMapSetInfo(),
                                   mBaseMgr->getmMapModeMethodAvg(),

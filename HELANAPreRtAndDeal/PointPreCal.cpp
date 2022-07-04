@@ -129,6 +129,13 @@ void PointPreCal::CalculateModeCon(MapStringToDataMode &mModeInfo,
                     fValue = mCalculateIndex->calEngine(mode_con->m_ModelConditionId,  mode_con->m_strTranOutVarFun, strLocVar, strOutVarVal, strExp);
                     //std::string tt = PubOpt::StringOpt::StringFormat("calEngine value %s=%f;",pIndexConfInfo->mIndexCode.c_str(), fValue);
                     //Aos_WriteLog_D(tt.c_str());
+
+                    std::string tt = PubOpt::StringOpt::StringFormat("calEngine strExp:%s mTranOutVarAndFun:%s strOutVarVal:%s value:%f;",
+                                                                     strExp.c_str(),
+                                                                     mode_con->m_strTranOutVarFun.c_str(),
+                                                                     strOutVarVal.c_str(),
+                                                                     fValue);
+                    Aos_WriteLog_D(tt.c_str());
                 }
 
             }
@@ -482,10 +489,7 @@ void PointPreCal::CalculatePre(MapStringToBool &mMapModleNameStatus,MapStringToS
                 DcPreDeal(mode_info, mModeMethodAvg, mMapWrite, sum, sumw);
             }
 
-            if (0 == sum)
-                sysobj->mSysJkdValue = 0;
-            else
-                sysobj->mSysJkdValue = sum;        //sysobj->mSysJkdValue = sumw / sum;
+            sysobj->mSysJkdValue = sum;
 
             if(sysobj->mRtdbSysJkdIsExist && 0 != sysobj->mSysWeight && 0 != sysobj->mSysJkdValue)
             {
@@ -500,8 +504,8 @@ void PointPreCal::CalculatePre(MapStringToBool &mMapModleNameStatus,MapStringToS
             {
                 //setsumw += sysobj->mSysWeight;
                 //setsum += sysobj->mSysWeight/sysobj->mSysJkdValue;
-//                setsumw += pow(sysobj->mSysWeight, 2) / sysobj->mSysJkdValue;
-//                setsum += pow(sysobj->mSysWeight / sysobj->mSysJkdValue, 2);
+                //                setsumw += pow(sysobj->mSysWeight, 2) / sysobj->mSysJkdValue;
+                //                setsum += pow(sysobj->mSysWeight / sysobj->mSysJkdValue, 2);
                 setsum += sysobj->mSysWeight * sysobj->mSysJkdValue;
             }
 
@@ -520,9 +524,7 @@ void PointPreCal::CalculatePre(MapStringToBool &mMapModleNameStatus,MapStringToS
             else
                 it_rw->second = setobj->mSetJkdValue;
         }
-
     }
-
 }
 void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeMethodAvg,
                             MapStringToDouble &mMapWrite,double  &sum,double &sumw)
@@ -603,14 +605,12 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
 //                PreValueToMapWrite(it->second, mMapWrite, true);
 //            }
 //        }
-//        mode_info->mDModeSim = 0;
-//        sum += 0;
 //        CalGroupSim(mode_info, mMapWrite);
 //        if(0 == mode_info->mDModeWeight || 0 == mode_info->mDModeSim)
 //            return;
 //        sumw += pow(mode_info->mDModeWeight, 2) / mode_info->mDModeSim;
 //        sum += pow(mode_info->mDModeWeight / mode_info->mDModeSim, 2);
-        mode_info->mDModeSim;
+//        mode_info->mDModeSim;
         sum += 0;
         return;
     }
@@ -632,15 +632,14 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
 
     SetPreValue(mode_info, mode_fun, msim, pm, mt, mMapWrite);
 
-    //LiyG
-    /*
-    if(0 == mode_info->mDModeWeight || 0 == mode_info->mDModeSim)
-        return;
+    //LiyG 修改jkd算法
+//    if(0 == mode_info->mDModeWeight || 0 == mode_info->mDModeSim)
+//        return;
+//    sumw += pow(mode_info->mDModeWeight, 2) / mode_info->mDModeSim;
+//    sum += pow(mode_info->mDModeWeight / mode_info->mDModeSim, 2);
 
-    sumw += pow(mode_info->mDModeWeight, 2) / mode_info->mDModeSim;
-    sum += pow(mode_info->mDModeWeight / mode_info->mDModeSim, 2);
-    */
     sum += mode_info->mDModeWeight * mode_info->mDModeSim;
+
 }
 
 void PointPreCal::DwPreDeal(DataMode* mode_info,MapStringToDouble &mMapWrite,double  &sum,double &sumw)
@@ -757,15 +756,15 @@ void PointPreCal::SetPreValue(DataMode* mode_info,MethodAvg* mode_fun,const doub
         Aos_WriteLog(err.c_str());
     }
     it_g = mode_info->mMapGroup.begin();
-    for (;it_g!=mode_info->mMapGroup.end();++it_g)
+    for (;it_g != mode_info->mMapGroup.end(); ++it_g)
     {
         pgroup = it_g->second;
         it = pgroup->mMapGroupPoint.begin();
-        for(;it!=pgroup->mMapGroupPoint.end();++it)   //模型有些点可能不参与训练原始值还是要回写，比如一个模型下有50个点，但训练的只有40个点
+        for(;it != pgroup->mMapGroupPoint.end(); ++it)   //模型有些点可能不参与训练原始值还是要回写，比如一个模型下有50个点，但训练的只有40个点
         {
             if(!it->second->mRtdbPointSourceIsExist) continue;
-            it_rw=mMapWrite.find(it->second->mPointSource);
-            if(it_rw==mMapWrite.end())
+            it_rw = mMapWrite.find(it->second->mPointSource);
+            if(it_rw == mMapWrite.end())
             {
                 mMapWrite.insert(make_pair(it->second->mPointSource,it->second->getCurrVar(1)));
             }
@@ -775,21 +774,15 @@ void PointPreCal::SetPreValue(DataMode* mode_info,MethodAvg* mode_fun,const doub
 }
 void PointPreCal::CalGroupSim(DataMode* mode_info,MapStringToDouble &mMapWrite)
 {
-    MapStringToDouble_It  it_rw;
-    MapStringToMDataValueInfo_It it;
-    PointGroup* pgroup;
-    MapStringToPointGroup_It it_g;
-    std::vector<double> vecdev;
     double sum = 0;
     double sumw = 0;
-    it_g = mode_info->mMapGroup.begin();
+    MapStringToPointGroup_It it_g = mode_info->mMapGroup.begin();
     for (;it_g!=mode_info->mMapGroup.end();++it_g)
     {
-        vecdev.clear();
-        pgroup = it_g->second;
-        if("ZZ2_3_fl_1gjsdc"==pgroup->m_Group)
-            int itep =100;
-        it = pgroup->mMapGroupPoint.begin();
+        std::vector<double> vecdev;
+        PointGroup* pgroup = it_g->second;
+
+        MapStringToMDataValueInfo_It it = pgroup->mMapGroupPoint.begin();
         for (;it!=pgroup->mMapGroupPoint.end();++it)
         {
             vecdev.push_back(it->second->getCurrVar(3));
@@ -799,7 +792,7 @@ void PointPreCal::CalGroupSim(DataMode* mode_info,MapStringToDouble &mMapWrite)
         //add by wk 2018-7-3 参数类去尾操作
         if ((1 == pgroup->m_ValueType) && (0 != pgroup->m_ValueNum) && (pgroup->m_ValueNum < vecdev.size()))
         {
-            for(int i =0;i<pgroup->m_ValueNum;i++)
+            for(int i = 0;i < pgroup->m_ValueNum; i++)
             {
                 vecdev.erase(vecdev.begin());
             }
@@ -809,21 +802,23 @@ void PointPreCal::CalGroupSim(DataMode* mode_info,MapStringToDouble &mMapWrite)
         //end by wk 2018-7-3 参数类去尾操作
         else
         {
-            if (num%2==0)
+            if (num % 2 == 0)
             {
-                pgroup->m_JkdValue = (vecdev[num/2-1]+vecdev[num/2])/2;
+                pgroup->m_JkdValue = (vecdev[num / 2 - 1] + vecdev[num / 2]) / 2;
             }
             else
             {
-                pgroup->m_JkdValue = vecdev[num/2];
+                pgroup->m_JkdValue = vecdev[num / 2];
             }
         }
-        if(0==pgroup->m_GroupWeight||0==pgroup->m_JkdValue)
+
+        if(0 == pgroup->m_GroupWeight || 0 == pgroup->m_JkdValue)
             continue;
+
         if(pgroup->mRtdbGroupJkdIsExist)
         {
-            it_rw = mMapWrite.find(pgroup->m_GroupJkd);
-            if(it_rw==mMapWrite.end())
+            MapStringToDouble_It it_rw = mMapWrite.find(pgroup->m_GroupJkd);
+            if(it_rw == mMapWrite.end())
             {
                 mMapWrite.insert(make_pair(pgroup->m_GroupJkd,pgroup->m_JkdValue));
             }
@@ -837,23 +832,27 @@ void PointPreCal::CalGroupSim(DataMode* mode_info,MapStringToDouble &mMapWrite)
         //sumw += pgroup->m_GroupWeight;
         //sum += pgroup->m_GroupWeight/pgroup->m_JkdValue;
 
-        sumw += pow(pgroup->m_GroupWeight,2)/pgroup->m_JkdValue;
-        sum += pow(pgroup->m_GroupWeight/pgroup->m_JkdValue,2);
+        sumw += pow(pgroup->m_GroupWeight,2) / pgroup->m_JkdValue;
+        sum += pow(pgroup->m_GroupWeight / pgroup->m_JkdValue,2);
     }
-    if (0==sum)
+
+    if (0 == sum)
     {
         mode_info->mDModeSim = 0;
     }
     else
     {
-        mode_info->mDModeSim = sumw/sum;
+        mode_info->mDModeSim = sumw / sum;
     }
+
     if(mode_info->mRtdbSimModleIsWrite)
     {
         //add by wk 2018-7-19
-        if (0==mode_info->mDModeSim) return;
+        if (0 == mode_info->mDModeSim)
+            return;
+
         //end add
-        it_rw = mMapWrite.find(mode_info->mSimPoint);
+        MapStringToDouble_It it_rw = mMapWrite.find(mode_info->mSimPoint);
         if(it_rw==mMapWrite.end())
         {
             mMapWrite.insert(make_pair(mode_info->mSimPoint,mode_info->mDModeSim));
@@ -877,13 +876,13 @@ void PointPreCal::PreValueToMapWrite(DataValueInfo *pointData,MapStringToDouble 
         it_rw=mMapWrite.find(pointData->mPointSource);
         if(it_rw==mMapWrite.end())
         {
-            if(0!=pointData->getCurrVar(1))
-                mMapWrite.insert(make_pair(pointData->mPointSource, pointData->getCurrVar(1)));
+            //if(0!=pointData->getCurrVar(1))
+            mMapWrite.insert(make_pair(pointData->mPointSource, pointData->getCurrVar(1)));
         }
         else
         {
-            if(0!=pointData->getCurrVar(1))
-                it_rw->second = pointData->getCurrVar(1);
+            //if(0!=pointData->getCurrVar(1))
+            it_rw->second = pointData->getCurrVar(1);
         }
     }
     
@@ -893,13 +892,13 @@ void PointPreCal::PreValueToMapWrite(DataValueInfo *pointData,MapStringToDouble 
         it_rw = mMapWrite.find(pointData->mPreSource);
         if(it_rw==mMapWrite.end())
         {
-            if(0!=pointData->getCurrVar(2))
-                mMapWrite.insert(make_pair(pointData->mPreSource,pointData->getCurrVar(2)));
+            //if(0!=pointData->getCurrVar(2))
+            mMapWrite.insert(make_pair(pointData->mPreSource,pointData->getCurrVar(2)));
         }
         else
         {
-            if(0!=pointData->getCurrVar(2))
-                it_rw->second = pointData->getCurrVar(2);
+            //if(0!=pointData->getCurrVar(2))
+            it_rw->second = pointData->getCurrVar(2);
         }
         
         /*Aos_WriteLog(PubOpt::StringOpt::StringFormat("点名： %s 点值: %f",
@@ -911,13 +910,13 @@ void PointPreCal::PreValueToMapWrite(DataValueInfo *pointData,MapStringToDouble 
         it_rw = mMapWrite.find(pointData->mSimSource);
         if(it_rw==mMapWrite.end())
         {
-            if(0!=pointData->getCurrVar(3))
-                mMapWrite.insert(make_pair(pointData->mSimSource,pointData->getCurrVar(3)));
+            //if(0!=pointData->getCurrVar(3))
+            mMapWrite.insert(make_pair(pointData->mSimSource,pointData->getCurrVar(3)));
         }
         else
         {
-            if(0!=pointData->getCurrVar(3))
-                it_rw->second = pointData->getCurrVar(3);
+            //if(0!=pointData->getCurrVar(3))
+            it_rw->second = pointData->getCurrVar(3);
         }
     }
 }

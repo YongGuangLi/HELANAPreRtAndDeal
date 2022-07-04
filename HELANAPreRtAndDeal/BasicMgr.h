@@ -95,7 +95,7 @@ public:
 	 * 输出参数: 无
 	 * 返回值: true(成功)、false(失败)
 	*/
-	bool	loadPointData(long &lTimeStamp,const long nowTime); 
+    bool	loadPointData(long &lTimeStamp);
 	
 	bool	loadHisPointData(const long StartTime,const long EndTime); 
 	void    ClearMapMonmentDatas();
@@ -109,7 +109,7 @@ public:
 	 * 输出参数: 无
 	 * 返回值: true(成功)、false(失败)
 	*/
-	bool	loadConfigInfo(const bool isFirstCal,bool &ModConf,long	&mCurSeCalTime);
+    bool	loadConfigInfo();
 	
 	bool  UpdataCalTime(std::string strcalTime,const int itype);
 	bool UpdateServiceVersion(std::string strServiceName,std::string strVersion,std::string strLog);

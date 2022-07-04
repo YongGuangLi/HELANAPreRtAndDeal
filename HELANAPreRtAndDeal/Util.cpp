@@ -33,8 +33,7 @@ bool QtConnectOnce(RsdbAdapter* pQtOpt,std::string strFactoryCode)
     DBServerInfo stServerInfo;
     stServerInfo.strSessionName = SINGLETON(ServiceEIDSPreConfig)->getOciSessionName();
     stServerInfo.strUserName = SINGLETON(ServiceEIDSPreConfig)->getOciUserName();
-    //stServerInfo.strPasswd = SINGLETON(ServiceEIDSPreConfig)->getOciPassWD();
-    stServerInfo.strPasswd = "Tzrd#2021@db";
+    stServerInfo.strPasswd = "Tzrd#2021@db";   //SINGLETON(ServiceEIDSPreConfig)->getOciPassWD();
     stServerInfo.strRsdbType = SINGLETON(ServiceEIDSPreConfig)->getRsdbType();
     stServerInfo.strIp = SINGLETON(ServiceEIDSPreConfig)->getRsdbIp();
     stServerInfo.iPort = CharPointerConvert2Number<int>(SINGLETON(ServiceEIDSPreConfig)->getRsdbPort().c_str());

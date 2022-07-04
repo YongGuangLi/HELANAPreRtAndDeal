@@ -417,6 +417,9 @@ bool AlarmSetDeal::UpdateServiceVersion(std::string strServiceName,std::string s
 
     return true;
 }
+
+
+
 bool AlarmSetDeal::RsltPointRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 {
     bool nErr = true;
@@ -567,7 +570,7 @@ bool AlarmSetDeal::RsltPointGroupRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 
     return nErr;
 }
-bool AlarmSetDeal::RsltModleRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
+bool AlarmSetDeal::RsltModelRtValuesRsdb(MapStringToSetCfg &mMapSetInfo)
 {
     bool nErr = true;
     DataMode* mode_info;
@@ -749,38 +752,13 @@ void AlarmSetDeal::WriteRsdb(MapStringToSetCfg &mMapSetInfo,MapStringToPointData
 {
     mlCalTimeStamp = mCurSeCalTime;
 
-    QFile fileHandler(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp");
-    if(fileHandler.open(QIODevice::Append))
-    {
-        QTextStream stream(&fileHandler);
-
-        stream<<"begin;"<<'\n';
-
-        fileHandler.close();
-    }
-
     RsltPointRtValuesRsdb(mMapSetInfo);
     RsltPointGroupRtValuesRsdb(mMapSetInfo);
-    RsltModleRtValuesRsdb(mMapSetInfo);
+    RsltModelRtValuesRsdb(mMapSetInfo);
     RsltDpointRtValuesRsdb(mMapPointData,strFactory);
     RsltIndexRtValuesRsdb(mMapPointData,strFactory);
 
-    std::string strSQL =  PubOpt::StringOpt::StringFormat(g_strUpdateSysCalTimeSQL.c_str(),PubOpt::SystemOpt::DateTmToStr(mCurSeCalTime).c_str(), 1);
 
-    if(fileHandler.open(QIODevice::Append))
-    {
-        QTextStream stream(&fileHandler);
-
-        stream<<QString::fromStdString(strSQL)<<'\n';
-        stream<<"commit;"<<'\n';
-
-        fileHandler.close();
-    }
-
-    if(QFile::exists(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt"))
-        QFile::remove(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
-
-    QFile::rename(QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt.tmp", QString::fromStdString( PubOpt::SystemOpt::GetCurExePath()) + "sql.txt");
 }
 
 bool AlarmSetDeal::RsltPointUpValuesRsdb()
