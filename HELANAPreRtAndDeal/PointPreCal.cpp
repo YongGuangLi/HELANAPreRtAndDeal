@@ -486,6 +486,10 @@ void PointPreCal::CalculatePre(MapStringToBool &mMapModleNameStatus,MapStringToS
                 else
                     mode_info->m_IsDeal = it_ok->second;
 
+                if(mode_info->mModeId == "TZ_1_2hkssb1")
+                {
+                    printf("in/");
+                }
                 DcPreDeal(mode_info, mModeMethodAvg, mMapWrite, sum, sumw);
             }
 
@@ -504,6 +508,7 @@ void PointPreCal::CalculatePre(MapStringToBool &mMapModleNameStatus,MapStringToS
             {
                 //setsumw += sysobj->mSysWeight;
                 //setsum += sysobj->mSysWeight/sysobj->mSysJkdValue;
+
                 //                setsumw += pow(sysobj->mSysWeight, 2) / sysobj->mSysJkdValue;
                 //                setsum += pow(sysobj->mSysWeight / sysobj->mSysJkdValue, 2);
                 setsum += sysobj->mSysWeight * sysobj->mSysJkdValue;
@@ -595,23 +600,22 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
     MapStringToMethodAvg_It fun_iter = mMethodAvg->mMapmethodavg.find(mode_info->mCondId);
     if(fun_iter == mMethodAvg->mMapmethodavg.end() || !mode_info->m_IsDeal)
     {
-//        MapStringToPointGroup_It iter_g = mode_info->mMapGroup.begin();
-//        for (;iter_g != mode_info->mMapGroup.end(); ++iter_g)
-//        {
-//            PointGroup* model_group = iter_g->second;
-//            MapStringToMDataValueInfo_It it = model_group->mMapGroupPoint.begin();
-//            for (;it!=model_group->mMapGroupPoint.end();++it)
-//            {
-//                PreValueToMapWrite(it->second, mMapWrite, true);
-//            }
-//        }
-//        CalGroupSim(mode_info, mMapWrite);
-//        if(0 == mode_info->mDModeWeight || 0 == mode_info->mDModeSim)
-//            return;
+        MapStringToPointGroup_It iter_g = mode_info->mMapGroup.begin();
+        for (;iter_g != mode_info->mMapGroup.end(); ++iter_g)
+        {
+            PointGroup* model_group = iter_g->second;
+            MapStringToMDataValueInfo_It it = model_group->mMapGroupPoint.begin();
+            for (;it!=model_group->mMapGroupPoint.end();++it)
+            {
+                PreValueToMapWrite(it->second, mMapWrite, true);
+            }
+        }
+        CalGroupSim(mode_info, mMapWrite);
+        if(0 == mode_info->mDModeWeight || 0 == mode_info->mDModeSim)
+            return;
+
 //        sumw += pow(mode_info->mDModeWeight, 2) / mode_info->mDModeSim;
 //        sum += pow(mode_info->mDModeWeight / mode_info->mDModeSim, 2);
-//        mode_info->mDModeSim;
-        sum += 0;
         return;
     }
 
@@ -639,7 +643,6 @@ void PointPreCal::DcPreDeal(DataMode* mode_info,MapStringToModeMethodAvg &mModeM
 //    sum += pow(mode_info->mDModeWeight / mode_info->mDModeSim, 2);
 
     sum += mode_info->mDModeWeight * mode_info->mDModeSim;
-
 }
 
 void PointPreCal::DwPreDeal(DataMode* mode_info,MapStringToDouble &mMapWrite,double  &sum,double &sumw)
@@ -653,8 +656,6 @@ void PointPreCal::DwPreDeal(DataMode* mode_info,MapStringToDouble &mMapWrite,dou
     double msim = 0;
     std::string errMessge;
 
-    if(mode_info->mModeId=="4_zc"||mode_info->mModeId=="4_zc")
-        int i=100;
     mode_info->m_IsCalOk= false;
     pm.clear();
     mt.clear();
@@ -668,8 +669,6 @@ void PointPreCal::DwPreDeal(DataMode* mode_info,MapStringToDouble &mMapWrite,dou
             it = model_group->mMapGroupPoint.begin();
             for (;it!=model_group->mMapGroupPoint.end();++it)
             {
-                if ("DDM.ZZEIDS.D4_FLN02AM"==it->second->mPointSource)
-                    int itemp = 100;
                 if(!it->second->mRtdbPointSourceIsExist) continue;
                 PreValueToMapWrite(it->second,mMapWrite);
                 if(it->second->mRtdbPreSourceIsExist)

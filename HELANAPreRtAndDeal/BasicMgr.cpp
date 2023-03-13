@@ -198,7 +198,7 @@ BasicMgr::loadConfigInfo()
 
     //读入等配置信息
     Aos_WriteLog_D("Start loadModeData()");
-    //select * from v_eids_model_monit_point_all
+    //select select t.set_id,set_code ..... from v_eids_model_monit_point_all
     //select point_code,source_id_original,set_code,full_point_code  from tb_pub_point
     Aos_Assert_R(loadModeData(), false);
     Aos_WriteLog_D("End loadModeData()");
@@ -206,7 +206,7 @@ BasicMgr::loadConfigInfo()
     //select t.model_id,t.model_condition_id,t.similar_limit,t.monit_point_id, t.ma_value,t.model_value,t.model_value_relation \
     from  tb_eids_model_method_avg t left join  v_eids_model_all p  on t.model_id=p.model_id order by model_id,model_condition_id
 
-            Aos_WriteLog_D("Start loadModeMuFun()");
+    Aos_WriteLog_D("Start loadModeMuFun()");
     Aos_Assert_R(loadModeMuFun(), false);
     Aos_WriteLog_D("End loadModeMuFun()");
 
